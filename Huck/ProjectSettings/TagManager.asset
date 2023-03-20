@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Gather
+  - build
+  - Terrain
   layers:
   - Default
   - TransparentFX
@@ -12,6 +16,7 @@ TagManager:
   - Water
   - UI
   - Player
+  - Enemy
   - 
   - 
   - 
@@ -20,6 +25,8 @@ TagManager:
   - 
   - 
   - 
+  - Gather
+  - Terrain
   - 
   - 
   - 
@@ -28,11 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - buildThings
+  - build
   - 
   - 
   - 

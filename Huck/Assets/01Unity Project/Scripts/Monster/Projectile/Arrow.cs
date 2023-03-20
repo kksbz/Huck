@@ -42,7 +42,6 @@ public class Arrow : MonoBehaviour
         // 화살의 방향이 힘을 받는 방향으로 향하도록 하는 처리
         if (isHit == false && transform.forward != Vector3.zero)
         {
-            Debug.Log(transform.forward);
             transform.forward = arrowRb.velocity;
         }
     } // FixedUpdate

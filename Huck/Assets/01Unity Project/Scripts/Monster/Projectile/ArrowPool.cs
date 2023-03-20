@@ -22,7 +22,7 @@ public class ArrowPool : MonoBehaviour
     //! ArrowPool 채우는 함수
     private void SetupArrowPool()
     {
-        for (int i = 0; i < 0; i++)
+        for (int i = 0; i < 5; i++)
         {
             GameObject arrow = Instantiate(arrowPrefab, Vector3.zero, Quaternion.identity);
             arrowPool.Enqueue(arrow);

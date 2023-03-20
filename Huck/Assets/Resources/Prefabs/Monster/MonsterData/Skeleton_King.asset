@@ -26,4 +26,4 @@ MonoBehaviour:
   skillB_MaxCooldown: 0
   searchRange: 25
   attackRange: 20
-  meleeAttackRange: 3
+  meleeAttackRange: 4

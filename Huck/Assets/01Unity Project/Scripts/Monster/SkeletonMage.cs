@@ -20,6 +20,7 @@ public class SkeletonMage : Monster
     //! 해골마법사 공격 오버라이드
     public override void Attack()
     {
+        mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         if (mController.distance > meleeAttackRange)
         {
             mController.monsterAni.SetBool("isAttackB", true);
@@ -34,6 +35,7 @@ public class SkeletonMage : Monster
     //! 해골마법사 스킬 오버라이드
     public override void Skill()
     {
+        mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         if (useSkillA == true)
         {
             SkillA();

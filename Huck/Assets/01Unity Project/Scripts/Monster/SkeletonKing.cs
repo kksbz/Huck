@@ -18,6 +18,7 @@ public class SkeletonKing : Monster
     //! 해골왕 공격 오버라이드
     public override void Attack()
     {
+        mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         // 모션 2개 중 랜덤으로 한개 실행
         int number = Random.Range(0, 10);
         if (number <= 6)
@@ -33,6 +34,7 @@ public class SkeletonKing : Monster
     //! 해골왕 스킬 오버라이드
     public override void Skill()
     {
+        mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         SkillA();
     } // Skill
 

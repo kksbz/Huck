@@ -16,8 +16,7 @@ MonoBehaviour:
   monsterHp: 150
   monsterMaxHp: 150
   moveSpeed: 5
-  minDamage: 4
-  maxDamage: 6
+  damage: 12
   isNoRangeAttack: 0
   isNoRangeSkill: 1
   useSkillA: 1

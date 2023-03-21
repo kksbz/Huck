@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : MonoBehaviour, IDamageable
 {
     //! 몬스터 타입
     public enum MonsterType
@@ -13,11 +13,10 @@ public class Monster : MonoBehaviour
 
     [HideInInspector] public MonsterType monsterType;
     [HideInInspector] public string monsterName;
-    [HideInInspector] public float monsterHp;
-    [HideInInspector] public float monsterMaxHp;
+    [HideInInspector] public int monsterHp;
+    [HideInInspector] public int monsterMaxHp;
     [HideInInspector] public float moveSpeed;
-    [HideInInspector] public float minDamage;
-    [HideInInspector] public float maxDamage;
+    [HideInInspector] public int damage;
     [HideInInspector] public bool isNoRangeAttack;
     [HideInInspector] public bool isNoRangeSkill;
     [HideInInspector] public bool useSkillA;
@@ -27,6 +26,9 @@ public class Monster : MonoBehaviour
     [HideInInspector] public float searchRange;
     [HideInInspector] public float attackRange;
     [HideInInspector] public float meleeAttackRange;
+    [HideInInspector] public bool isHit = false;
+    [HideInInspector] public bool isDead = false;
+    [HideInInspector] public GameObject attacker = default;
 
     //! 몬스터 데이터 초기화하는 함수
     public void InitMonsterData(MonsterType _monsterType, MonsterData monsterData)
@@ -36,8 +38,7 @@ public class Monster : MonoBehaviour
         this.monsterHp = monsterData.MonsterHp;
         this.monsterMaxHp = monsterData.MonsterMaxHp;
         this.moveSpeed = monsterData.MoveSpeed;
-        this.minDamage = monsterData.MinDamage;
-        this.maxDamage = monsterData.MaxDamage;
+        this.damage = monsterData.Damage;
         this.isNoRangeAttack = monsterData.IsNoRangeAttack;
         this.isNoRangeSkill = monsterData.IsNoRangeSkill;
         this.useSkillA = monsterData.UseSkillA;
@@ -60,6 +61,19 @@ public class Monster : MonoBehaviour
     {
         /* Do Nothing */
     } // Skill
+
+    //! 공격받으면 처리하는 함수
+    public void TakeDamage(GameObject _attacker, int _damage)
+    {
+        isHit = true;
+        monsterHp -= _damage;
+        attacker = _attacker;
+        if (monsterHp <= 0f)
+        {
+            isDead = true;
+        }
+        Debug.Log($"{_attacker.name}한테 {_damage} 피해입음! 현재체력:{monsterHp}");
+    } // TakeDamage
 
     //! 공격딜레이 주는 코루틴함수
     protected IEnumerator AttackDelay(MonsterController mController, int _number)

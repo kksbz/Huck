@@ -11,6 +11,9 @@ public class Test : MonoBehaviour
     public float timer;
     public float h;
     public bool isJump = false;
+    public float x;
+    public float y;
+    public float z;
 
     private void Start()
     {
@@ -49,5 +52,14 @@ public class Test : MonoBehaviour
         result *= v0xz;
         result.y = v0y;
         return result;
+    }
+
+    public void GetParabola(Vector3 start, Vector3 end, float time)
+    {
+        Vector3 Speed;
+        Speed.x = (end.x - start.x) / time;
+        Speed.y = (end.y - start.y);
+        Speed.z = (end.z - start.z) / time;
+
     }
 }

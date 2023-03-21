@@ -11,8 +11,5 @@ public struct DamageMessage
 }
 public interface IDamageable
 {
-    public virtual void TakeDamage(DamageMessage message)
-    {
-        /* virtual method */
-    }
+    void TakeDamage(GameObject attacker, int damage);
 }

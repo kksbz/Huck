@@ -10,24 +10,20 @@ public class MonsterData : ScriptableObject
     public string MonsterName { get { return monsterName; } }
 
     [SerializeField]
-    private float monsterHp; //몬스터 HP
-    public float MonsterHp { get { return monsterHp; } }
+    private int monsterHp; //몬스터 HP
+    public int MonsterHp { get { return monsterHp; } }
 
     [SerializeField]
-    private float monsterMaxHp; //몬스터 MAX_HP
-    public float MonsterMaxHp { get { return monsterMaxHp; } }
+    private int monsterMaxHp; //몬스터 MAX_HP
+    public int MonsterMaxHp { get { return monsterMaxHp; } }
 
     [SerializeField]
     private float moveSpeed; //몬스터 이동속도
     public float MoveSpeed { get { return moveSpeed; } }
 
     [SerializeField]
-    private float minDamage; //몬스터 최소 공격력
-    public float MinDamage { get { return minDamage; } }
-
-    [SerializeField]
-    private float maxDamage; //몬스터 최대 공격력
-    public float MaxDamage { get { return maxDamage; } }
+    private int damage; //몬스터 최소 공격력
+    public int Damage { get { return damage; } }
 
     [SerializeField]
     private bool isNoRangeAttack; //몬스터 원거리 공격 유무

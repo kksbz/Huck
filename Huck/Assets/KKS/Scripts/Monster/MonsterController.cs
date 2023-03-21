@@ -45,6 +45,7 @@ public class MonsterController : MonoBehaviour
         targetSearch = gameObject.GetComponent<TargetSearchRay>();
         mAgent = gameObject.GetComponent<NavMeshAgent>();
         mAgent.acceleration = 100f;
+        mAgent.angularSpeed = 180f;
         mAgent.speed = monster.moveSpeed;
 
         // { 각 상태를 Dictionary에 저장
@@ -115,12 +116,18 @@ public class MonsterController : MonoBehaviour
     //! 몬스터 상태 정하는 함수
     private void MonsterSetState()
     {
-        if (monster.monsterHp < currentHp)
+        if (monster.isHit == true && (enumState == MonsterState.ATTACK || enumState == MonsterState.SKILL))
+        {
+            monster.isHit = false;
+        }
+        if (monster.isHit == true && monster.isDead == false
+            && enumState != MonsterState.ATTACK
+            && enumState != MonsterState.SKILL)
         {
             MStateMachine.SetState(dicState[MonsterState.HIT]);
         }
 
-        float _distance = Vector3.Distance(this.transform.position, target.transform.position);
+        float _distance = Vector3.Distance(transform.position, target.transform.position);
         // 타겟이 몬스터의 탐색범위 밖에 있으면 추적
         if (_distance > monster.searchRange)
         {
@@ -130,9 +137,10 @@ public class MonsterController : MonoBehaviour
 
         // 타겟이 몬스터의 탐색범위 안에 있을 때 탐색 실행
         targetSearch.SearchTarget();
-        distance = Vector3.Distance(this.transform.position, targetSearch.hit.transform.position);
+        distance = Vector3.Distance(this.transform.position, targetSearch.hit.gameObject.transform.position);
+
         // 공격, 스킬 상태가 아니면 이동상태로 전환
-        if (enumState != MonsterState.ATTACK && enumState != MonsterState.SKILL)
+        if (enumState != MonsterState.ATTACK && enumState != MonsterState.SKILL && enumState != MonsterState.HIT)
         {
             MStateMachine.SetState(dicState[MonsterState.MOVE]);
         }

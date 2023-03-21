@@ -16,8 +16,7 @@ MonoBehaviour:
   monsterHp: 100
   monsterMaxHp: 100
   moveSpeed: 7
-  minDamage: 4
-  maxDamage: 6
+  damage: 7
   isNoRangeAttack: 1
   isNoRangeSkill: 0
   useSkillA: 1
@@ -26,4 +25,4 @@ MonoBehaviour:
   skillB_MaxCooldown: 45
   searchRange: 25
   attackRange: 20
-  meleeAttackRange: 2
+  meleeAttackRange: 1.5

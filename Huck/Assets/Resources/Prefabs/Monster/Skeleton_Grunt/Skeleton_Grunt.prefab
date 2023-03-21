@@ -1994,9 +1994,9 @@ GameObject:
   - component: {fileID: 8716971430347659801}
   - component: {fileID: 8716971430347659800}
   - component: {fileID: 8716971430347659807}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Skeleton_Grunt
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

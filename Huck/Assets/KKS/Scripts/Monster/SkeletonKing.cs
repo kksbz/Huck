@@ -58,7 +58,7 @@ public class SkeletonKing : Monster
         mController.monsterAni.SetBool("isAttackB", false);
         mController.monsterAni.SetBool("isSkillA_End", false);
         // 공격종료 후 딜레이 시작
-        StartCoroutine(AttackDelay(mController, 3));
+        mController.isDelay = true;
     } // ExitAttack
 
     //! 스킬A 공격 코루틴함수

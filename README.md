@@ -17,3 +17,4 @@
 2023-03-21 / v0.1.3 / [KKS] 몬스터 돌진 최소사거리 추가, tag 및 LayerMask 변수 팀 통일, 제네릭 Singleton 추가</br>
 2023-03-21 / v0.1.4 / [KKS] 몬스터 포물선 점프 prototype setup</br>
 2023-03-22 / v0.1.5 / [KKS] 몬스터 Hit상태 및 공용 데미지처리 interface prototype setup</br>
+2023-03-22 / v0.1.6 / [KKS] 몬스터 4방향 Hit상태 구현, 공격딜레이 State로 분리</br>

@@ -136,7 +136,7 @@ public class SkeletonSoldier : Monster
         mController.monsterAni.SetBool("isSkillB", false);
         weapon.SetActive(false);
         // 공격종료 후 딜레이 시작
-        StartCoroutine(AttackDelay(mController, 4));
+        mController.isDelay = true;
     } // ExitAttack
 
     //! 스킬A 돌진 공격 코루틴함수

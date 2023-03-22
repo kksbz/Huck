@@ -134,7 +134,7 @@ public class SkeletonGrunt : Monster
         mController.monsterAni.SetBool("isSkillA", false);
         mController.monsterAni.SetBool("isSkillB_End", false);
         // 공격종료 후 딜레이 시작
-        StartCoroutine(AttackDelay(mController, 4));
+        mController.isDelay = true;
     } // ExitAttack
 
     //! 돌진 공격 사용 거리 체크하는 코루틴함수

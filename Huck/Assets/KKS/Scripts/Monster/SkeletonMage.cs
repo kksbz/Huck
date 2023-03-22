@@ -57,7 +57,7 @@ public class SkeletonMage : Monster
         mController.monsterAni.SetBool("isSkillA", false);
         mController.monsterAni.SetBool("isSkillB", false);
         // 공격종료 후 딜레이 시작
-        StartCoroutine(AttackDelay(mController, 4));
+        mController.isDelay = true;
     } // ExitAttack
 
     //! 스킬A 함수

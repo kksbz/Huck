@@ -26,3 +26,4 @@ MonoBehaviour:
   searchRange: 25
   attackRange: 20
   meleeAttackRange: 1.5
+  delayType: 4

@@ -43,7 +43,7 @@ public class SkeletonGrunt : Monster
         }
         else if(mController.distance > meleeAttackRange)
         {
-            // 돌진공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진공격X Idle상태로 전환
+            // 돌진공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진공격X Idle상태로 초기화
             StartCoroutine(CheckRushDistance());
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
@@ -77,14 +77,12 @@ public class SkeletonGrunt : Monster
         if (useSkillA == true)
         {
             SkillA();
-            Debug.Log($"스킬A 발동 {isNoRangeSkill}");
             return;
         }
 
         if (useSkillB == true)
         {
             SkillB();
-            Debug.Log($"스킬B 발동 {isNoRangeSkill}");
             return;
         }
     } // Skill
@@ -99,12 +97,12 @@ public class SkeletonGrunt : Monster
     //! 스킬A 데미지판정 함수
     private void SkillA_Damage()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK));
+        RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {
-            if (hits[0].collider.tag == GData.PLAYER_MASK)
+            foreach(var _hit in hits)
             {
-                Debug.Log("플레이어 맞춤");
+                Debug.Log($"{_hit.collider.name} 맞춤!");
             }
         }
     } // SkillA_Damage
@@ -113,7 +111,7 @@ public class SkeletonGrunt : Monster
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(weapon.transform.position, 3f);
-    }
+    } // OnDrawGizmos
 
     //! 해골그런트 스킬B 함수
     private void SkillB()
@@ -166,7 +164,7 @@ public class SkeletonGrunt : Monster
         mController.mAgent.speed = moveSpeed * 2f;
         while (isRush == true)
         {
-            // if : 돌진 마무리 공격 시작 전까지
+            // 돌진 마무리 공격 시작 전까지 타겟을 향하여 돌진
             if (isFinishRush == false)
             {
                 mController.mAgent.SetDestination(mController.targetSearch.hit.transform.position);

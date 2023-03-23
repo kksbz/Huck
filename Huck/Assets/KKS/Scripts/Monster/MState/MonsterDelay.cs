@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterDelay : IMonsterState
@@ -33,7 +34,8 @@ public class MonsterDelay : IMonsterState
     //! 공격딜레이 주는 코루틴함수
     private IEnumerator AttackDelay(int _number)
     {
-        int number = Random.Range(0, _number);
+        //int number = Random.Range(0, _number);
+        int number = 2;
         switch (number)
         {
             case 0:
@@ -68,8 +70,7 @@ public class MonsterDelay : IMonsterState
                         isIdle = true;
                     }
                     Vector3 dir = (mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
-                    mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 2f * Time.deltaTime);
-
+                    mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 3f * Time.deltaTime);
                     yield return null;
                 }
                 //Debug.Log($"대기 종료");
@@ -79,24 +80,25 @@ public class MonsterDelay : IMonsterState
                 bool isSideMove = false;
                 int sideNumber = Random.Range(0, 2);
                 //Debug.Log("사이드무빙 시작");
+                mController.transform.LookAt(mController.targetSearch.hit.transform.position);
                 while (isSideMove == false)
                 {
                     checkTime3 += Time.deltaTime;
-                    if (checkTime3 >= 2f)
+                    if (checkTime3 >= 2.5f)
                     {
                         isSideMove = true;
                     }
                     Vector3 dir = (mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
-                    mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 2f * Time.deltaTime);
+                    mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 3f * Time.deltaTime);
                     if (sideNumber == 0)
                     {
                         mController.monsterAni.SetBool("isRight", true);
-                        mController.mAgent.Move(mController.transform.right.normalized * mController.monster.moveSpeed * Time.deltaTime);
+                        mController.mAgent.Move(mController.transform.right * mController.monster.moveSpeed * Time.deltaTime);
                     }
                     else
                     {
                         mController.monsterAni.SetBool("isLeft", true);
-                        mController.mAgent.Move(-mController.transform.right.normalized * mController.monster.moveSpeed * Time.deltaTime);
+                        mController.mAgent.Move(-mController.transform.right * mController.monster.moveSpeed * Time.deltaTime);
                     }
                     yield return null;
                 }
@@ -114,5 +116,4 @@ public class MonsterDelay : IMonsterState
         IMonsterState nextState = new MonsterIdle();
         mController.MStateMachine.onChangeState?.Invoke(nextState);
     } // AttackDelay
-
 } // MonsterDelay

@@ -38,6 +38,7 @@ public class MonsterController : MonoBehaviour, IDamageable
     // { Test
     public GameObject target;
     public float distance; // 타겟과의 거리 변수
+    public bool useSkill;
     // } Test
 
     // Start is called before the first frame update
@@ -83,6 +84,9 @@ public class MonsterController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        // 인스펙터 스킬 사용가능한지 확인용
+        useSkill = monster.useSkill;
+
         if (isSpawn == false)
         {
             MonsterSetState();
@@ -184,7 +188,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         }
         // 타겟이 몬스터의 탐색범위 안에 있을 때만 탐색 실행 (최적화)
         targetSearch.SearchTarget();
-        distance = Vector3.Distance(this.transform.position, targetSearch.hit.gameObject.transform.position);
+        distance = Vector3.Distance(targetSearch.hit.transform.position, transform.position);
         // 타겟이 감지범위를 벗어나면 배틀종료
         if (distance > monster.searchRange)
         {
@@ -204,7 +208,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (distance <= monster.attackRange && enumState != MonsterState.DELAY && enumState != MonsterState.HIT)
         {
             // 몬스터의 스킬이 사용가능할 때
-            if (enumState != MonsterState.ATTACK && (monster.useSkillA == true || monster.useSkillB == true))
+            if (enumState != MonsterState.ATTACK && monster.useSkill == true)
             {
                 // 몬스터의 원거리 스킬 유무에 따라 실행
                 switch (monster.isNoRangeSkill)

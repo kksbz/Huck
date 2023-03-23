@@ -19,10 +19,7 @@ public class Monster : MonoBehaviour
     [HideInInspector] public int damage;
     [HideInInspector] public bool isNoRangeAttack;
     [HideInInspector] public bool isNoRangeSkill;
-    [HideInInspector] public bool useSkillA;
-    [HideInInspector] public bool useSkillB;
-    [HideInInspector] public float skillA_MaxCool;
-    [HideInInspector] public float skillB_MaxCool;
+    [HideInInspector] public bool useSkill;
     [HideInInspector] public float searchRange;
     [HideInInspector] public float attackRange;
     [HideInInspector] public float meleeAttackRange;
@@ -39,10 +36,7 @@ public class Monster : MonoBehaviour
         this.damage = monsterData.Damage;
         this.isNoRangeAttack = monsterData.IsNoRangeAttack;
         this.isNoRangeSkill = monsterData.IsNoRangeSkill;
-        this.useSkillA = monsterData.UseSkillA;
-        this.useSkillB = monsterData.UseSkillB;
-        this.skillA_MaxCool = monsterData.SkillA_MaxCooldown;
-        this.skillB_MaxCool = monsterData.SkillB_MaxCooldown;
+        this.useSkill = monsterData.UseSkill;
         this.searchRange = monsterData.SearchRange;
         this.attackRange = monsterData.AttackRange;
         this.meleeAttackRange = monsterData.MeleeAttackRange;

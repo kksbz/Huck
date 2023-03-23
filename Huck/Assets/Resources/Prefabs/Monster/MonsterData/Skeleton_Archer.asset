@@ -19,10 +19,7 @@ MonoBehaviour:
   damage: 7
   isNoRangeAttack: 0
   isNoRangeSkill: 0
-  useSkillA: 1
-  useSkillB: 0
-  skillA_MaxCooldown: 30
-  skillB_MaxCooldown: 0
+  useSkill: 1
   searchRange: 30
   attackRange: 20
   meleeAttackRange: 2

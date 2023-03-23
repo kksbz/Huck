@@ -34,20 +34,8 @@ public class MonsterData : ScriptableObject
     public bool IsNoRangeSkill { get { return isNoRangeSkill; } }
 
     [SerializeField]
-    private bool useSkillA; // 몬스터 스킬A 사용가능 체크
-    public bool UseSkillA { get { return useSkillA; } }
-
-    [SerializeField]
-    private bool useSkillB; // 몬스터 스킬B 사용가능 체크
-    public bool UseSkillB { get { return useSkillB; } }
-
-    [SerializeField]
-    private float skillA_MaxCooldown; // 몬스터 스킬A 쿨다운
-    public float SkillA_MaxCooldown { get { return skillA_MaxCooldown; } }
-
-    [SerializeField]
-    private float skillB_MaxCooldown; // 몬스터 스킬B 쿨다운
-    public float SkillB_MaxCooldown { get { return skillB_MaxCooldown; } }
+    private bool useSkill; // 몬스터 스킬 사용가능 체크
+    public bool UseSkill { get { return useSkill; } }
 
     [SerializeField]
     private float searchRange; // 몬스터 탐색 범위

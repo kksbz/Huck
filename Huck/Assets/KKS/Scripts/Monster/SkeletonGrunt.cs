@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Monster;
-using static UnityEngine.Rendering.DebugUI;
 
 public class SkeletonGrunt : Monster
 {
@@ -41,7 +39,7 @@ public class SkeletonGrunt : Monster
             StartCoroutine(RushAttack());
             return;
         }
-        else if(mController.distance > meleeAttackRange)
+        else if (mController.distance > meleeAttackRange)
         {
             // 돌진공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진공격X Idle상태로 초기화
             StartCoroutine(CheckRushDistance());
@@ -90,9 +88,29 @@ public class SkeletonGrunt : Monster
     //! 해골그런트 스킬A 함수
     private void SkillA()
     {
+        Parabola parabola = new Parabola();
+        float distance = 1f;
+        // 몬스터가 타겟을 바라보는 방향의 반대방향을 구함
+        Vector3 dir = -(mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
+        // 목표위치를 타겟위치에서 몬스터방향으로 distance만큼 이동된 좌표로 설정
+        Vector3 targetPos = mController.targetSearch.hit.transform.position + dir * distance;
+        StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, 1.5f, gameObject));
         mController.monsterAni.SetBool("isSkillA", true);
         StartCoroutine(SkillACooldown());
     } // SkillA
+
+    //! SkillA 사용 중 특정 구간에서 애니메이션 멈추는 이벤트함수
+    private void StopSkillA_Ani()
+    {
+        mController.monsterAni.StartPlayback();
+        StartCoroutine(PlaySkillA());
+    } // StopSkillA_Ani
+    //! SkillA 멈췄던 애니메이션 재생하는 코루틴함수
+    private IEnumerator PlaySkillA()
+    {
+        yield return new WaitForSeconds(0.5f);
+        mController.monsterAni.StopPlayback();
+    } // PlaySkillA
 
     //! 스킬A 데미지판정 함수
     private void SkillA_Damage()
@@ -100,7 +118,7 @@ public class SkeletonGrunt : Monster
         RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {
-            foreach(var _hit in hits)
+            foreach (var _hit in hits)
             {
                 Debug.Log($"{_hit.collider.name} 맞춤!");
             }
@@ -193,14 +211,14 @@ public class SkeletonGrunt : Monster
     } // RushAttack
 
     //! 스킬A 연계 공격 코루틴함수
-    private IEnumerator UseSkillA()
+    private IEnumerator UseSkillB()
     {
         mController.monsterAni.SetBool("isSkillB_Start", false);
         mController.monsterAni.SetBool("isSkillB_Loop", true);
         yield return new WaitForSeconds(2f);
         mController.monsterAni.SetBool("isSkillB_Loop", false);
         mController.monsterAni.SetBool("isSkillB_End", true);
-    } // UseSkillA
+    } // UseSkillB
 
     //! 돌진 쿨다운 코루틴함수
     private IEnumerator RushCooldown()

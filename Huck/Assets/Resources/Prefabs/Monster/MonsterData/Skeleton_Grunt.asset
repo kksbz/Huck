@@ -17,11 +17,11 @@ MonoBehaviour:
   monsterMaxHp: 150
   moveSpeed: 5
   damage: 12
-  isNoRangeAttack: 0
-  isNoRangeSkill: 1
+  isNoRangeAttack: 1
+  isNoRangeSkill: 0
   useSkillA: 1
   useSkillB: 1
-  skillA_MaxCooldown: 40
+  skillA_MaxCooldown: 10
   skillB_MaxCooldown: 50
   searchRange: 25
   attackRange: 20

@@ -19,3 +19,4 @@
 2023-03-22 / v0.1.5 / [KKS] 몬스터 Hit상태 및 공용 데미지처리 interface prototype setup</br>
 2023-03-22 / v0.1.6 / [KKS] 몬스터 4방향 Hit상태 구현, 공격딜레이 State로 분리</br>
 2023-03-22 / v0.1.7 / [KKS] delay상태와 Hit상태 추가로 인한 몬스터컨트롤러 상태진입 조건 변경</br>
+2023-03-23 / v0.1.8 / [KKS] 공용 포물선이동 class Setup</br>

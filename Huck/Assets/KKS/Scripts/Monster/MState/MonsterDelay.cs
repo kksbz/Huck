@@ -28,7 +28,6 @@ public class MonsterDelay : IMonsterState
         mController.monsterAni.SetBool("isLeft", false);
         mController.isDelay = false;
         mController.StopCoroutineDeligate(runningCoroutine);
-        Debug.Log($"딜레이 상태 탈출 {runningCoroutine}");
     } // StateExit
 
     //! 공격딜레이 주는 코루틴함수
@@ -114,7 +113,6 @@ public class MonsterDelay : IMonsterState
         // 공격딜레이가 끝났으면 Idle상태로 초기화
         IMonsterState nextState = new MonsterIdle();
         mController.MStateMachine.onChangeState?.Invoke(nextState);
-        Debug.Log($"딜레이 상태 초기화 {nextState}");
     } // AttackDelay
 
 } // MonsterDelay

@@ -95,7 +95,7 @@ public class SkeletonKing : Monster
         else if (useSkillB == true && mController.distance < 13f)
         {
             useSkillB = false;
-            // 돌진스킬이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진스킬 사용X Idle상태로 초기화
+            // 도약 공격 스킬이 사용가능하지만 타겟이 최소사거리 안에 있을때 스킬 사용X Idle상태로 초기화
             StartCoroutine(CheckSkillBDistance());
             CheckUseSkill();
             IMonsterState nextState = new MonsterIdle();
@@ -117,13 +117,13 @@ public class SkeletonKing : Monster
         }
     } // CheckUseSkill
 
-    //! 스킬A 돌진 사용 거리체크하는 코루틴함수
+    //! 스킬B (도약 공격) 사용거리 체크하는 코루틴함수
     private IEnumerator CheckSkillBDistance()
     {
         isNoRangeSkill = true;
         while (isNoRangeSkill == true)
         {
-            // 타겟이 돌진 최소사거리 밖에 있으면 돌진 사용가능
+            // 타겟이 도약 공격 최소사거리 밖에 있으면 스킬 사용가능
             if (mController.distance >= 13f)
             {
                 useSkillB = true;
@@ -197,8 +197,6 @@ public class SkeletonKing : Monster
         mController.isDelay = true;
     } // UseSkillB
 
-
-
     //! 스킬A 쿨다운 코루틴함수
     private IEnumerator SkillACooldown()
     {
@@ -220,6 +218,7 @@ public class SkeletonKing : Monster
     //! 스킬B 쿨다운 코루틴함수
     private IEnumerator SkillBCooldown()
     {
+        isNoRangeSkill = true;
         // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
         while (true)
         {
@@ -227,6 +226,7 @@ public class SkeletonKing : Monster
             if (skillBCool >= skillB_MaxCool)
             {
                 skillBCool = 0f;
+                isNoRangeSkill = false;
                 useSkillB = true;
                 CheckUseSkill();
                 yield break;

@@ -2,14 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct DamageMessage
+public class DamageMessage
 {
     public GameObject causer;
     public float damageAmount;
-
-    // 더 필요할만한거 알아서 추가하기
+    public Item item;
+    public DamageMessage(GameObject causer, float damageAmount, Item item = default)
+    {
+        this.causer = causer;
+        this.damageAmount = damageAmount;
+        this.item = item;
+    }
 }
 public interface IDamageable
 {
-    void TakeDamage(GameObject attacker, int damage);
+    public void TakeDamage(DamageMessage message)
+    {
+        /* virtual method */
+    }
 }

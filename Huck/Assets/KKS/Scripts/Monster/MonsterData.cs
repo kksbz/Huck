@@ -48,8 +48,4 @@ public class MonsterData : ScriptableObject
     [SerializeField]
     private float meleeAttackRange; // 몬스터 근접공격 사거리
     public float MeleeAttackRange { get { return meleeAttackRange; } }
-
-    [SerializeField]
-    private int delayType; // 몬스터 공격딜레이 타입
-    public int DelayType { get { return delayType; } }
 } // MonsterData

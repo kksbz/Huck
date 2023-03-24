@@ -43,7 +43,7 @@ public class SkeletonGrunt : Monster
             StartCoroutine(RushAttack());
             return;
         }
-        else if (mController.distance > meleeAttackRange)
+        else if (mController.distance < 13f)
         {
             // 돌진공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진공격 사용X Idle상태로 초기화
             StartCoroutine(CheckRushDistance());
@@ -271,7 +271,7 @@ public class SkeletonGrunt : Monster
         {
             time += Time.deltaTime;
             mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-            if(time >= 0.24f && isStart == true)
+            if (time >= 0.24f && isStart == true)
             {
                 mController.monsterAni.SetBool("isSkillB_Start", false);
                 mController.monsterAni.SetBool("isSkillB_Loop", true);

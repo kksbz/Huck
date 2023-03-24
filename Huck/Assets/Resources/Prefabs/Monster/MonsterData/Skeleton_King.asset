@@ -20,7 +20,6 @@ MonoBehaviour:
   isNoRangeAttack: 1
   isNoRangeSkill: 0
   useSkill: 1
-  searchRange: 25
-  attackRange: 20
+  searchRange: 30
+  attackRange: 25
   meleeAttackRange: 4
-  delayType: 3

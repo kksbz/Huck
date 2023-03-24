@@ -11,7 +11,7 @@ public class MonsterHit : IMonsterState
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.HIT;
         Debug.Log($"Hit상태 시작 : {mController.monster.monsterName}");
-        aniClipName = GetHitPoint(mController.monster.delayType);
+        aniClipName = GetHitPoint();
         mController.CoroutineDeligate(HitProcess(aniClipName));
     } // StateEnter
     public void StateFixedUpdate()
@@ -29,7 +29,7 @@ public class MonsterHit : IMonsterState
     } // StateExit
 
     //! 공격을 당했을 때 맞은 위치를 찾는 함수
-    private string GetHitPoint(int _delayType)
+    private string GetHitPoint()
     {
         // 타겟과의 방향벡터를 구한 다음에 forward 와 방향벡터 사이의 각도를 구함
         Vector3 dir = (mController.attacker.transform.position - mController.transform.position).normalized;
@@ -50,14 +50,7 @@ public class MonsterHit : IMonsterState
         else if (angle >= 135 && angle < 225)
         {
             //Debug.Log($"타겟이 뒤에 있다!!");
-            if (_delayType == 4)
-            {
-                clipName = "isHitBack";
-            }
-            else
-            {
-                clipName = default;
-            }
+            clipName = "isHitBack";
         }
         else if (angle >= 225 && angle < 315)
         {

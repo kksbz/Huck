@@ -76,7 +76,7 @@ public class SkeletonSoldier : Monster
             CheckUseSkill();
             return;
         }
-        else if (useSkillA == true && mController.distance > meleeAttackRange)
+        else if (useSkillA == true && mController.distance < 13f)
         {
             useSkillA = false;
             // 돌진스킬이 사용가능하지만 타겟이 최소사거리 안에 있을때 돌진스킬 사용X Idle상태로 초기화

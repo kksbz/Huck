@@ -11,7 +11,7 @@ public class MonsterDelay : IMonsterState
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DELAY;
-        runningCoroutine = AttackDelay(mController.monster.delayType);
+        runningCoroutine = AttackDelay();
         mController.CoroutineDeligate(runningCoroutine);
     } // StateEnter
     public void StateFixedUpdate()
@@ -28,14 +28,15 @@ public class MonsterDelay : IMonsterState
         mController.monsterAni.SetBool("isRight", false);
         mController.monsterAni.SetBool("isLeft", false);
         mController.isDelay = false;
+        // 딜레이 상태 탈출 시 코루틴 종료
         mController.StopCoroutineDeligate(runningCoroutine);
     } // StateExit
 
     //! 공격딜레이 주는 코루틴함수
-    private IEnumerator AttackDelay(int _number)
+    private IEnumerator AttackDelay()
     {
-        //int number = Random.Range(0, _number);
-        int number = 2;
+        int number = Random.Range(0, 4);
+        //int number = 1;
         switch (number)
         {
             case 0:

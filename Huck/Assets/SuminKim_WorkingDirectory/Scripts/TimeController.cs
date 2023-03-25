@@ -75,7 +75,7 @@ public class TimeController : MonoBehaviour
     private void UpdateTimeOfDay()
     {
         currentTime = currentTime.AddSeconds(Time.deltaTime * timeMultiplier);
-        Debug.Log($"currentTime : {currentTime.Hour}");
+        //Debug.Log($"currentTime : {currentTime.Hour}");
         if(timeText != null)
         {
             timeText.text = currentTime.ToString("HH:mm");
@@ -141,13 +141,13 @@ public class TimeController : MonoBehaviour
 
         if(currentTime.Hour == sunriseHour - 1f)
         {
-            Debug.Log($"≥∑¿∏∑Œ");
+            //Debug.Log($"≥∑¿∏∑Œ");
             isPlayingTransition = true;
             StartCoroutine(TransitionSkybox(false));
         }
         else if(currentTime.Hour == sunsetHour - 1f)
         {
-            Debug.Log($"π„¿∏∑Œ");
+            //Debug.Log($"π„¿∏∑Œ");
             isPlayingTransition = true;
             StartCoroutine(TransitionSkybox(true));
         }
@@ -171,7 +171,7 @@ public class TimeController : MonoBehaviour
             yield return null;
             time += Time.deltaTime*timeMultiplier;
             blendValue = Mathf.Lerp(from, to, skyChangeCurve.Evaluate(time));
-            Debug.Log($"blendValue : {blendValue}");
+            //Debug.Log($"blendValue : {blendValue}");
             skybox.SetFloat("_Blend", blendValue);
             if (blendValue == to)
             {

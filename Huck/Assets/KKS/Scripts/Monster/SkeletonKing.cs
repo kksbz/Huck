@@ -18,6 +18,7 @@ public class SkeletonKing : Monster
         mController = gameObject.GetComponent<MonsterController>();
         InitMonsterData(MonsterType.MELEE, monsterData);
         mController.monster = this;
+        CheckUseSkill();
     } // Awake
 
     //! 공격 처리 이벤트함수 (Collider)
@@ -180,6 +181,9 @@ public class SkeletonKing : Monster
     //! 스킬B (도약 공격) 코루틴함수
     private IEnumerator UseSkillB()
     {
+        mController.monsterAni.SetTrigger("isRoar");
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
         // 포물선 이동함수를 사용하기 위한 Parabola 초기화
         Parabola parabola = new Parabola();
         // 몬스터가 타겟을 바라보는 방향의 반대방향을 구함
@@ -191,9 +195,6 @@ public class SkeletonKing : Monster
         StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, 1f, gameObject));
         yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length - 0.8f);
         mController.monsterAni.SetBool("isSkillB", false);
-        mController.monsterAni.SetTrigger("isRoar");
-        yield return new WaitForSeconds(0.1f);
-        yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
         mController.isDelay = true;
     } // UseSkillB
 

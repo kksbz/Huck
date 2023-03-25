@@ -90,6 +90,6 @@ public class ResObjHPBar : MonoBehaviour
         hpBarSlider.value = 1f;
         ratio = 1f;
         gameObject.SetActive(false);
-        Debug.Log("binding Success!");
+        //Debug.Log("binding Success!");
     }
 }

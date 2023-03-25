@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStat : MonoBehaviour
+public class PlayerStat : MonoBehaviour, IDamageable
 {
     public static int curHp = default;
     public static float curHungry = default;
@@ -104,4 +104,10 @@ public class PlayerStat : MonoBehaviour
     }
     #endregion
     // } Hp, Hungry, Energy
+
+    public void TakeDamage(DamageMessage message)
+    {
+        curHp -= Mathf.FloorToInt(message.damageAmount);
+        Debug.Log($"{message.causer.name}에게 {message.damageAmount}피해입음!");
+    }
 }

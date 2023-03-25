@@ -115,6 +115,9 @@ public class MonsterController : MonoBehaviour, IDamageable
         //Debug.Log($"{monsterAni.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
         //Debug.Log($"{monster.monsterName}, {monsterAni.GetCurrentAnimatorStateInfo(0).length}");
         yield return new WaitForSeconds(monsterAni.GetCurrentAnimatorStateInfo(0).length);
+        monsterAni.SetTrigger("isRoar");
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(monsterAni.GetCurrentAnimatorStateInfo(0).length);
         isSpawn = false;
     } // Spawn
 
@@ -174,7 +177,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (isBattle == false)
         {
             float _distance = Vector3.Distance(transform.position, target.transform.position);
-            Debug.Log($"배틀중이 아님 : {_distance}");
+            //Debug.Log($"배틀중이 아님 : {_distance}");
             // 타겟이 몬스터의 탐색범위 밖에 있으면 추적
             if (_distance > monster.searchRange)
             {
@@ -196,7 +199,7 @@ public class MonsterController : MonoBehaviour, IDamageable
             return;
         }
 
-        // 공격, 스킬 상태가 아니면 이동상태로 전환
+        // 이동상태로 전환 체크
         if (enumState != MonsterState.ATTACK
             && enumState != MonsterState.SKILL
             && enumState != MonsterState.HIT
@@ -220,10 +223,7 @@ public class MonsterController : MonoBehaviour, IDamageable
                         }
                         break;
                     case false:
-                        if (distance > monster.meleeAttackRange)
-                        {
-                            MStateMachine.SetState(dicState[MonsterState.SKILL]);
-                        }
+                        MStateMachine.SetState(dicState[MonsterState.SKILL]);
                         break;
                 } // switch end
             } // if end

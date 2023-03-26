@@ -30,4 +30,4 @@ public class WeaponTrigger : MonoBehaviour
             other.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
         }
     } // OnTriggerEnter
-}
+} // WeaponTrigger

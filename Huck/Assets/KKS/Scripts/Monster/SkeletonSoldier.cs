@@ -101,7 +101,7 @@ public class SkeletonSoldier : Monster
     } // EnableShield
 
     //! 공격종료 이벤트함수
-    private void ExitAttack()
+    public override void ExitAttack()
     {
         damage = defaultDamage;
         weapon.SetActive(false);

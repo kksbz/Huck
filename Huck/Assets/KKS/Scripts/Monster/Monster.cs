@@ -53,5 +53,9 @@ public class Monster : MonoBehaviour
         /* Do Nothing */
     } // Skill
 
-    
+    //! 공격종료 함수
+    public virtual void ExitAttack()
+    {
+        /* Do Nothing */
+    } // ExitAttack
 } // Monster

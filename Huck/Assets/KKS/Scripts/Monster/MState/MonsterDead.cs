@@ -9,17 +9,18 @@ public class MonsterDead : IMonsterState
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DEAD;
-    }
+        mController.monsterAni.SetBool("isDead", true);
+    } // StateEnter
     public void StateFixedUpdate()
     {
         /*Do Nothing*/
-    }
+    } // StateFixedUpdate
     public void StateUpdate()
     {
         /*Do Nothing*/
-    }
+    } // StateUpdate
     public void StateExit()
     {
         /*Do Nothing*/
-    }
-}
+    } // StateExit
+} // MonsterDead

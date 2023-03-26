@@ -8,7 +8,7 @@ public class SkeletonMage : Monster
 {
     private MonsterController mController = default;
     [SerializeField] private MonsterData monsterData = default;
-    [SerializeField] private GameObject SkeletonSoldierPrefab = default;
+    [SerializeField] private GameObject summonObjPrefab = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
@@ -105,7 +105,7 @@ public class SkeletonMage : Monster
     } // OnDrawGizmos
 
     //! 공격종료 이벤트함수
-    private void ExitAttack()
+    public override void ExitAttack()
     {
         damage = defaultDamage;
         mController.monsterAni.SetBool("isAttackA", false);
@@ -183,15 +183,16 @@ public class SkeletonMage : Monster
         {
             // 해골병사가 소환될 때 타겟을 바라보면서 소환되게 회전축 설정
             Vector3 dirToTarget = (mController.targetSearch.hit.transform.position - hit.point).normalized;
-            Instantiate(SkeletonSoldierPrefab, hit.point, Quaternion.LookRotation(dirToTarget));
+            Instantiate(summonObjPrefab, hit.point, Quaternion.LookRotation(dirToTarget));
             return;
         }
         else
         {
-            // 무한루프 예외처리 : 좌표탐색 20번 이상이면 소환X
             //Debug.Log("소환위치에 장애물 있음! 다른좌표 탐색시작");
+            // 무한루프 예외처리 : 좌표탐색 20번 이상이면 해골마법사 앞에 소환
             if (summonCount > 20)
             {
+                Instantiate(summonObjPrefab, transform.position + (transform.forward * 2f), Quaternion.LookRotation(transform.forward));
                 summonCount = 0;
                 return;
             }

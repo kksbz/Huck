@@ -124,7 +124,7 @@ public class SkeletonGrunt : Monster
     } // EnableShoulderAttack
 
     //! 공격종료 이벤트함수
-    private void ExitAttack()
+    public override void ExitAttack()
     {
         weapon.SetActive(false);
         shoulder.SetActive(false);

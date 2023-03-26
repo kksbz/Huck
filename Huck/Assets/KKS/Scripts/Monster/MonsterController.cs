@@ -20,21 +20,20 @@ public class MonsterController : MonoBehaviour, IDamageable
 
     private Dictionary<MonsterState, IMonsterState> dicState = new Dictionary<MonsterState, IMonsterState>(); // 몬스터의 상태를 담을 딕셔너리
     private MStateMachine mStateMachine; // 몬스터의 상태를 처리할 스테이트머신
-    [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
     private bool isSpawn = true;
     public MStateMachine MStateMachine { get; private set; }
-    [HideInInspector] public Monster monster;
     public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
-    public int currentHp; // 몬스터의 현재 HP 변수
+    [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
+    [HideInInspector] public Monster monster;
     [HideInInspector] public Rigidbody monsterRb = default;
     [HideInInspector] public Animator monsterAni = default;
     [HideInInspector] public AudioSource monsterAudio = default;
     [HideInInspector] public TargetSearchRay targetSearch = default;
     [HideInInspector] public NavMeshAgent mAgent = default;
+    [HideInInspector] public GameObject attacker = default; // 데미지를 가한 상대의 정보를 담을 변수
     [HideInInspector] public bool isDelay = false;
     [HideInInspector] public bool isHit = false;
     [HideInInspector] public bool isDead = false;
-    [HideInInspector] public GameObject attacker = default; // 데미지를 가한 상대의 정보를 담을 변수
     // { Test
     public GameObject target;
     public float distance; // 타겟과의 거리 변수
@@ -44,7 +43,6 @@ public class MonsterController : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
-        currentHp = monster.monsterHp;
         monsterRb = gameObject.GetComponent<Rigidbody>();
         monsterAni = gameObject.GetComponent<Animator>();
         monsterAudio = gameObject.GetComponent<AudioSource>();
@@ -87,7 +85,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         // 인스펙터 스킬 사용가능한지 확인용
         useSkill = monster.useSkill;
 
-        if (isSpawn == false)
+        if (isSpawn == false && isDead == false)
         {
             MonsterSetState();
         }
@@ -122,11 +120,19 @@ public class MonsterController : MonoBehaviour, IDamageable
     } // Spawn
 
     //! 공격받으면 처리하는 함수 (interface 상속)
-    public void TakeDamage(GameObject _attacker, int _damage)
+    public void TakeDamage(DamageMessage message)
     {
         // 스폰상태일 때 무적처리
         if (isSpawn == true)
         {
+            return;
+        }
+        monster.monsterHp -= Mathf.FloorToInt(message.damageAmount);
+        // HP가 0 이하면 사망
+        if (monster.monsterHp <= 0f)
+        {
+            isDead = true;
+            MStateMachine.SetState(dicState[MonsterState.DEAD]);
             return;
         }
         // 공격중이 아닐 때만 Hit상태로 전환하기 위한 예외처리
@@ -134,13 +140,8 @@ public class MonsterController : MonoBehaviour, IDamageable
         {
             isHit = true;
         }
-        monster.monsterHp -= _damage;
-        attacker = _attacker;
-        if (monster.monsterHp <= 0f)
-        {
-            isDead = true;
-        }
-        Debug.Log($"{_attacker.name}한테 {_damage} 피해입음! 현재체력:{monster.monsterHp}, {isHit}");
+        attacker = message.causer;
+        Debug.Log($"{attacker.name}한테 {message.damageAmount} 피해입음! 현재체력:{monster.monsterHp}, {isHit}");
     } // TakeDamage
 
     //! interface를 상속받은 클래스는 MonoBehaviour를 상속 받지 못해서 코루틴을 대신 실행시켜줄 함수
@@ -162,11 +163,6 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (isDelay == true)
         {
             MStateMachine.SetState(dicState[MonsterState.DELAY]);
-        }
-        // 공격, 스킬 상태일 경우 HIT 상태 진입X (맞는모션 실행 안하기 위한 예외처리) 
-        if (isHit == true && (enumState == MonsterState.ATTACK || enumState == MonsterState.SKILL))
-        {
-            isHit = false;
         }
         // 공격을 당하면 HIT상태로 전환
         if (isHit == true)

@@ -24,3 +24,4 @@
 2023-03-24 / v0.2.0 / [KKS] 보스몬스터 애니메이션클립 교체 및 클립 추가</br>
 2023-03-26 / v0.2.1 / [KKS] 해골병사, 그런트 setup, ArrowPool 및 Arrow 로직 변경</br>
 2023-03-26 / v0.2.2 / [KKS] 해골마법사 스킬B 해골병사 소환 setup</br>
+2023-03-26 / v0.2.3 / [KKS] 해골왕 스킬B 해골그런트 소환, DeadState protoType setup</br>

@@ -103,6 +103,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         target = GameManager.Instance.playerObj;
     } // GetTarget
 
+    #region 몬스터의 스폰과 공용 데미지처리 함수
     //! 몬스터 스폰 코루틴함수
     private IEnumerator Spawn()
     {
@@ -132,6 +133,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (monster.monsterHp <= 0f)
         {
             isDead = true;
+            monster.ExitAttack();
             MStateMachine.SetState(dicState[MonsterState.DEAD]);
             return;
         }
@@ -143,8 +145,10 @@ public class MonsterController : MonoBehaviour, IDamageable
         attacker = message.causer;
         Debug.Log($"{attacker.name}한테 {message.damageAmount} 피해입음! 현재체력:{monster.monsterHp}, {isHit}");
     } // TakeDamage
+    #endregion // 몬스터의 스폰과 데미지처리 함수
 
-    //! interface를 상속받은 클래스는 MonoBehaviour를 상속 받지 못해서 코루틴을 대신 실행시켜줄 함수
+    #region MonoBehaviour를 상속받지 않는 클래스에서 대신 기능을 수행시켜줄 함수모음
+    //! 코루틴을 대신 실행시켜줄 함수
     public void CoroutineDeligate(IEnumerator func)
     {
         StartCoroutine(func);
@@ -156,6 +160,14 @@ public class MonsterController : MonoBehaviour, IDamageable
         StopCoroutine(func);
     } // StopCoroutineDeligate
 
+    //! 디스트로이어를 대신 실행시켜줄 함수
+    public void DestroyObj(GameObject obj)
+    {
+        Destroy(obj);
+    } // DestroyObj
+    #endregion // MonoBehaviour를 상속받지 않는 클래스에서 대신 기능을 수행시켜줄 함수모음
+
+    #region 조건에 따라 몬스터의 상태 정하는 함수
     //! 몬스터 상태 정하는 함수
     private void MonsterSetState()
     {
@@ -242,6 +254,6 @@ public class MonsterController : MonoBehaviour, IDamageable
             } // if end
         }
         // } 타겟이 공격사거리 안에 있으면 공격 및 스킬 상태로 전환
-
     } // MonsterSetState
+    #endregion // 조건에 따라 몬스터의 상태 정하는 함수
 } // MonsterController

@@ -25,3 +25,4 @@
 2023-03-26 / v0.2.1 / [KKS] 해골병사, 그런트 setup, ArrowPool 및 Arrow 로직 변경</br>
 2023-03-26 / v0.2.2 / [KKS] 해골마법사 스킬B 해골병사 소환 setup</br>
 2023-03-26 / v0.2.3 / [KKS] 해골왕 스킬B 해골그런트 소환, DeadState protoType setup</br>
+2023-03-27 / v0.2.4 / [KKS] 몬스터 죽음상태, 보스몬스터 죽음상태 setup</br>

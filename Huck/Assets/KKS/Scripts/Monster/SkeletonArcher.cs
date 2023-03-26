@@ -17,7 +17,7 @@ public class SkeletonArcher : Monster
     private void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.RANGE, monsterData);
+        InitMonsterData(MonsterType.NOMAL, monsterData);
         mController.monster = this;
         defaultDamage = damage;
         CheckUseSkill();

@@ -22,7 +22,7 @@ public class RangeMove : MonoBehaviour
     {
         if(other.tag == GData.ENEMY_MASK)
         {
-            DamageMessage dm = new DamageMessage(transform.parent.gameObject, 10f);
+            DamageMessage dm = new DamageMessage(transform.parent.gameObject, 30f);
             other.gameObject.GetComponent<IDamageable>().TakeDamage(dm);
         }
     }

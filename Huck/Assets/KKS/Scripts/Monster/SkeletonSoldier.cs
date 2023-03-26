@@ -19,7 +19,7 @@ public class SkeletonSoldier : Monster
     void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.MELEE, monsterData);
+        InitMonsterData(MonsterType.NOMAL, monsterData);
         mController.monster = this;
         defaultDamage = damage;
         CheckUseSkill();

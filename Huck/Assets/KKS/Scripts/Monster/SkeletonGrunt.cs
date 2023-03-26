@@ -20,7 +20,7 @@ public class SkeletonGrunt : Monster
     void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.MELEE, monsterData);
+        InitMonsterData(MonsterType.NAMEED, monsterData);
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
@@ -76,7 +76,7 @@ public class SkeletonGrunt : Monster
             SkillA();
             return;
         }
-        else if (useSkillA == true && mController.distance > meleeAttackRange)
+        else if (useSkillA == true && mController.distance < 13f)
         {
             useSkillA = false;
             CheckUseSkill();

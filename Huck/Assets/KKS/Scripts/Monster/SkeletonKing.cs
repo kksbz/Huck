@@ -12,13 +12,14 @@ public class SkeletonKing : Monster
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
+    [HideInInspector] public bool is2Phase = false;
     private int summonCount = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
     void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.MELEE, monsterData);
+        InitMonsterData(MonsterType.BOSS, monsterData);
         mController.monster = this;
         CheckUseSkill();
     } // Awake
@@ -122,6 +123,58 @@ public class SkeletonKing : Monster
         mController.isDelay = true;
     } // ExitAttack
     #endregion // 공격 처리 (Collider, Raycast)
+
+    #region 보스몬스터 죽음 처리
+    //! 보스몬스터 죽음 처리 함수
+    public override void BossDead()
+    {
+        StartCoroutine(Dead());
+    } // BossDead
+
+    //! 보스몬스터 페이즈별 죽음 처리 함수
+    private IEnumerator Dead()
+    {
+        mController.monsterAni.speed = 1f;
+        mController.monsterAni.SetBool("isDead", true);
+        // 죽는 모션 되감기를 위한 float트리거
+        mController.monsterAni.SetFloat("RewindDead", 1f);
+        yield return null;
+        float deadAniTime = mController.monsterAni.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(deadAniTime);
+        mController.monsterAni.SetFloat("RewindDead", 0f);
+        yield return new WaitForSeconds(1.5f);
+        if (is2Phase == false)
+        {
+            // 1페이즈에서 죽었을 경우 부활하고 2페이즈로 전환
+            mController.monsterAni.SetFloat("RewindDead", -1f);
+            yield return null;
+            yield return new WaitForSeconds(deadAniTime);
+            mController.monsterAni.SetBool("isDead", false);
+            mController.monsterAni.SetTrigger("isRoar");
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
+            mController.isDead = false;
+            is2Phase = true;
+            mController.monsterAni.speed = 1.5f;
+        }
+        else
+        {
+            // 2페이즈에서 완전히 죽음
+            // 밑으로 시체가 내려가게 하기위해 네비매쉬 비활성화
+            mController.mAgent.enabled = false;
+            // 4초에 걸쳐 총 2f만큼 밑으로 내려간 뒤에 디스트로이
+            float deadTime = 0f;
+            while (deadTime < 4f)
+            {
+                deadTime += Time.deltaTime;
+                float deadSpeed = Time.deltaTime * 0.5f;
+                mController.transform.position += Vector3.down * deadSpeed;
+                yield return null;
+            }
+            mController.DestroyObj(mController.gameObject);
+        }
+    } // Dead
+    #endregion // 보스몬스터 죽음 처리
 
     #region 스킬A 해골그런트 소환
     //! 해골왕 스킬A 함수 (소환 스킬)

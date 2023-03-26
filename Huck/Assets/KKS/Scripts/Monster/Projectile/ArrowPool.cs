@@ -5,7 +5,6 @@ using UnityEngine;
 public class ArrowPool : MonoBehaviour
 {
     [SerializeField] private GameObject arrowPrefab = default;
-    [SerializeField] private Transform arrowPos = default;
     private Queue<GameObject> arrowPool = new Queue<GameObject>();
     private static ArrowPool instance = default;
     public static ArrowPool Instance

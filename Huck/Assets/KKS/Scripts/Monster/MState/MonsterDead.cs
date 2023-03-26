@@ -9,7 +9,19 @@ public class MonsterDead : IMonsterState
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DEAD;
-        mController.monsterAni.SetBool("isDead", true);
+        // 몬스터의 타입별 죽음처리
+        switch (mController.monster.monsterType)
+        {
+            case Monster.MonsterType.BOSS:
+                mController.monster.BossDead();
+                break;
+            case Monster.MonsterType.NAMEED:
+                mController.CoroutineDeligate(Dead());
+                break;
+            case Monster.MonsterType.NOMAL:
+                mController.CoroutineDeligate(Dead());
+                break;
+        }
     } // StateEnter
     public void StateFixedUpdate()
     {
@@ -23,4 +35,25 @@ public class MonsterDead : IMonsterState
     {
         /*Do Nothing*/
     } // StateExit
+
+    //! 몬스터 죽음 처리 함수
+    private IEnumerator Dead()
+    {
+        mController.monsterAni.SetBool("isDead", true);
+        yield return null;
+        yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(1.5f);
+        // 밑으로 시체가 내려가게 하기위해 네비매쉬 비활성화
+        mController.mAgent.enabled = false;
+        // 4초에 걸쳐 총 2f만큼 밑으로 내려간 뒤에 디스트로이
+        float deadTime = 0f;
+        while (deadTime < 4f)
+        {
+            deadTime += Time.deltaTime;
+            float deadSpeed = Time.deltaTime * 0.5f;
+            mController.transform.position += Vector3.down * deadSpeed;
+            yield return null;
+        }
+        mController.DestroyObj(mController.gameObject);
+    } // Dead
 } // MonsterDead

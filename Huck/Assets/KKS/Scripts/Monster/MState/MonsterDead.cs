@@ -9,10 +9,13 @@ public class MonsterDead : IMonsterState
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DEAD;
+        Debug.Log($"죽음상태 시작 : {mController.monster.monsterName}");
+        mController.isDelay = false;
         // 몬스터의 타입별 죽음처리
         switch (mController.monster.monsterType)
         {
             case Monster.MonsterType.BOSS:
+                // 보스몬스터는 죽음 로직이 달라서 따로 처리
                 mController.monster.BossDead();
                 break;
             case Monster.MonsterType.NAMEED:

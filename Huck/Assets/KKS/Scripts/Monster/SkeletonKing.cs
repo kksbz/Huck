@@ -10,12 +10,15 @@ public class SkeletonKing : Monster
     [SerializeField] private GameObject summonObjPrefab = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
+    [SerializeField] private bool useSkillC = default;
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
+    [SerializeField] private float skillC_MaxCool = default;
     [HideInInspector] public bool is2Phase = false;
     private int summonCount = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
+    private float skillCCool = 0f;
     void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
@@ -31,8 +34,22 @@ public class SkeletonKing : Monster
         // 모션 5개 중 랜덤으로 한개 실행
         if (mController.distance <= meleeAttackRange)
         {
-            int number = Random.Range(0, 11);
-            if (number > 8)
+            int number = default;
+            if (is2Phase == true)
+            {
+                // 2페이즈에선 공격 모션 E, F 타입 추가
+                number = Random.Range(0, 13);
+            }
+            else
+            {
+                number = Random.Range(0, 9);
+            }
+
+            if (number > 10)
+            {
+                StartCoroutine(UseAttackF());
+            }
+            else if (number > 8)
             {
                 mController.monsterAni.SetBool("isAttackE", true);
             }
@@ -64,25 +81,34 @@ public class SkeletonKing : Monster
         if (useSkillA == true)
         {
             useSkillA = false;
-            SkillA();
             CheckUseSkill();
+            SkillA();
             return;
         }
+
         if (useSkillB == true && mController.distance >= 13f)
         {
             useSkillB = false;
-            SkillB();
             CheckUseSkill();
+            SkillB();
             return;
         }
         else if (useSkillB == true && mController.distance < 13f)
         {
             useSkillB = false;
+            CheckUseSkill();
             // 도약 공격 스킬이 사용가능하지만 타겟이 최소사거리 안에 있을때 스킬 사용X Idle상태로 초기화
             StartCoroutine(CheckSkillBDistance());
-            CheckUseSkill();
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
+            return;
+        }
+
+        if (useSkillC == true && mController.distance <= meleeAttackRange)
+        {
+            useSkillC = false;
+            CheckUseSkill();
+            SkillC();
             return;
         }
     } // Skill
@@ -90,7 +116,7 @@ public class SkeletonKing : Monster
     //! 사용가능한 스킬이 있는지 체크하는 함수 (몬스터컨트롤러에서 상태진입 체크하기 위함)
     private void CheckUseSkill()
     {
-        if (useSkillA == false && useSkillB == false)
+        if (useSkillA == false && useSkillB == false && useSkillC == false)
         {
             useSkill = false;
         }
@@ -117,11 +143,29 @@ public class SkeletonKing : Monster
         mController.monsterAni.SetBool("isAttackC", false);
         mController.monsterAni.SetBool("isAttackD", false);
         mController.monsterAni.SetBool("isAttackE", false);
+        mController.monsterAni.SetBool("isAttackF", false);
         mController.monsterAni.SetBool("isSkillA_End", false);
         mController.monsterAni.SetBool("isSkillB", false);
+        mController.monsterAni.SetBool("isSkillC", false);
         // 공격종료 후 딜레이 상태로 전환
         mController.isDelay = true;
     } // ExitAttack
+
+    //! 공격F타입 코루틴함수
+    private IEnumerator UseAttackF()
+    {
+        mController.monsterAni.SetBool("isAttackF", true);
+        yield return new WaitForSeconds(1f);
+        float time = 0f;
+        // 2페이즈 : 애니메이션 속도가 1.2배 증가한만큼 시간변경
+        float maxTime = 1.5f / mController.monsterAni.speed;
+        while (time < maxTime)
+        {
+            time += Time.deltaTime;
+            mController.mAgent.Move(mController.transform.forward * moveSpeed * 0.5f * Time.deltaTime);
+            yield return null;
+        }
+    } // UseAttackF
     #endregion // 공격 처리 (Collider, Raycast)
 
     #region 보스몬스터 죽음 처리
@@ -142,20 +186,31 @@ public class SkeletonKing : Monster
         float deadAniTime = mController.monsterAni.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(deadAniTime);
         mController.monsterAni.SetFloat("RewindDead", 0f);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         if (is2Phase == false)
         {
             // 1페이즈에서 죽었을 경우 부활하고 2페이즈로 전환
+            mController.monsterAni.speed = 0.5f;
             mController.monsterAni.SetFloat("RewindDead", -1f);
             yield return null;
-            yield return new WaitForSeconds(deadAniTime);
+            yield return new WaitForSeconds(deadAniTime * 2f);
             mController.monsterAni.SetBool("isDead", false);
             mController.monsterAni.SetTrigger("isRoar");
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
+            float time = 0f;
+            float endTime = mController.monsterAni.GetCurrentAnimatorStateInfo(0).length - 2f;
+            while (time < endTime)
+            {
+                // endTime 까지 scale을 1에서 1.5까지 늘림
+                time += Time.deltaTime;
+                mController.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.5f, time / endTime);
+                yield return null;
+            }
+            yield return new WaitForSeconds(2f);
             mController.isDead = false;
             is2Phase = true;
-            mController.monsterAni.speed = 1.5f;
+            // 2페이즈 전환시 애니메이션 속도 1.2배로 설정
+            mController.monsterAni.speed = 1.2f;
         }
         else
         {
@@ -171,7 +226,7 @@ public class SkeletonKing : Monster
                 mController.transform.position += Vector3.down * deadSpeed;
                 yield return null;
             }
-            mController.DestroyObj(mController.gameObject);
+            Destroy(mController.gameObject);
         }
     } // Dead
     #endregion // 보스몬스터 죽음 처리
@@ -188,6 +243,7 @@ public class SkeletonKing : Monster
     {
         StartCoroutine(SkillACooldown());
         mController.monsterAni.SetBool("isSkillA_Start", true);
+        yield return null;
         bool isStart = true;
         bool isSkillA = false;
         float timeCheck = 0f;
@@ -282,7 +338,20 @@ public class SkeletonKing : Monster
         yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
         StartCoroutine(SkillBCooldown());
         mController.monsterAni.SetBool("isSkillB", true);
-        yield return new WaitForSeconds(0.8f);
+        float waitTime = default;
+        float leapTime = default;
+        if (is2Phase == true)
+        {
+            // 2페이즈 : 애니메이션 속도가 1.2배 증가한만큼 시간변경
+            waitTime = 0.8f / mController.monsterAni.speed;
+            leapTime = 1f / mController.monsterAni.speed;
+        }
+        else
+        {
+            waitTime = 0.8f;
+            leapTime = 1f;
+        }
+        yield return new WaitForSeconds(waitTime);
         // 포물선 이동함수를 사용하기 위한 Parabola 초기화
         Parabola parabola = new Parabola();
         // 몬스터가 타겟을 바라보는 방향의 반대방향을 구함
@@ -290,8 +359,8 @@ public class SkeletonKing : Monster
         // 목표위치를 dir방향으로 meleeAttackRange만큼 이동된 좌표로 설정
         Vector3 targetPos = mController.targetSearch.hit.transform.position + dir * meleeAttackRange;
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-        StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, 1f, gameObject));
-        yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length - 0.8f);
+        StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, leapTime, gameObject));
+        yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length - waitTime);
         mController.monsterAni.SetBool("isSkillB", false);
         mController.isDelay = true;
     } // UseSkillB
@@ -325,5 +394,42 @@ public class SkeletonKing : Monster
         CheckUseSkill();
     } // SkillBCooldown
     #endregion // 스킬B 도약 공격
+
+    #region 스킬C 연속 베기
+    //! 해골왕 스킬C 함수 (연속 베기)
+    private void SkillC()
+    {
+        StartCoroutine(UseSkillC());
+    } // SkillC
+
+    //! 스킬C (연속 베기) 코루틴함수
+    private IEnumerator UseSkillC()
+    {
+        StartCoroutine(SkillCCooldown());
+        mController.monsterAni.SetBool("isSkillC", true);
+        yield return null;
+        float time = 0f;
+        while (time < mController.monsterAni.GetCurrentAnimatorStateInfo(0).length)
+        {
+            time += Time.deltaTime;
+            mController.transform.LookAt(mController.targetSearch.hit.transform.position);
+            yield return null;
+        }
+    } // UseSkillC
+
+    //! 스킬C 쿨다운 코루틴함수
+    private IEnumerator SkillCCooldown()
+    {
+        skillCCool = 0f;
+        while (skillCCool < skillC_MaxCool)
+        {
+            skillCCool += Time.deltaTime;
+            yield return null;
+        }
+        skillCCool = 0f;
+        useSkillC = true;
+        CheckUseSkill();
+    } // SkillCCooldown
+    #endregion // 스킬C 연속 베기
     //! } 해골왕 항목별 region 모음
 } // SkeletonKing

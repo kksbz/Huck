@@ -111,6 +111,22 @@ public class MonsterController : MonoBehaviour, IDamageable
         isSpawn = true;
         // 기본상태가 Idle이기 때문에 현재Clip이 Spawn으로 갱신되도록 0.1초 기다림
         yield return null;
+        if (monster.monsterType == Monster.MonsterType.BOSS)
+        {
+            // 보스몬스터일 경우 타겟이 일정범위 안까지 올때까지 대기
+            monsterAni.StartPlayback();
+            bool isStart = false;
+            while (isStart == false)
+            {
+                float distance = Vector3.SqrMagnitude(transform.position - target.transform.position);
+                if (distance <= 15f * 15f)
+                {
+                    isStart = true;
+                }
+                yield return null;
+            }
+            monsterAni.StopPlayback();
+        }
         //Debug.Log($"{monsterAni.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
         //Debug.Log($"{monster.monsterName}, {monsterAni.GetCurrentAnimatorStateInfo(0).length}");
         yield return new WaitForSeconds(monsterAni.GetCurrentAnimatorStateInfo(0).length);
@@ -123,8 +139,8 @@ public class MonsterController : MonoBehaviour, IDamageable
     //! 공격받으면 처리하는 함수 (interface 상속)
     public void TakeDamage(DamageMessage message)
     {
-        // 스폰상태일 때 무적처리
-        if (isSpawn == true)
+        // 스폰, 죽음 상태일 때 무적처리
+        if (isSpawn == true || isDead == true)
         {
             return;
         }

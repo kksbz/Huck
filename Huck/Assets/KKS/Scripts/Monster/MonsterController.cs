@@ -24,20 +24,20 @@ public class MonsterController : MonoBehaviour, IDamageable
     public MStateMachine MStateMachine { get; private set; }
     public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
     [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
-    [HideInInspector] public Monster monster;
-    [HideInInspector] public Rigidbody monsterRb = default;
-    [HideInInspector] public Animator monsterAni = default;
-    [HideInInspector] public AudioSource monsterAudio = default;
-    [HideInInspector] public TargetSearchRay targetSearch = default;
-    [HideInInspector] public NavMeshAgent mAgent = default;
+    [SerializeField] private GameObject hpBar = default; // HpBar 오브젝트
+    [HideInInspector] public Monster monster; // 몬스터 정보
+    [HideInInspector] public Rigidbody monsterRb = default; // 리지드바디
+    [HideInInspector] public Animator monsterAni = default; // 애니메이터
+    [HideInInspector] public AudioSource monsterAudio = default; // 오디오
+    [HideInInspector] public TargetSearchRay targetSearch = default; // 탐색범위 레이케스트
+    [HideInInspector] public NavMeshAgent mAgent = default; // 네비매쉬
     [HideInInspector] public GameObject attacker = default; // 데미지를 가한 상대의 정보를 담을 변수
-    [HideInInspector] public bool isDelay = false;
-    [HideInInspector] public bool isHit = false;
-    [HideInInspector] public bool isDead = false;
+    [HideInInspector] public bool isDelay = false; // Delay상태 체크 변수
+    [HideInInspector] public bool isHit = false; // HIT상태 체크 변수
+    [HideInInspector] public bool isDead = false; // Dead상태 체크 변수
     // { Test
     public GameObject target;
     public float distance; // 타겟과의 거리 변수
-    public bool useSkill;
     // } Test
 
     // Start is called before the first frame update
@@ -77,14 +77,12 @@ public class MonsterController : MonoBehaviour, IDamageable
         // 매프레임마다 실행 시켜줄 필요가 없어서 0.5초마다 타겟 정보 갱신
         InvokeRepeating("GetTarget", 0f, 0.5f);
         StartCoroutine(Spawn());
+        hpBar.SetActive(false);
     } // Start
 
     // Update is called once per frame
     void Update()
     {
-        // 인스펙터 스킬 사용가능한지 확인용
-        useSkill = monster.useSkill;
-
         if (isSpawn == false && isDead == false)
         {
             MonsterSetState();
@@ -149,6 +147,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (monster.monsterHp <= 0f)
         {
             isDead = true;
+            hpBar.SetActive(false);
             monster.ExitAttack();
             MStateMachine.SetState(dicState[MonsterState.DEAD]);
             return;
@@ -221,6 +220,15 @@ public class MonsterController : MonoBehaviour, IDamageable
         {
             isBattle = false;
             return;
+        }
+
+        if (distance < 10f)
+        {
+            hpBar.SetActive(true);
+        }
+        else
+        {
+            hpBar.SetActive(false);
         }
 
         // 이동상태로 전환 체크

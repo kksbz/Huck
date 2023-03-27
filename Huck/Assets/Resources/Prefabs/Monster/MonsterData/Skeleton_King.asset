@@ -17,7 +17,7 @@ MonoBehaviour:
   monsterMaxHp: 200
   moveSpeed: 8
   damage: 15
-  isNoRangeAttack: 1
+  isNoRangeAttack: 0
   isNoRangeSkill: 0
   useSkill: 1
   searchRange: 30

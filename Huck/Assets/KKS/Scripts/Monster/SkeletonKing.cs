@@ -11,14 +11,18 @@ public class SkeletonKing : Monster
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private bool useSkillC = default;
+    [SerializeField] private bool useSkillD = default;
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
     [SerializeField] private float skillC_MaxCool = default;
+    [SerializeField] private float skillD_MaxCool = default;
     [HideInInspector] public bool is2Phase = false;
     private int summonCount = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
     private float skillCCool = 0f;
+    private float skillDCool = 0f;
+    private float slideAttackCool = 0f;
     void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
@@ -31,6 +35,18 @@ public class SkeletonKing : Monster
     public override void Attack()
     {
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
+        if (slideAttackCool == 0f && isNoRangeAttack == false && mController.distance >= 10f)
+        {
+            SlideAttack();
+        }
+        else if (slideAttackCool == 0f && isNoRangeAttack == false && mController.distance < 10f)
+        {
+            StartCoroutine(CheckSlideDistance());
+            // 슬라이드 공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 사용X Idle상태로 초기화
+            IMonsterState nextState = new MonsterIdle();
+            mController.MStateMachine.onChangeState?.Invoke(nextState);
+            return;
+        }
         // 모션 5개 중 랜덤으로 한개 실행
         if (mController.distance <= meleeAttackRange)
         {
@@ -111,12 +127,20 @@ public class SkeletonKing : Monster
             SkillC();
             return;
         }
+
+        if (useSkillD == true && mController.distance <= meleeAttackRange)
+        {
+            useSkillD = false;
+            CheckUseSkill();
+            SkillD();
+            return;
+        }
     } // Skill
 
     //! 사용가능한 스킬이 있는지 체크하는 함수 (몬스터컨트롤러에서 상태진입 체크하기 위함)
     private void CheckUseSkill()
     {
-        if (useSkillA == false && useSkillB == false && useSkillC == false)
+        if (useSkillA == false && useSkillB == false && useSkillC == false && useSkillD == false)
         {
             useSkill = false;
         }
@@ -138,6 +162,7 @@ public class SkeletonKing : Monster
     public override void ExitAttack()
     {
         weapon.SetActive(false);
+        mController.monsterAni.SetBool("isSlideAttack", false);
         mController.monsterAni.SetBool("isAttackA", false);
         mController.monsterAni.SetBool("isAttackB", false);
         mController.monsterAni.SetBool("isAttackC", false);
@@ -147,6 +172,7 @@ public class SkeletonKing : Monster
         mController.monsterAni.SetBool("isSkillA_End", false);
         mController.monsterAni.SetBool("isSkillB", false);
         mController.monsterAni.SetBool("isSkillC", false);
+        mController.monsterAni.SetBool("isSkillD", false);
         // 공격종료 후 딜레이 상태로 전환
         mController.isDelay = true;
     } // ExitAttack
@@ -230,6 +256,66 @@ public class SkeletonKing : Monster
         }
     } // Dead
     #endregion // 보스몬스터 죽음 처리
+
+    #region 슬라이드 공격(원거리)
+    //! 슬라이드 공격 함수
+    private void SlideAttack()
+    {
+        StartCoroutine(UseSlideAttack());
+    } // SlideAttack
+
+    //! 슬라이드 공격 코루틴함수
+    private IEnumerator UseSlideAttack()
+    {
+        StartCoroutine(SlideAttackCooldown());
+        mController.monsterAni.SetBool("isSlideAttack", true);
+        yield return null;
+        float time = 0f;
+        float speed = default;
+        if (is2Phase == false)
+        {
+            speed = moveSpeed;
+        }
+        else
+        {
+            speed = moveSpeed * 1.2f;
+        }
+        while (time < mController.monsterAni.GetCurrentAnimatorStateInfo(0).length)
+        {
+            time += Time.deltaTime;
+            mController.mAgent.Move(mController.transform.forward * speed * Time.deltaTime);
+            yield return null;
+        }
+    } // UseSlideAttack
+
+    //! 슬라이드 공격 사용 거리 체크하는 코루틴함수
+    private IEnumerator CheckSlideDistance()
+    {
+        isNoRangeAttack = true;
+        while (isNoRangeAttack == true)
+        {
+            // 타겟이 슬라이드 최소사거리 밖에 있으면 슬라이드 공격 사용가능
+            if (mController.distance >= 10f)
+            {
+                isNoRangeAttack = false;
+                yield break;
+            }
+            yield return null;
+        }
+    } // CheckSlideDistance
+    private IEnumerator SlideAttackCooldown()
+    {
+        slideAttackCool = 0f;
+        isNoRangeAttack = true;
+        while (slideAttackCool < 20f)
+        {
+            slideAttackCool += Time.deltaTime;
+            yield return null;
+        }
+        slideAttackCool = 0f;
+        isNoRangeAttack = false;
+    } // SlideAttackCooldown
+    #endregion // 슬라이드 공격(원거리)
 
     #region 스킬A 해골그런트 소환
     //! 해골왕 스킬A 함수 (소환 스킬)
@@ -431,5 +517,52 @@ public class SkeletonKing : Monster
         CheckUseSkill();
     } // SkillCCooldown
     #endregion // 스킬C 연속 베기
+
+    #region 스킬D 타겟유도 연속 베기
+    //! 해골왕 스킬D 함수 (타겟유도 연속 베기)
+    private void SkillD()
+    {
+        StartCoroutine(UseSkillD());
+    } // SkillD
+
+    //! 스킬D 코루틴함수
+    private IEnumerator UseSkillD()
+    {
+        StartCoroutine(SkillDCooldown());
+        mController.monsterAni.SetBool("isSkillD", true);
+        yield return null;
+        float time = 0f;
+        if (is2Phase == false)
+        {
+            mController.mAgent.speed = 1f;
+        }
+        else
+        {
+            mController.mAgent.speed = 2f;
+        }
+        while (time < mController.monsterAni.GetCurrentAnimatorStateInfo(0).length)
+        {
+            time += Time.deltaTime;
+            mController.mAgent.SetDestination(mController.targetSearch.hit.transform.position);
+            yield return null;
+        }
+        mController.mAgent.speed = moveSpeed;
+        mController.mAgent.ResetPath();
+    } // UseSkillD
+
+    //! 스킬D 쿨다운 코루틴함수
+    private IEnumerator SkillDCooldown()
+    {
+        skillDCool = 0f;
+        while (skillDCool < skillD_MaxCool)
+        {
+            skillDCool += Time.deltaTime;
+            yield return null;
+        }
+        skillDCool = 0f;
+        useSkillD = true;
+        CheckUseSkill();
+    } // SkillDCooldown
+    #endregion // 스킬D 타겟유도 연속 베기
     //! } 해골왕 항목별 region 모음
 } // SkeletonKing

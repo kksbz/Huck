@@ -8,6 +8,8 @@ public class SkeletonGrunt : Monster
     [SerializeField] private MonsterData monsterData = default;
     [SerializeField] private GameObject weapon = default;
     [SerializeField] private GameObject shoulder = default;
+    [SerializeField] private GameObject effectPrefabA = default;
+    [SerializeField] private GameObject effectPrefabB = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
@@ -253,6 +255,7 @@ public class SkeletonGrunt : Monster
     //! 스킬A 데미지판정 이벤트함수
     private void SkillA_Damage()
     {
+        StartCoroutine(OnEffectA());
         damageMessage.damageAmount = defaultDamage * 2f;
         RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
@@ -267,6 +270,19 @@ public class SkeletonGrunt : Monster
             }
         }
     } // SkillA_Damage
+
+    //! 스킬A 이펙트 코루틴함수
+    private IEnumerator OnEffectA()
+    {
+        GameObject effectObj = Instantiate(effectPrefabA);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.transform.position = weapon.transform.position;
+        effectObj.transform.forward = transform.forward;
+        effectObj.SetActive(true);
+        effect.Play();
+        yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+        Destroy(effectObj);
+    } // OnEffectA
 
     //! 스킬A 데미지판정 범위 기즈모
     void OnDrawGizmos()
@@ -323,6 +339,20 @@ public class SkeletonGrunt : Monster
         mController.monsterAni.SetBool("isSkillB_End", true);
     } // UseSkillB
 
+    //! 스킬B 이펙트 코루틴함수
+    private IEnumerator OnEffectB()
+    {
+        GameObject effectObj = Instantiate(effectPrefabB);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.FindChildObj("thorn").GetComponent<ParticleTrigger>().InitDamageMessage(gameObject, 5);
+        effectObj.transform.position = weapon.transform.position;
+        effectObj.transform.forward = transform.forward;
+        effectObj.SetActive(true);
+        effect.Play();
+        Debug.Log($"{effect.main.duration + effect.main.startLifetime.constant}");
+        yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+        Destroy(effectObj);
+    } // OnEffectB
     //! 스킬B 쿨다운 코루틴함수
     private IEnumerator SkillBCooldown()
     {

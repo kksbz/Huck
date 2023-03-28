@@ -9,6 +9,8 @@ public class SkeletonMage : Monster
     private MonsterController mController = default;
     [SerializeField] private MonsterData monsterData = default;
     [SerializeField] private GameObject summonObjPrefab = default;
+    [SerializeField] private GameObject attackA_Prefab = default;
+    [SerializeField] private GameObject skillA_Prefab = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
@@ -83,7 +85,8 @@ public class SkeletonMage : Monster
     //! 근접공격 데미지 처리 함수
     private void AttackA()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position + Vector3.up, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        StartCoroutine(OnEffectAttackA());
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position + Vector3.up, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {
             foreach (var _hit in hits)
@@ -97,11 +100,24 @@ public class SkeletonMage : Monster
         }
     } // AttackA
 
+    //! 근접공격 이펙트 코루틴함수
+    private IEnumerator OnEffectAttackA()
+    {
+        GameObject effectObj = Instantiate(attackA_Prefab);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.transform.position = transform.position + Vector3.up;
+        effectObj.transform.forward = transform.forward;
+        effectObj.SetActive(true);
+        effect.Play();
+        yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+        Destroy(effectObj);
+    } // OnEffectAttackA
+
     //! 근접공격 데미지판정 범위 기즈모
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up, 3f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up, 2.5f);
     } // OnDrawGizmos
 
     //! 공격종료 이벤트함수
@@ -134,14 +150,49 @@ public class SkeletonMage : Monster
     } // LookTarget
     #endregion // 공격 처리
 
-    #region 스킬A
-    //! 스킬A 함수
+    #region 스킬A 가시 소환
+    //! 스킬A 함수 (가시 소환)
     private void SkillA()
     {
         mController.monsterAni.SetBool("isSkillA", true);
         StartCoroutine(LookTarget());
         StartCoroutine(SkillACooldown());
     } // SkillA
+
+    //! 스킬A 데미지판정 이벤트함수
+    private void SkillA_Damage()
+    {
+        StartCoroutine(OnEffectSkillA());
+    } // SkillA_Damage
+
+    //! 스킬A 이펙트 코루틴함수
+    private IEnumerator OnEffectSkillA()
+    {
+        GameObject effectObj = Instantiate(skillA_Prefab);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.transform.position = mController.targetSearch.hit.transform.position;
+        effectObj.transform.forward = transform.forward;
+        yield return new WaitForSeconds(1f);
+        effectObj.SetActive(true);
+        effect.Play();
+        // 스킬A 이펙트 실행될때 데미지판정 시작
+        damageMessage.damageAmount = defaultDamage * 2f;
+        RaycastHit[] hits = Physics.SphereCastAll(effectObj.transform.position, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        if (hits.Length > 0)
+        {
+            foreach (var _hit in hits)
+            {
+                // if : 플레이어 또는 건축물일 때
+                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
+                {
+                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
+                }
+            }
+        }
+        damageMessage.damageAmount = defaultDamage;
+        yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+        Destroy(effectObj);
+    } // OnEffectSkillA
 
     //! 스킬A 쿨다운 코루틴함수
     private IEnumerator SkillACooldown()

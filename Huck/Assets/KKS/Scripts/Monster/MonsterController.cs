@@ -77,7 +77,10 @@ public class MonsterController : MonoBehaviour, IDamageable
         // 매프레임마다 실행 시켜줄 필요가 없어서 0.5초마다 타겟 정보 갱신
         InvokeRepeating("GetTarget", 0f, 0.5f);
         StartCoroutine(Spawn());
-        hpBar.SetActive(false);
+        if (hpBar != null || hpBar != default)
+        {
+            hpBar.SetActive(false);
+        }
     } // Start
 
     // Update is called once per frame

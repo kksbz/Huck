@@ -120,6 +120,7 @@ public class MonsterController : MonoBehaviour, IDamageable
             while (isStart == false)
             {
                 float distance = Vector3.SqrMagnitude(transform.position - target.transform.position);
+                // SqrMagnitude로 거리를 구해서 제곱으로 비교
                 if (distance <= 15f * 15f)
                 {
                     isStart = true;

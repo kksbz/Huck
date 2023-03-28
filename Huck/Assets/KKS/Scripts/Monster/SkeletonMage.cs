@@ -9,18 +9,18 @@ public class SkeletonMage : Monster
     private MonsterController mController = default;
     [SerializeField] private MonsterData monsterData = default;
     [SerializeField] private GameObject summonObjPrefab = default;
-    [SerializeField] private GameObject attackA_Prefab = default;
-    [SerializeField] private GameObject skillA_Prefab = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
     private DamageMessage damageMessage = default;
+    private GameObject attackA_Prefab = default;
+    private GameObject attackB_Prefab = default;
+    private GameObject skillA_Prefab = default;
     private int summonCount = default;
     private int defaultDamage = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
-    public GameObject attackA_Effect;
     private void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
@@ -28,6 +28,9 @@ public class SkeletonMage : Monster
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
+        attackA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/MageMelee") as GameObject;
+        attackB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/FireBall") as GameObject;
+        skillA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/Summon_Thorn") as GameObject;
         CheckUseSkill();
     } // Awake
 
@@ -100,14 +103,13 @@ public class SkeletonMage : Monster
         }
     } // AttackA
 
-    //! 근접공격 이펙트 코루틴함수
+    //! AttackA 근접공격 이펙트 코루틴함수
     private IEnumerator OnEffectAttackA()
     {
         GameObject effectObj = Instantiate(attackA_Prefab);
         ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
         effectObj.transform.position = transform.position + Vector3.up;
         effectObj.transform.forward = transform.forward;
-        effectObj.SetActive(true);
         effect.Play();
         yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
         Destroy(effectObj);
@@ -119,6 +121,15 @@ public class SkeletonMage : Monster
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Vector3.up, 2.5f);
     } // OnDrawGizmos
+
+    //! AttackB 파이어볼 쏘는 함수
+    private void ShootFireBall()
+    {
+        GameObject fireBall = ProjectilePool.Instance.GetProjecttile();
+        fireBall.GetComponent<FireBall>().InitDamageMessage(gameObject, defaultDamage, mController.targetSearch.hit.gameObject);
+        fireBall.transform.position = transform.position + Vector3.up * 2f;
+        fireBall.SetActive(true);
+    } // ShootFireBall
 
     //! 공격종료 이벤트함수
     public override void ExitAttack()
@@ -173,7 +184,6 @@ public class SkeletonMage : Monster
         effectObj.transform.position = mController.targetSearch.hit.transform.position;
         effectObj.transform.forward = transform.forward;
         yield return new WaitForSeconds(1f);
-        effectObj.SetActive(true);
         effect.Play();
         // 스킬A 이펙트 실행될때 데미지판정 시작
         damageMessage.damageAmount = defaultDamage * 2f;

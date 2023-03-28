@@ -75,7 +75,8 @@ public class SkeletonArcher : Monster
     //! 화살 쏘는 함수
     private void ShootArrow()
     {
-        GameObject arrow = ArrowPool.Instance.GetArrow();
+        GameObject arrow = ProjectilePool.Instance.GetProjecttile();
+        arrow.GetComponent<Arrow>().InitDamageMessage(gameObject, defaultDamage);
         arrow.transform.position = arrowPos.position;
         Vector3 dir = ((mController.targetSearch.hit.transform.position + Vector3.up) - arrow.transform.position).normalized;
         arrow.transform.forward = dir;

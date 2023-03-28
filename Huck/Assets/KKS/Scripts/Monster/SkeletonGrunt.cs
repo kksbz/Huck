@@ -8,13 +8,13 @@ public class SkeletonGrunt : Monster
     [SerializeField] private MonsterData monsterData = default;
     [SerializeField] private GameObject weapon = default;
     [SerializeField] private GameObject shoulder = default;
-    [SerializeField] private GameObject effectPrefabA = default;
-    [SerializeField] private GameObject effectPrefabB = default;
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private bool useSkillB = default;
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
     private DamageMessage damageMessage = default;
+    private GameObject skillA_Prefab = default;
+    private GameObject skillB_Prefab = default;
     private int defaultDamage = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
@@ -26,6 +26,8 @@ public class SkeletonGrunt : Monster
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
+        skillA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Grunt_Effect/LeapEffect") as GameObject;
+        skillB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Grunt_Effect/Splash_Thorn") as GameObject;
         CheckUseSkill();
     } // Awake
 
@@ -274,11 +276,10 @@ public class SkeletonGrunt : Monster
     //! 스킬A 이펙트 코루틴함수
     private IEnumerator OnEffectA()
     {
-        GameObject effectObj = Instantiate(effectPrefabA);
+        GameObject effectObj = Instantiate(skillA_Prefab);
         ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
         effectObj.transform.position = weapon.transform.position;
         effectObj.transform.forward = transform.forward;
-        effectObj.SetActive(true);
         effect.Play();
         yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
         Destroy(effectObj);
@@ -342,14 +343,12 @@ public class SkeletonGrunt : Monster
     //! 스킬B 이펙트 코루틴함수
     private IEnumerator OnEffectB()
     {
-        GameObject effectObj = Instantiate(effectPrefabB);
+        GameObject effectObj = Instantiate(skillB_Prefab);
         ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-        effectObj.FindChildObj("thorn").GetComponent<ParticleTrigger>().InitDamageMessage(gameObject, 5);
+        effectObj.FindChildObj("thorn").GetComponent<ParticleTrigger>().InitDamageMessage(gameObject, Mathf.FloorToInt(defaultDamage * 2f));
         effectObj.transform.position = weapon.transform.position;
         effectObj.transform.forward = transform.forward;
-        effectObj.SetActive(true);
         effect.Play();
-        Debug.Log($"{effect.main.duration + effect.main.startLifetime.constant}");
         yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
         Destroy(effectObj);
     } // OnEffectB

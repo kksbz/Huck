@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d6896396adaeb49a3a62ffe4715674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrowPrefab: {fileID: 5981513708777018803, guid: 13ad6568c28a5124491ca486fef623a0,
+  projecttilePrefab: {fileID: 5981513708777018803, guid: 13ad6568c28a5124491ca486fef623a0,
     type: 3}
 --- !u!1 &1748688674528431077
 GameObject:

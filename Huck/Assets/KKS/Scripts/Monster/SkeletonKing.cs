@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class SkeletonKing : Monster
 {
@@ -189,7 +191,7 @@ public class SkeletonKing : Monster
         mController.monsterAni.SetBool("isSkillA_End", false);
         mController.monsterAni.SetBool("isSkillB", false);
         mController.monsterAni.SetBool("isSkillC", false);
-        mController.monsterAni.SetBool("isSkillD_Start", false);
+        mController.monsterAni.SetBool("isSkillD_End", false);
         // 공격종료 후 딜레이 상태로 전환
         mController.isDelay = true;
     } // ExitAttack
@@ -424,40 +426,12 @@ public class SkeletonKing : Monster
     //! 스킬A 해골그런트 소환하는 함수
     private void Summon()
     {
-        RaycastHit hit = default;
-        // 해골왕 위로 5f 떨어진 곳에서 summonPos 방향으로 Raycast쏴서 소환좌표 구함
-        Vector3 pos = transform.position + (Vector3.up * 5f);
-        Vector3 summonPos = transform.position;
-        // 삼항연산자로 targetPos 기준 5~10사이의 거리좌표를 구함
-        int numberX = Random.Range(0, 2);
-        summonPos.x = summonPos.x + (numberX == 0 ? Random.Range(-10, -4) : Random.Range(5, 11));
-        int numberZ = Random.Range(0, 2);
-        summonPos.z = summonPos.z + (numberZ == 0 ? Random.Range(-10, -4) : Random.Range(5, 11));
-        Vector3 dir = (summonPos - pos).normalized;
-        if (Physics.Raycast(pos, dir, out hit, 30f, LayerMask.GetMask(GData.TERRAIN_MASK)) == true)
-        {
-            Vector3 dirToTarget = (mController.targetSearch.hit.transform.position - hit.point).normalized;
-            // 해골병사가 소환될 때 타겟을 바라보면서 소환되게 회전축 설정
-            Instantiate(summonObjPrefab, hit.point, Quaternion.LookRotation(dirToTarget));
-            return;
-        }
-        else
-        {
-            //Debug.Log("소환위치에 장애물 있음! 다른좌표 탐색시작");
-            // 무한루프 예외처리 : 좌표탐색 20번 이상이면 해골왕 앞에 소환
-            if (summonCount > 20)
-            {
-                Instantiate(summonObjPrefab, transform.position + (transform.forward * 2f), Quaternion.LookRotation(transform.forward));
-                summonCount = 0;
-                return;
-            }
-            else
-            {
-                summonCount += 1;
-                // 소환할 좌표탐색을 위한 재귀함수 
-                Summon();
-            }
-        }
+        GetRandomPosition getRandomPos = new GetRandomPosition();
+        // 원범위의 장애물이 없는 좌표를 가져옴
+        Vector3 pos = getRandomPos.GetRandomCirclePos(transform.position, 10, 4);
+        Vector3 dirToTarget = (mController.targetSearch.hit.transform.position - pos).normalized;
+        // 해골그런트가 소환될 때 타겟을 바라보면서 소환되게 회전축 설정
+        Instantiate(summonObjPrefab, pos, Quaternion.LookRotation(dirToTarget));
     } // Summon
 
     //! 스킬A 쿨다운 코루틴함수
@@ -638,7 +612,7 @@ public class SkeletonKing : Monster
         yield return null;
         yield return new WaitForSeconds(mController.monsterAni.GetCurrentAnimatorStateInfo(0).length);
         mController.monsterAni.SetBool("isSkillD_Start", false);
-        mController.monsterAni.SetTrigger("isSkillD_End");
+        mController.monsterAni.SetBool("isSkillD_End", true);
         StartCoroutine(OnEffectSkillD());
     } // UseSkillD
 
@@ -661,11 +635,44 @@ public class SkeletonKing : Monster
         }
         else
         {
-            List<GameObject> thunderList = new List<GameObject>();
             // 2페이즈 낙뢰 이펙트
+            GetRandomPosition getRandomPos = new GetRandomPosition();
+            List<Vector3> randomPosList = new List<Vector3>();
+            while (randomPosList.Count < 10)
+            {
+                // 타겟위치 원범위에서 중복되지않는 랜덤좌표 10개 뽑아옴 
+                Vector3 pos = getRandomPos.GetRandomCirclePos(mController.targetSearch.hit.transform.position, 10, 0);
+                if (!randomPosList.Contains(pos))
+                {
+                    randomPosList.Add(pos);
+                }
+            }
+            yield return new WaitForSeconds(1.5f);
+            ParticleSystem lastEffect = default;
+            List<GameObject> thunderList = new List<GameObject>();
             for (int i = 0; i < 10; i++)
             {
-                
+                GameObject thunder = ProjectilePool.Instance.GetProjecttile();
+                ParticleSystem effect = thunder.GetComponent<ParticleSystem>();
+                thunder.transform.position = randomPosList[i];
+                thunder.gameObject.SetActive(true);
+                effect.Play();
+                SkillD_Damage(thunder.transform.position);
+                if (i == 9)
+                {
+                    lastEffect = effect;
+                }
+                thunderList.Add(thunder);
+                if (i % 2 == 0)
+                {
+                    // 짝수번째마다 0.3초 늦게 떨어지게 처리
+                    yield return new WaitForSeconds(0.3f);
+                }
+            }
+            yield return new WaitForSeconds(lastEffect.main.duration + lastEffect.main.startLifetime.constant);
+            for (int i = 0; i < 10; i++)
+            {
+                ProjectilePool.Instance.EnqueueProjecttile(thunderList[i]);
             }
         }
     } // OnEffectSkillD

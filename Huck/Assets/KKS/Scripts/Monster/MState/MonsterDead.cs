@@ -5,12 +5,16 @@ using UnityEngine;
 public class MonsterDead : IMonsterState
 {
     private MonsterController mController;
+    private CapsuleCollider monsterCollider = default;
     public void StateEnter(MonsterController _mController)
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DEAD;
         Debug.Log($"죽음상태 시작 : {mController.monster.monsterName}");
+        monsterCollider = mController.gameObject.GetComponent<CapsuleCollider>();
         mController.isDelay = false;
+        // 몬스터시체 충돌을 막기위한 트리거 true
+        monsterCollider.isTrigger = true;
         // 몬스터의 타입별 죽음처리
         switch (mController.monster.monsterType)
         {
@@ -36,7 +40,7 @@ public class MonsterDead : IMonsterState
     } // StateUpdate
     public void StateExit()
     {
-        /*Do Nothing*/
+        monsterCollider.isTrigger = false;
     } // StateExit
 
     //! 몬스터 죽음 처리 함수

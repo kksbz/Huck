@@ -151,7 +151,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (monster.monsterHp <= 0f)
         {
             isDead = true;
-            hpBar.SetActive(false);
+            //hpBar.SetActive(false);
             monster.ExitAttack();
             MStateMachine.SetState(dicState[MonsterState.DEAD]);
             return;
@@ -226,14 +226,14 @@ public class MonsterController : MonoBehaviour, IDamageable
             return;
         }
 
-        if (distance < 10f)
-        {
-            hpBar.SetActive(true);
-        }
-        else
-        {
-            hpBar.SetActive(false);
-        }
+        //if (distance < 10f)
+        //{
+        //    hpBar.SetActive(true);
+        //}
+        //else
+        //{
+        //    hpBar.SetActive(false);
+        //}
 
         // 이동상태로 전환 체크
         if (enumState != MonsterState.ATTACK

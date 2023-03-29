@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectilePool : MonoBehaviour
 {
     [SerializeField] private GameObject projecttilePrefab = default;
+    [SerializeField] private int maxPoolNumber = default;
     private Queue<GameObject> projecttilePool = new Queue<GameObject>();
     private static ProjectilePool instance = default;
     public static ProjectilePool Instance
@@ -16,7 +17,7 @@ public class ProjectilePool : MonoBehaviour
     void Start()
     {
         instance = this;
-        SetupProjecttilePool();
+        SetupProjecttilePool(maxPoolNumber);
     } // Start
 
     private void OnDisable()
@@ -29,9 +30,9 @@ public class ProjectilePool : MonoBehaviour
     } // OnDisable
 
     //! ProjecttilePool 채우는 함수
-    private void SetupProjecttilePool()
+    private void SetupProjecttilePool(int _number)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < _number; i++)
         {
             GameObject projecttile = Instantiate(projecttilePrefab, Vector3.zero, Quaternion.identity);
             projecttilePool.Enqueue(projecttile);
@@ -39,7 +40,7 @@ public class ProjectilePool : MonoBehaviour
         }
     } // SetupProjecttilePool
 
-    //! ArrowPool에서 화살 한발 가져오는 함수
+    //! ProjecttilePool 투사체 한발 가져오는 함수
     public GameObject GetProjecttile()
     {
         GameObject projecttile = default;

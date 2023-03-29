@@ -170,24 +170,17 @@ public class SkeletonMage : Monster
         StartCoroutine(SkillACooldown());
     } // SkillA
 
-    //! 스킬A 데미지판정 이벤트함수
-    private void SkillA_Damage()
+    //! 스킬A 사용 이벤트함수
+    private void UseSkillA()
     {
         StartCoroutine(OnEffectSkillA());
-    } // SkillA_Damage
+    } // UseSkillA
 
-    //! 스킬A 이펙트 코루틴함수
-    private IEnumerator OnEffectSkillA()
+    //! 스킬A 데미지판정 함수
+    private void SkillA_Damage(Vector3 _effectPos)
     {
-        GameObject effectObj = Instantiate(skillA_Prefab);
-        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-        effectObj.transform.position = mController.targetSearch.hit.transform.position;
-        effectObj.transform.forward = transform.forward;
-        yield return new WaitForSeconds(1f);
-        effect.Play();
-        // 스킬A 이펙트 실행될때 데미지판정 시작
         damageMessage.damageAmount = defaultDamage * 2f;
-        RaycastHit[] hits = Physics.SphereCastAll(effectObj.transform.position, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {
             foreach (var _hit in hits)
@@ -200,6 +193,18 @@ public class SkeletonMage : Monster
             }
         }
         damageMessage.damageAmount = defaultDamage;
+    } // SkillA_Damage
+
+    //! 스킬A 이펙트 코루틴함수
+    private IEnumerator OnEffectSkillA()
+    {
+        GameObject effectObj = Instantiate(skillA_Prefab);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.transform.position = mController.targetSearch.hit.transform.position;
+        effectObj.transform.forward = transform.forward;
+        yield return new WaitForSeconds(1.5f);
+        effect.Play();
+        SkillA_Damage(effectObj.transform.position);
         yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
         Destroy(effectObj);
     } // OnEffectSkillA

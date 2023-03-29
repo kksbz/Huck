@@ -9,8 +9,11 @@ public class SkeletonArcher : Monster
     [SerializeField] private GameObject weapon = default;
     [SerializeField] private Transform arrowPos = default;
     [SerializeField] private MonsterData monsterData;
+
     [SerializeField] private bool useSkillA = default;
     [SerializeField] private float skillA_MaxCool = default;
+    private GameObject skillA_Prefab = default;
+    private DamageMessage damageMessage = default;
     private int defaultDamage = default;
     private float skillACool = 0f;
     private bool isAttackDelay = false;
@@ -20,6 +23,8 @@ public class SkeletonArcher : Monster
         InitMonsterData(MonsterType.NOMAL, monsterData);
         mController.monster = this;
         defaultDamage = damage;
+        damageMessage = new DamageMessage(gameObject, damage);
+        skillA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Archer_Effect/ArrowRain") as GameObject;
         CheckUseSkill();
     } // Awake
 
@@ -96,14 +101,53 @@ public class SkeletonArcher : Monster
     } // ExitAttack
     #endregion // 공격 처리 (Collider, RayCast)
 
-    #region 스킬A (모아 쏘기)
-    //! 스킬A 함수
+    #region 스킬A (화살비)
+    //! 스킬A 함수 (화살비)
     private void SkillA()
     {
         mController.monsterAni.SetBool("isSkillA", true);
         StartCoroutine(LookAtTarget());
         StartCoroutine(SkillACooldown());
     } // SkillA
+
+    //! 스킬A 사용 이벤트함수
+    private void UseSkillA()
+    {
+        StartCoroutine(OnEffectSkillA());
+    } //UseSkillA
+
+    //! 스킬A 데미지판정 함수
+    private void SkillA_Damage(Vector3 _effectPos)
+    {
+        damageMessage.damageAmount = defaultDamage * 2f;
+        RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        if (hits.Length > 0)
+        {
+            foreach (var _hit in hits)
+            {
+                // if : 플레이어 또는 건축물일 때
+                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
+                {
+                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
+                }
+            }
+        }
+        damageMessage.damageAmount = defaultDamage;
+    } // SkillA_Damage
+
+    //! 스킬A 이펙트 코루틴함수
+    private IEnumerator OnEffectSkillA()
+    {
+        GameObject effectObj = Instantiate(skillA_Prefab);
+        ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+        effectObj.transform.position = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
+        effectObj.transform.forward = transform.forward;
+        yield return new WaitForSeconds(1.5f);
+        effect.Play();
+        SkillA_Damage(effectObj.transform.position);
+        yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+        Destroy(effectObj);
+    } // OnEffectSkillA
 
     //! 스킬A 쿨다운 코루틴함수
     private IEnumerator SkillACooldown()

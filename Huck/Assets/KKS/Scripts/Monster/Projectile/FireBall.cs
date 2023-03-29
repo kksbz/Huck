@@ -6,8 +6,10 @@ public class FireBall : MonoBehaviour
 {
     [SerializeField] ParticleSystem fireBallStart = default; // 파이어볼 이펙트
     [SerializeField] ParticleSystem fireBallEnd = default; // 파이어볼폭발 이펙트
+    private Rigidbody fireBallRb = default;
     private DamageMessage damageMessage = default; // 데미지처리
     private GameObject target = default; // 타겟
+    private IEnumerator runningCoroutine = default; // 회수타이머 코루틴 저장 변수
     private Vector3 lastTargetPos = default; // 유도비활성화 시 방향벡터 구할 변수
     private Vector3 lastDir = default; // 유도비활성화 시 방향벡터 변수
     private bool isEndFollow = false; // 유도체크 변수
@@ -18,16 +20,21 @@ public class FireBall : MonoBehaviour
     private void OnEnable()
     {
         // 활성화 시 초기화
+        fireBallRb = GetComponent<Rigidbody>();
+        transform.parent = default;
         isHit = false;
         isEndFollow = false;
         fireBallStart.gameObject.SetActive(true);
         fireBallStart.Play();
-        StartCoroutine(EnqueueFireBall());
+        // 충돌유무에 따라 회수코루틴을 종료하기 위해 캐싱
+        runningCoroutine = EnqueueFireBall();
+        StartCoroutine(runningCoroutine);
     } // OnEnable
 
     private void OnDisable()
     {
         // 비활성화 시 타겟 초기화
+        fireBallRb.isKinematic = false;
         target = default;
         lastTargetPos = default;
         fireBallEnd.gameObject.SetActive(false);
@@ -42,11 +49,21 @@ public class FireBall : MonoBehaviour
     {
         if (other.tag != GData.ENEMY_MASK)
         {
+            // 충돌지점에 붙어있게 만들려고 부모를 설정시 중복 데미지를 주는걸 막기위한 예외처리
+            if (isHit == true)
+            {
+                return;
+            }
             isHit = true;
             if (other.tag == GData.PLAYER_MASK || other.tag == GData.BUILD_MASK)
             {
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
             }
+            // 충돌지점에 붙어있게 만드는 처리
+            fireBallRb.isKinematic = true;
+            gameObject.transform.parent = other.transform;
+            // 파이어볼이 충돌했을 경우 회수 코루틴 종료 (제한시간 끝쪽에서 충돌했을경우 바로 사라지는거 방지)
+            StopCoroutine(runningCoroutine);
             StartCoroutine(FireBallExplosion());
         }
     } // OnTriggerEnter
@@ -110,6 +127,8 @@ public class FireBall : MonoBehaviour
         fireBallEnd.gameObject.SetActive(true);
         fireBallEnd.Play();
         yield return new WaitForSeconds(fireBallEnd.main.duration + fireBallEnd.main.startLifetime.constant);
+        // 폭발이펙트 재생끝나면 Pool에 저장하고 비활성화
+        ProjectilePool.Instance.EnqueueProjecttile(gameObject);
         gameObject.SetActive(false);
     } // FireBallExplosion
 } // FireBall

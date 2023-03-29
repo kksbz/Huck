@@ -107,7 +107,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageMessage message)
     {
-        curHp -= Mathf.FloorToInt(message.damageAmount);
+        //curHp -= Mathf.FloorToInt(message.damageAmount);
         Debug.Log($"{message.causer.name}에게 {message.damageAmount}피해입음!");
     }
 }

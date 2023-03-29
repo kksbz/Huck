@@ -24,7 +24,6 @@ public class SkeletonKing : Monster
     private DamageMessage damageMessage = default;
     private GameObject skillB_Prefab = default;
     private GameObject skillC_Prefab = default;
-    private GameObject skillD_Prefab = default;
     private int defaultDamage = default;
     private int summonCount = default;
     private float skillACool = 0f;
@@ -41,7 +40,7 @@ public class SkeletonKing : Monster
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
         skillB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/LeapEffect") as GameObject;
-        skillD_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/Thunder") as GameObject;
+        skillC_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/Thunder") as GameObject;
         CheckUseSkill();
     } // Awake
 
@@ -158,6 +157,15 @@ public class SkeletonKing : Monster
     //! 사용가능한 스킬이 있는지 체크하는 함수 (몬스터컨트롤러에서 상태진입 체크하기 위함)
     private void CheckUseSkill()
     {
+        if (useSkillA == false && useSkillB == false && useSkillD == false)
+        {
+            isNoRangeSkill = true;
+        }
+        else
+        {
+            isNoRangeSkill = false;
+        }
+
         if (useSkillA == false && useSkillB == false && useSkillC == false && useSkillD == false)
         {
             useSkill = false;
@@ -582,6 +590,63 @@ public class SkeletonKing : Monster
         }
     } // UseSkillC
 
+    //! 스킬C 이펙트 코루틴함수
+    private IEnumerator OnEffectC()
+    {
+        Vector3 pos = weapon.transform.position + Vector3.up * 0.5f;
+        if (is2Phase == false)
+        {
+            // 1페이즈
+            GameObject effectObj = Instantiate(skillC_Prefab);
+            ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+            effectObj.transform.position = pos;
+            effectObj.transform.forward = transform.forward;
+            yield return new WaitForSeconds(0.5f);
+            effect.Play();
+            SkillD_Damage(pos);
+            yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
+            Destroy(effectObj);
+        }
+        else
+        {
+            // 2페이즈
+            Vector3 dir = (mController.targetSearch.hit.transform.position - pos).normalized;
+            dir.y = 0f;
+            List<GameObject> effectObjList = new List<GameObject>();
+            ParticleSystem lasteffect = default;
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject effectObj = Instantiate(skillC_Prefab);
+                ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+                switch (i)
+                {
+                    case 0:
+                        effectObj.transform.position = pos;
+                        yield return new WaitForSeconds(0.5f);
+                        effect.Play();
+                        break;
+                    case 1:
+                        effectObj.transform.position = pos + (dir + Vector3.right).normalized * 2f;
+                        yield return new WaitForSeconds(0.3f);
+                        effect.Play();
+                        break;
+                    case 2:
+                        effectObj.transform.position = pos + (dir + Vector3.left).normalized * 2f;
+                        effect.Play();
+                        lasteffect = effect;
+                        break;
+                }
+                SkillD_Damage(effectObj.transform.position);
+                effectObjList.Add(effectObj);
+            }
+            yield return new WaitForSeconds(lasteffect.main.duration + lasteffect.main.startLifetime.constant);
+            foreach (var obj in effectObjList)
+            {
+                Destroy(obj);
+            }
+        }
+    } // OnEffectC
+
     //! 스킬C 쿨다운 코루틴함수
     private IEnumerator SkillCCooldown()
     {
@@ -597,8 +662,8 @@ public class SkeletonKing : Monster
     } // SkillCCooldown
     #endregion // 스킬C 연속 베기
 
-    #region 스킬D 낙뢰
-    //! 해골왕 스킬D 함수 (낙뢰)
+    #region 스킬D 칼날비
+    //! 해골왕 스킬D 함수 (칼날비)
     private void SkillD()
     {
         StartCoroutine(UseSkillD());
@@ -681,7 +746,7 @@ public class SkeletonKing : Monster
     private void SkillD_Damage(Vector3 _effectPos)
     {
         damageMessage.damageAmount = Mathf.FloorToInt(defaultDamage * 1.5f);
-        RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {
             foreach (var _hit in hits)

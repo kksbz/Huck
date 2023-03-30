@@ -51,6 +51,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         mAgent.acceleration = 100f;
         mAgent.angularSpeed = 180f;
         mAgent.speed = monster.moveSpeed;
+        mAgent.enabled = true;
 
         // { 각 상태를 Dictionary에 저장
         IMonsterState idle = new MonsterIdle();
@@ -74,8 +75,7 @@ public class MonsterController : MonoBehaviour, IDamageable
 
         // 입력받은 상태를 처리할 MStateMachine 초기화 
         MStateMachine = new MStateMachine(idle, this);
-        // 매프레임마다 실행 시켜줄 필요가 없어서 0.5초마다 타겟 정보 갱신
-        InvokeRepeating("GetTarget", 0f, 0.5f);
+        target = GameManager.Instance.playerObj;
         StartCoroutine(Spawn());
         if (hpBar != null || hpBar != default)
         {
@@ -97,12 +97,6 @@ public class MonsterController : MonoBehaviour, IDamageable
     {
         MStateMachine.DoFixedUpdate();
     } // FixedUpdate
-
-    //! 타겟의 정보를 가져오는 함수
-    private void GetTarget()
-    {
-        target = GameManager.Instance.playerObj;
-    } // GetTarget
 
     #region 몬스터의 스폰과 공용 데미지처리 함수
     //! 몬스터 스폰 코루틴함수

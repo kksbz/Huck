@@ -179,7 +179,7 @@ public class SkeletonMage : Monster
     //! 스킬A 데미지판정 함수
     private void SkillA_Damage(Vector3 _effectPos)
     {
-        damageMessage.damageAmount = defaultDamage * 2f;
+        damageMessage.damageAmount = defaultDamage * 2;
         RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2.5f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {

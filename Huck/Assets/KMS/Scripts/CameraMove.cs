@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    public GameObject head = default;
-    public Transform player = default;
+    private GameObject head = default;
+    private Transform player = default;
 
     public static float sensitivity = 100f;
     private float limitAngle = 80;
@@ -13,7 +13,9 @@ public class CameraMove : MonoBehaviour
 
     private void Start()
     {
-
+        GameObject player_ = GameObject.Find("Player");
+        player = player_.transform;
+        head = GFunc.FindChildObj(player_, "Head_M");
     }
 
     private void LateUpdate()
@@ -24,7 +26,7 @@ public class CameraMove : MonoBehaviour
     private void CameraMoving()
     {
         // if Player Alive
-        if (PlayerMove.isDead == false)
+        if (PlayerMove.isDead == false && PlayerOther.isStoveOpen == false)
         {
             CameraPos();
             CameraRotate();
@@ -34,7 +36,7 @@ public class CameraMove : MonoBehaviour
         if (PlayerStat.curHp == 0)
         {
             this.transform.position =
-                transform.position + new Vector3(0, 2, -2);
+                transform.position + new Vector3(0, 2, -2) * Time.deltaTime;
 
             this.transform.LookAt(player);
         }

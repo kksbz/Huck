@@ -12,18 +12,25 @@ public class PlayerStat : MonoBehaviour, IDamageable
     public float maxHungry = 100;
     public float maxEnergy = 100;
 
-    public int damage = 10;
+    public int damage = 1;
     public int armor = 0;
     public float critical = 5;
 
     private bool isEgFull = default;
     private bool isHgEmpty = default;
+    private bool isHit = default;
+
+    public delegate void EventHandler();
+    public EventHandler onPlayerDead;
 
     private void Start()
     {
         curHp = maxHp;
+        isHit = false;
         curHungry = maxHungry;
         curEnergy = maxEnergy;
+
+        onPlayerDead = new EventHandler(() => Debug.Log("Player Dead"));
     }
 
     private void Update()
@@ -105,9 +112,41 @@ public class PlayerStat : MonoBehaviour, IDamageable
     #endregion
     // } Hp, Hungry, Energy
 
+    // { TakeDamage
     public void TakeDamage(DamageMessage message)
     {
-        //curHp -= Mathf.FloorToInt(message.damageAmount);
-        Debug.Log($"{message.causer.name}에게 {message.damageAmount}피해입음!");
+        if (isHit == false)
+        {
+            curHp -= message.damageAmount;
+            StartCoroutine(WaitHitTime());
+        }
+        if (curHp <= 0f)
+        {
+            onPlayerDead();
+            Die();
+        }
     }
+
+    private IEnumerator WaitHitTime()
+    {
+        isHit = true;
+        float time = 0f;
+        while (time < 1f)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        isHit = false;
+    } // WaitHitTime
+    // } TakeDamage
+    // { Player Die
+    #region Die
+    private void Die()
+    {
+        UIManager.Instance.Dead.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+    #endregion
+    // { Player Die
 }

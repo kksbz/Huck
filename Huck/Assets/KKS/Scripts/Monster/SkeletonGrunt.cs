@@ -258,7 +258,7 @@ public class SkeletonGrunt : Monster
     private void SkillA_Damage()
     {
         StartCoroutine(OnEffectA());
-        damageMessage.damageAmount = defaultDamage * 2f;
+        damageMessage.damageAmount = defaultDamage * 2;
         RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
         if (hits.Length > 0)
         {

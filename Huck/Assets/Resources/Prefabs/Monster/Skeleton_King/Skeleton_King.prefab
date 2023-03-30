@@ -1661,6 +1661,7 @@ MonoBehaviour:
   enumState: 0
   isBattle: 0
   hpBar: {fileID: 0}
+  attackIndicator: {fileID: 0}
   monster: {fileID: 0}
   monsterRb: {fileID: 0}
   monsterAni: {fileID: 0}
@@ -1702,13 +1703,13 @@ MonoBehaviour:
   summonObjPrefab: {fileID: 3890301283945508039, guid: 9060ded37663abc479936259f5aa8ff4,
     type: 3}
   useSkillA: 0
-  useSkillB: 1
-  useSkillC: 1
-  useSkillD: 0
+  useSkillB: 0
+  useSkillC: 0
+  useSkillD: 1
   skillA_MaxCool: 100
   skillB_MaxCool: 15
   skillC_MaxCool: 3
-  skillD_MaxCool: 15
+  skillD_MaxCool: 5
   slideAttack_MaxCool: 25
   crushAttack_MaxCool: 15
   is2Phase: 0

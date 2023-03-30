@@ -230,9 +230,13 @@ public class SkeletonGrunt : Monster
         // 몬스터가 타겟을 바라보는 방향의 반대방향을 구함
         Vector3 dir = -(mController.targetSearch.hit.transform.position - transform.position).normalized;
         // 목표위치를 dir방향으로 meleeAttackRange만큼 이동된 좌표로 설정
-        Vector3 targetPos = mController.targetSearch.hit.transform.position + dir * meleeAttackRange;
+        Vector3 targetPos = mController.targetSearch.hit.transform.position + dir * (meleeAttackRange + 1);
         StartCoroutine(parabola.ParabolaMoveToTarget(transform.position, targetPos, 1f, gameObject));
         mController.monsterAni.SetBool("isSkillA", true);
+        // 공격범위 표시
+        dir.y = 0f;
+        Vector3 pos = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
+        mController.attackIndicator.GetCircleIndicator(pos, 6f, 1f);
         StartCoroutine(SkillACooldown());
     } // SkillA
 
@@ -322,11 +326,16 @@ public class SkeletonGrunt : Monster
     private IEnumerator UseSkillB()
     {
         mController.monsterAni.SetBool("isSkillB_Start", true);
+        // 공격범위 표시
+        GameObject indicator = mController.attackIndicator.GetRectangIndicator(transform.position, 3f, 22f, 3.5f);
+        Quaternion startRotation = indicator.transform.rotation;
         bool isStart = true;
         float time = 0f;
         while (time <= 2.5f)
         {
             time += Time.deltaTime;
+            // 공격범위 지시자 오브젝트의 회전축을 x는 본인걸로 유지하면서 y축만 같이 변경 (LookAt함수로 인해 공격방향이 바뀌기 때문) 
+            indicator.transform.rotation = Quaternion.Euler(startRotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0f);
             mController.transform.LookAt(mController.targetSearch.hit.transform.position);
             if (time >= 0.24f && isStart == true)
             {

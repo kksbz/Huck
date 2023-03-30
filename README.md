@@ -38,3 +38,4 @@
 2023-03-30 / v0.3.4 / [KKS] 범위공격 및 스킬 indicator setup</br>
 2023-03-30 / v0.3.5 / [Merge] Huck Project</br>
 2023-03-30 / v0.3.6 / [KKS] 보스몬스터 스킬 indicator setup, 스킬 데미지처리 함수 공용으로 통합</br>
+2023-03-31 / v0.3.7 / [KKS] AttackIndicator pool 구현, 모든 몬스터가 공통된 pool을 공유하게 처리, 직사각형 공격지시자 구현</br>

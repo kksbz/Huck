@@ -526,8 +526,7 @@ public class SkeletonKing : Monster
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, leapTime, gameObject));
         // 공격범위 표시
-        GameObject indicator = Instantiate(indicator_Prefab, mController.targetSearch.hit.transform.position, indicator_Prefab.transform.rotation);
-        indicator.GetComponent<AttackIndicator>().InitAttackIndicator(6f, leapTime);
+        mController.attackIndicator.GetCircleIndicator(mController.targetSearch.hit.transform.position, 6f, leapTime);
     } // UseSkillB
 
     //! 스킬B 데미지판정 이벤트함수
@@ -627,6 +626,8 @@ public class SkeletonKing : Monster
                 pos = hit.point + (Vector3.up * 0.1f);
             }
             effectObj.transform.position = pos;
+            // 공격범위 표시
+            mController.attackIndicator.GetCircleIndicator(effectObj.transform.position, 3f, 0.5f);
             yield return new WaitForSeconds(0.5f);
             effect.Play();
             Skill_Damage(effectObj.transform.position, 1.5f, 1.5f);
@@ -650,8 +651,7 @@ public class SkeletonKing : Monster
                 }
                 effectObj.transform.position = pos + (dir * i * 2f);
                 // 공격범위 표시
-                GameObject indicator = Instantiate(indicator_Prefab, effectObj.transform.position, indicator_Prefab.transform.rotation);
-                indicator.GetComponent<AttackIndicator>().InitAttackIndicator(3f, 0.5f);
+                mController.attackIndicator.GetCircleIndicator(effectObj.transform.position, 3f, 0.5f);
                 yield return new WaitForSeconds(0.5f);
                 effect.Play();
                 if (i == 2)
@@ -713,9 +713,9 @@ public class SkeletonKing : Monster
             ParticleSystem effect = swordObj.GetComponent<ParticleSystem>();
             swordObj.transform.position = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
             // 공격범위 표시
-            GameObject indicator = Instantiate(indicator_Prefab, swordObj.transform.position, indicator_Prefab.transform.rotation);
-            indicator.GetComponent<AttackIndicator>().InitAttackIndicator(4f, 1.5f);
+            mController.attackIndicator.GetCircleIndicator(swordObj.transform.position, 4f, 1.5f);
             yield return new WaitForSeconds(1.5f);
+
             swordObj.gameObject.SetActive(true);
             effect.Play();
             Skill_Damage(swordObj.transform.position, 2f, 1.5f);
@@ -740,8 +740,7 @@ public class SkeletonKing : Monster
             for (int i = 0; i < 10; i++)
             {
                 // 공격범위 표시
-                GameObject indicator = Instantiate(indicator_Prefab, randomPosList[i], indicator_Prefab.transform.rotation);
-                indicator.GetComponent<AttackIndicator>().InitAttackIndicator(4f, 1.5f);
+                mController.attackIndicator.GetCircleIndicator(randomPosList[i], 4f, 1.5f);
                 if (i % 2 == 0)
                 {
                     // 짝수번째마다 0.3초 늦게 떨어지게 처리

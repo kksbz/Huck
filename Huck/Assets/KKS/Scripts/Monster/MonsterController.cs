@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +26,7 @@ public class MonsterController : MonoBehaviour, IDamageable
     public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
     [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
     [SerializeField] private GameObject hpBar = default; // HpBar 오브젝트
+    public AttackIndicator attackIndicator = default; // 공격범위 지시자 pool에 접근할 변수
     [HideInInspector] public Monster monster; // 몬스터 정보
     [HideInInspector] public Rigidbody monsterRb = default; // 리지드바디
     [HideInInspector] public Animator monsterAni = default; // 애니메이터
@@ -48,6 +50,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         monsterAudio = gameObject.GetComponent<AudioSource>();
         targetSearch = gameObject.GetComponent<TargetSearchRay>();
         mAgent = gameObject.GetComponent<NavMeshAgent>();
+        attackIndicator = GFunc.GetRootObj("AttackIndicator").GetComponent<AttackIndicator>();
         mAgent.acceleration = 100f;
         mAgent.angularSpeed = 180f;
         mAgent.speed = monster.moveSpeed;

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class GetRandomPosition
 {
@@ -29,4 +31,13 @@ public class GetRandomPosition
         }
         return new Vector3(x, center.y, z);
     } // GetRandomPos
+
+    //! ≈∏∞Ÿ¿« y√‡
+    public Vector3 GetTerrainOfValidPos(Vector3 _targetPos)
+    {
+        Vector3 targetPos = _targetPos + Vector3.up * 5f;
+        RaycastHit[] hits = Physics.RaycastAll(targetPos, Vector3.down, 10f, LayerMask.GetMask(GData.TERRAIN_MASK));
+        targetPos = hits[0].point + new Vector3(0f, 0.1f, 0f);
+        return targetPos;
+    } // GetTerrainOfValidPos
 }

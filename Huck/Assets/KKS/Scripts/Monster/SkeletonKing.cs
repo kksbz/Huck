@@ -221,6 +221,25 @@ public class SkeletonKing : Monster
             yield return null;
         }
     } // UseAttackE
+
+    //! 스킬 데미지판정 함수 (SphereCastAll)
+    private void Skill_Damage(Vector3 _Pos, float _radius, float _damageMultiplier)
+    {
+        damageMessage.damageAmount = Mathf.FloorToInt(defaultDamage * _damageMultiplier);
+        RaycastHit[] hits = Physics.SphereCastAll(_Pos, _radius, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
+        if (hits.Length > 0)
+        {
+            foreach (var _hit in hits)
+            {
+                // if : 플레이어 또는 건축물일 때
+                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
+                {
+                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
+                }
+            }
+        }
+        damageMessage.damageAmount = defaultDamage;
+    } // Skill_Damage
     #endregion // 공격 처리 (Collider, Raycast)
 
     #region 보스몬스터 죽음 처리
@@ -515,20 +534,6 @@ public class SkeletonKing : Monster
     private void SkillB_Damage()
     {
         StartCoroutine(OnEffectB());
-        damageMessage.damageAmount = defaultDamage * 2;
-        RaycastHit[] hits = Physics.SphereCastAll(weapon.transform.position, 3f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
-        if (hits.Length > 0)
-        {
-            foreach (var _hit in hits)
-            {
-                // if : 플레이어 또는 건축물일 때
-                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
-                {
-                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
-                }
-            }
-        }
-        damageMessage.damageAmount = defaultDamage;
     } // SkillB_Damage
 
     //! 스킬B 이펙트 코루틴함수
@@ -536,9 +541,18 @@ public class SkeletonKing : Monster
     {
         GameObject effectObj = Instantiate(skillB_Prefab);
         ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-        effectObj.transform.position = weapon.transform.position + Vector3.up * 0.5f;
+        Vector3 targetPos = weapon.transform.position + (Vector3.up * 5f);
+        Vector3 pos = default;
+        RaycastHit hit = default;
+        if (Physics.Raycast(targetPos, Vector3.down, out hit, 10f) == true)
+        {
+            // 이펙트 터질 위치 정해줌
+            pos = hit.point + (Vector3.up * 0.1f);
+        }
+        effectObj.transform.position = pos;
         effectObj.transform.forward = transform.forward;
         effect.Play();
+        Skill_Damage(pos, 3f, 2f);
         yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
         Destroy(effectObj);
     } // OnEffectB
@@ -598,50 +612,53 @@ public class SkeletonKing : Monster
     //! 스킬C 이펙트 코루틴함수
     private IEnumerator OnEffectC()
     {
-        Vector3 pos = weapon.transform.position + Vector3.up * 0.5f;
+        Vector3 targetPos = weapon.transform.position + Vector3.up * 5f;
+        Vector3 pos = targetPos;
+        RaycastHit hit = default;
         if (is2Phase == false)
         {
             // 1페이즈
             GameObject effectObj = Instantiate(skillC_Prefab);
             ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
+
+            if (Physics.Raycast(pos, Vector3.down, out hit, 10f) == true)
+            {
+                // 번개 떨어질 위치 정해줌
+                pos = hit.point + (Vector3.up * 0.1f);
+            }
             effectObj.transform.position = pos;
-            effectObj.transform.forward = transform.forward;
             yield return new WaitForSeconds(0.5f);
             effect.Play();
-            SkillD_Damage(pos);
+            Skill_Damage(effectObj.transform.position, 1.5f, 1.5f);
             yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
             Destroy(effectObj);
         }
         else
         {
             // 2페이즈
-            Vector3 dir = (mController.targetSearch.hit.transform.position - pos).normalized;
-            dir.y = 0f;
+            Vector3 dir = transform.forward;
             List<GameObject> effectObjList = new List<GameObject>();
             ParticleSystem lasteffect = default;
             for (int i = 0; i < 3; i++)
             {
                 GameObject effectObj = Instantiate(skillC_Prefab);
                 ParticleSystem effect = effectObj.GetComponent<ParticleSystem>();
-                switch (i)
+                if (Physics.Raycast(pos, Vector3.down, out hit, 10f) == true)
                 {
-                    case 0:
-                        effectObj.transform.position = pos;
-                        yield return new WaitForSeconds(0.5f);
-                        effect.Play();
-                        break;
-                    case 1:
-                        effectObj.transform.position = pos + (dir + Vector3.right).normalized * 2f;
-                        yield return new WaitForSeconds(0.3f);
-                        effect.Play();
-                        break;
-                    case 2:
-                        effectObj.transform.position = pos + (dir + Vector3.left).normalized * 2f;
-                        effect.Play();
-                        lasteffect = effect;
-                        break;
+                    // 번개 떨어질 위치 정해줌
+                    pos = hit.point + (Vector3.up * 0.1f);
                 }
-                SkillD_Damage(effectObj.transform.position);
+                effectObj.transform.position = pos + (dir * i * 2f);
+                // 공격범위 표시
+                GameObject indicator = Instantiate(indicator_Prefab, effectObj.transform.position, indicator_Prefab.transform.rotation);
+                indicator.GetComponent<AttackIndicator>().InitAttackIndicator(3f, 0.5f);
+                yield return new WaitForSeconds(0.5f);
+                effect.Play();
+                if (i == 2)
+                {
+                    lasteffect = effect;
+                }
+                Skill_Damage(effectObj.transform.position, 1.5f, 1.5f);
                 effectObjList.Add(effectObj);
             }
             yield return new WaitForSeconds(lasteffect.main.duration + lasteffect.main.startLifetime.constant);
@@ -692,19 +709,19 @@ public class SkeletonKing : Monster
         if (is2Phase == false)
         {
             // 1페이즈 낙뢰 이펙트
-            GameObject thunder = ProjectilePool.Instance.GetProjecttile();
-            ParticleSystem effect = thunder.GetComponent<ParticleSystem>();
-            thunder.transform.position = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
+            GameObject swordObj = ProjectilePool.Instance.GetProjecttile();
+            ParticleSystem effect = swordObj.GetComponent<ParticleSystem>();
+            swordObj.transform.position = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
             // 공격범위 표시
-            GameObject indicator = Instantiate(indicator_Prefab, thunder.transform.position, indicator_Prefab.transform.rotation);
+            GameObject indicator = Instantiate(indicator_Prefab, swordObj.transform.position, indicator_Prefab.transform.rotation);
             indicator.GetComponent<AttackIndicator>().InitAttackIndicator(4f, 1.5f);
             yield return new WaitForSeconds(1.5f);
-            thunder.gameObject.SetActive(true);
+            swordObj.gameObject.SetActive(true);
             effect.Play();
-            SkillD_Damage(thunder.transform.position);
+            Skill_Damage(swordObj.transform.position, 2f, 1.5f);
             yield return new WaitForSeconds(effect.main.duration + effect.main.startLifetime.constant);
             effect.Stop();
-            ProjectilePool.Instance.EnqueueProjecttile(thunder);
+            ProjectilePool.Instance.EnqueueProjecttile(swordObj);
         }
         else
         {
@@ -735,17 +752,17 @@ public class SkeletonKing : Monster
             List<GameObject> thunderList = new List<GameObject>();
             for (int i = 0; i < 10; i++)
             {
-                GameObject thunder = ProjectilePool.Instance.GetProjecttile();
-                ParticleSystem effect = thunder.GetComponent<ParticleSystem>();
-                thunder.transform.position = randomPosList[i];
-                thunder.gameObject.SetActive(true);
+                GameObject swordObj = ProjectilePool.Instance.GetProjecttile();
+                ParticleSystem effect = swordObj.GetComponent<ParticleSystem>();
+                swordObj.transform.position = randomPosList[i];
+                swordObj.gameObject.SetActive(true);
                 effect.Play();
-                SkillD_Damage(thunder.transform.position);
+                Skill_Damage(swordObj.transform.position, 2f, 1.5f);
                 if (i == 9)
                 {
                     lastEffect = effect;
                 }
-                thunderList.Add(thunder);
+                thunderList.Add(swordObj);
                 if (i % 2 == 0)
                 {
                     // 짝수번째마다 0.3초 늦게 떨어지게 처리
@@ -759,25 +776,6 @@ public class SkeletonKing : Monster
             }
         }
     } // OnEffectSkillD
-
-    //! 스킬D 데미지판정 함수
-    private void SkillD_Damage(Vector3 _effectPos)
-    {
-        damageMessage.damageAmount = Mathf.FloorToInt(defaultDamage * 1.5f);
-        RaycastHit[] hits = Physics.SphereCastAll(_effectPos, 2f, Vector3.up, 0f, LayerMask.GetMask(GData.PLAYER_MASK, GData.BUILD_MASK));
-        if (hits.Length > 0)
-        {
-            foreach (var _hit in hits)
-            {
-                // if : 플레이어 또는 건축물일 때
-                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
-                {
-                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
-                }
-            }
-        }
-        damageMessage.damageAmount = defaultDamage;
-    } // SkillD_Damage
 
     //! 스킬D 쿨다운 코루틴함수
     private IEnumerator SkillDCooldown()

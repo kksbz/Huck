@@ -1701,14 +1701,14 @@ MonoBehaviour:
   weapon: {fileID: 7453184021625850853}
   summonObjPrefab: {fileID: 3890301283945508039, guid: 9060ded37663abc479936259f5aa8ff4,
     type: 3}
-  useSkillA: 1
+  useSkillA: 0
   useSkillB: 1
   useSkillC: 1
-  useSkillD: 1
+  useSkillD: 0
   skillA_MaxCool: 100
-  skillB_MaxCool: 30
-  skillC_MaxCool: 25
-  skillD_MaxCool: 40
+  skillB_MaxCool: 15
+  skillC_MaxCool: 3
+  skillD_MaxCool: 15
   slideAttack_MaxCool: 25
   crushAttack_MaxCool: 15
   is2Phase: 0

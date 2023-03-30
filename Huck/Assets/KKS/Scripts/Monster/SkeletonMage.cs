@@ -119,7 +119,7 @@ public class SkeletonMage : Monster
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up, 2f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up, 2.5f);
     } // OnDrawGizmos
 
     //! AttackB 파이어볼 쏘는 함수

@@ -152,8 +152,8 @@ MonoBehaviour:
   shield: {fileID: 4294388467469215710}
   useSkillA: 1
   useSkillB: 1
-  skillA_MaxCool: 20
-  skillB_MaxCool: 30
+  skillA_MaxCool: 25
+  skillB_MaxCool: 35
 --- !u!54 &448846600250583450
 Rigidbody:
   m_ObjectHideFlags: 0

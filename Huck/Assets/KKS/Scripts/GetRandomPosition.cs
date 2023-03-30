@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GetRandomPosition
 {
-    //! 원범위안에서 랜덤한 좌표 가져오는 함수
+    //! 원범위 안에서 랜덤한 좌표 가져오는 함수
     public Vector3 GetRandomCirclePos(Vector3 center, int radius, int minDistance)
     {
         // 360도 범위에서 랜덤 각도 구하기

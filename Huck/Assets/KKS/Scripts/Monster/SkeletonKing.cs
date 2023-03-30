@@ -22,6 +22,7 @@ public class SkeletonKing : Monster
     [SerializeField] private float crushAttack_MaxCool = default;
     [HideInInspector] public bool is2Phase = false;
     private DamageMessage damageMessage = default;
+    private GameObject indicator_Prefab = default;
     private GameObject skillB_Prefab = default;
     private GameObject skillC_Prefab = default;
     private int defaultDamage = default;
@@ -39,6 +40,7 @@ public class SkeletonKing : Monster
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
+        indicator_Prefab = Resources.Load("Prefabs/Monster/Projectile/Circle_Indicator") as GameObject;
         skillB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/LeapEffect") as GameObject;
         skillC_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/Thunder") as GameObject;
         CheckUseSkill();
@@ -504,6 +506,9 @@ public class SkeletonKing : Monster
         Vector3 targetPos = mController.targetSearch.hit.transform.position + dir * meleeAttackRange;
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         StartCoroutine(parabola.ParabolaMoveToTarget(mController.transform.position, targetPos, leapTime, gameObject));
+        // 공격범위 표시
+        GameObject indicator = Instantiate(indicator_Prefab, mController.targetSearch.hit.transform.position, indicator_Prefab.transform.rotation);
+        indicator.GetComponent<AttackIndicator>().InitAttackIndicator(6f, leapTime);
     } // UseSkillB
 
     //! 스킬B 데미지판정 이벤트함수
@@ -690,6 +695,9 @@ public class SkeletonKing : Monster
             GameObject thunder = ProjectilePool.Instance.GetProjecttile();
             ParticleSystem effect = thunder.GetComponent<ParticleSystem>();
             thunder.transform.position = mController.targetSearch.hit.transform.position + new Vector3(0f, 0.1f, 0f);
+            // 공격범위 표시
+            GameObject indicator = Instantiate(indicator_Prefab, thunder.transform.position, indicator_Prefab.transform.rotation);
+            indicator.GetComponent<AttackIndicator>().InitAttackIndicator(4f, 1.5f);
             yield return new WaitForSeconds(1.5f);
             thunder.gameObject.SetActive(true);
             effect.Play();
@@ -712,7 +720,17 @@ public class SkeletonKing : Monster
                     randomPosList.Add(pos);
                 }
             }
-            yield return new WaitForSeconds(1.5f);
+            for (int i = 0; i < 10; i++)
+            {
+                // 공격범위 표시
+                GameObject indicator = Instantiate(indicator_Prefab, randomPosList[i], indicator_Prefab.transform.rotation);
+                indicator.GetComponent<AttackIndicator>().InitAttackIndicator(4f, 1.5f);
+                if (i % 2 == 0)
+                {
+                    // 짝수번째마다 0.3초 늦게 떨어지게 처리
+                    yield return new WaitForSeconds(0.3f);
+                }
+            }
             ParticleSystem lastEffect = default;
             List<GameObject> thunderList = new List<GameObject>();
             for (int i = 0; i < 10; i++)

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Monster;
 
 public class SkeletonMage : Monster
 {
@@ -14,11 +12,9 @@ public class SkeletonMage : Monster
     [SerializeField] private float skillA_MaxCool = default;
     [SerializeField] private float skillB_MaxCool = default;
     private DamageMessage damageMessage = default;
-    private GameObject indicator_Prefab = default;
     private GameObject attackA_Prefab = default;
     private GameObject attackB_Prefab = default;
     private GameObject skillA_Prefab = default;
-    private int summonCount = default;
     private int defaultDamage = default;
     private float skillACool = 0f;
     private float skillBCool = 0f;
@@ -29,7 +25,6 @@ public class SkeletonMage : Monster
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
-        indicator_Prefab = Resources.Load("Prefabs/Monster/Projectile/Circle_Indicator") as GameObject;
         attackA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/MageMelee") as GameObject;
         attackB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/FireBall") as GameObject;
         skillA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/Summon_Thorn") as GameObject;

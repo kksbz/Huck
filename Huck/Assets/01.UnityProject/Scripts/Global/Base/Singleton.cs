@@ -28,7 +28,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Awake()
     {
-    // 조건: 해당 오브젝트의 부모 오브젝트나 최상위에 무언가가 존재한다면
+        Init();
+        // 조건: 해당 오브젝트의 부모 오브젝트나 최상위에 무언가가 존재한다면
         if (transform.parent != null && transform.root != null)
         {
             // 존재한다면 그 대상을 유지시킴

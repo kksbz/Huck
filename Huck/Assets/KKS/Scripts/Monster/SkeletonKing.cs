@@ -1,32 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class SkeletonKing : Monster
 {
     private MonsterController mController = default;
-    [SerializeField] private MonsterData monsterData = default;
-    [SerializeField] private GameObject weapon = default;
-    [SerializeField] private GameObject summonObjPrefab = default;
-    [SerializeField] private bool useSkillA = default;
-    [SerializeField] private bool useSkillB = default;
-    [SerializeField] private bool useSkillC = default;
-    [SerializeField] private bool useSkillD = default;
-    [SerializeField] private float skillA_MaxCool = default;
-    [SerializeField] private float skillB_MaxCool = default;
-    [SerializeField] private float skillC_MaxCool = default;
-    [SerializeField] private float skillD_MaxCool = default;
-    [SerializeField] private float slideAttack_MaxCool = default;
-    [SerializeField] private float crushAttack_MaxCool = default;
-    [HideInInspector] public bool is2Phase = false;
-    private DamageMessage damageMessage = default;
-    private GameObject indicator_Prefab = default;
-    private GameObject skillB_Prefab = default;
-    private GameObject skillC_Prefab = default;
-    private int defaultDamage = default;
-    private int summonCount = default;
+    [SerializeField] private MonsterData monsterData = default; // 몬스터정보
+    [SerializeField] private GameObject weapon = default; // 무기 오브젝트
+    [SerializeField] private GameObject summonObjPrefab = default; // 스킬A 소환오브젝트 Prefab
+    [SerializeField] private bool useSkillA = default; // 스킬A 사용가능 체크
+    [SerializeField] private bool useSkillB = default; // 스킬B 사용가능 체크
+    [SerializeField] private bool useSkillC = default; // 스킬C 사용가능 체크
+    [SerializeField] private bool useSkillD = default; // 스킬D 사용가능 체크
+    [SerializeField] private float skillA_MaxCool = default; // 스킬A 최대 쿨다운
+    [SerializeField] private float skillB_MaxCool = default; // 스킬B 최대 쿨다운
+    [SerializeField] private float skillC_MaxCool = default; // 스킬C 최대 쿨다운
+    [SerializeField] private float skillD_MaxCool = default; // 스킬D 최대 쿨다운
+    [SerializeField] private float slideAttack_MaxCool = default; // 슬라이드어택 최대 쿨다운
+    [SerializeField] private float crushAttack_MaxCool = default; // 크러쉬어택 최대 쿨다운
+    [HideInInspector] public bool is2Phase = false; // 1 ~ 2페이즈 체크
+    private DamageMessage damageMessage = default; // 데미지 처리
+    private GameObject skillB_Prefab = default; // 스킬B 이펙트 Prefab
+    private GameObject skillC_Prefab = default; // 스킬C 이펙트 Prefab
+    private int defaultDamage = default; // 기본 데미지 담을 변수
     private float skillACool = 0f;
     private float skillBCool = 0f;
     private float skillCCool = 0f;
@@ -40,7 +36,6 @@ public class SkeletonKing : Monster
         mController.monster = this;
         defaultDamage = damage;
         damageMessage = new DamageMessage(gameObject, damage);
-        indicator_Prefab = Resources.Load("Prefabs/Monster/Projectile/Circle_Indicator") as GameObject;
         skillB_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/LeapEffect") as GameObject;
         skillC_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/Thunder") as GameObject;
         CheckUseSkill();
@@ -53,14 +48,18 @@ public class SkeletonKing : Monster
         // 슬라이드 공격 조건체크
         if (slideAttackCool <= 0f && isNoRangeAttack == false && mController.distance >= 7f)
         {
+            isNoRangeAttack = true;
             SlideAttack();
+            return;
         }
         else if (slideAttackCool <= 0f && isNoRangeAttack == false && mController.distance < 7f)
         {
+            isNoRangeAttack = true;
             StartCoroutine(CheckSlideDistance());
             // 슬라이드 공격이 사용가능하지만 타겟이 최소사거리 안에 있을때 사용X Idle상태로 초기화
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
+            mController.isDelay = false;
             return;
         }
 
@@ -95,17 +94,16 @@ public class SkeletonKing : Monster
             else if (number > 4)
             {
                 mController.monsterAni.SetBool("isAttackC", true);
-                return;
             }
             else if (number > 2)
             {
                 mController.monsterAni.SetBool("isAttackB", true);
-                return;
             }
             else
             {
                 mController.monsterAni.SetBool("isAttackA", true);
             }
+            return;
         }
     } // Attack
 
@@ -113,11 +111,23 @@ public class SkeletonKing : Monster
     public override void Skill()
     {
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-        if (useSkillA == true)
+        // 스킬A 소환스킬 조건 : 체력이 50%이하일 때만 사용가능
+        if (useSkillA == true && monsterHp <= monsterMaxHp * 0.5f)
         {
             useSkillA = false;
             CheckUseSkill();
             SkillA();
+            return;
+        }
+        else if (useSkillA == true && monsterHp > monsterMaxHp * 0.5f)
+        {
+            useSkillA = false;
+            CheckUseSkill();
+            StartCoroutine(CheckUseSkillA());
+            // 체력이 절반 초과면 사용X Idle상태로 초기화
+            IMonsterState nextState = new MonsterIdle();
+            mController.MStateMachine.onChangeState?.Invoke(nextState);
+            mController.isDelay = false;
             return;
         }
 
@@ -144,6 +154,7 @@ public class SkeletonKing : Monster
             StartCoroutine(CheckSkillBDistance());
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
+            mController.isDelay = false;
             return;
         }
 
@@ -254,30 +265,36 @@ public class SkeletonKing : Monster
     {
         mController.monsterAni.speed = 1f;
         mController.monsterAni.SetBool("isDead", true);
-        // 죽는 모션 되감기를 위한 float트리거
+        // 죽는 애니메이션 되감기를 위한 float트리거
         mController.monsterAni.SetFloat("RewindDead", 1f);
         yield return null;
         float deadAniTime = mController.monsterAni.GetCurrentAnimatorStateInfo(0).length;
         yield return new WaitForSeconds(deadAniTime);
         mController.monsterAni.SetFloat("RewindDead", 0f);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         if (is2Phase == false)
         {
             // 1페이즈에서 죽었을 경우 부활하고 2페이즈로 전환
             mController.monsterAni.speed = 0.5f;
+            // 죽는 애니메이션 되감기
             mController.monsterAni.SetFloat("RewindDead", -1f);
             yield return null;
             yield return new WaitForSeconds(deadAniTime * 2f);
             mController.monsterAni.SetBool("isDead", false);
             mController.monsterAni.SetTrigger("isRoar");
             yield return new WaitForSeconds(0.1f);
+            mController.hpBar.SetActive(true);
             float time = 0f;
             float endTime = mController.monsterAni.GetCurrentAnimatorStateInfo(0).length - 2f;
             while (time < endTime)
             {
-                // endTime 까지 scale을 1에서 1.5까지 늘림
                 time += Time.deltaTime;
-                mController.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.5f, time / endTime);
+                float reviveTime = time / endTime;
+                // endTime 까지 Hp를 MaxHp까지 회복
+                float _hp = Mathf.Lerp(0f, monsterMaxHp, reviveTime);
+                monsterHp = (int)_hp;
+                // endTime 까지 scale을 1에서 1.5까지 늘림
+                mController.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.5f, reviveTime);
                 yield return null;
             }
             yield return new WaitForSeconds(2f);
@@ -452,6 +469,21 @@ public class SkeletonKing : Monster
         }
     } // UseSkillA
 
+    //! 스킬A 사용가능 조건 체크하는 코루틴함수
+    private IEnumerator CheckUseSkillA()
+    {
+        while (useSkillA == false)
+        {
+            if (monsterHp <= monsterMaxHp * 0.5f)
+            {
+                useSkillA = true;
+                CheckUseSkill();
+                yield break;
+            }
+            yield return null;
+        }
+    } // CheckUseSkillA
+
     //! 스킬A 해골그런트 소환하는 함수
     private void Summon()
     {
@@ -559,20 +591,17 @@ public class SkeletonKing : Monster
     //! 스킬B (도약 공격) 사용거리 체크하는 코루틴함수
     private IEnumerator CheckSkillBDistance()
     {
-        isNoRangeSkill = true;
         while (mController.distance < 13f)
         {
             yield return null;
         }
         useSkillB = true;
-        isNoRangeSkill = false;
         CheckUseSkill();
     } // CheckSkillBDistance
 
     //! 스킬B 쿨다운 코루틴함수
     private IEnumerator SkillBCooldown()
     {
-        isNoRangeSkill = true;
         skillBCool = 0f;
         while (skillBCool < skillB_MaxCool)
         {
@@ -580,7 +609,6 @@ public class SkeletonKing : Monster
             yield return null;
         }
         skillBCool = 0f;
-        isNoRangeSkill = false;
         useSkillB = true;
         CheckUseSkill();
     } // SkillBCooldown

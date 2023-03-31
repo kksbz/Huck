@@ -46,6 +46,7 @@ public class SkeletonGrunt : Monster
             StartCoroutine(CheckRushDistance());
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
+            mController.isDelay = false;
             return;
         }
 
@@ -55,17 +56,16 @@ public class SkeletonGrunt : Monster
             if (number > 7)
             {
                 mController.monsterAni.SetBool("isAttackC", true);
-                return;
             }
             else if (number > 4)
             {
                 mController.monsterAni.SetBool("isAttackB", true);
-                return;
             }
             else
             {
                 mController.monsterAni.SetBool("isAttackA", true);
             }
+            return;
         }
     } // Attack
 
@@ -88,6 +88,7 @@ public class SkeletonGrunt : Monster
             StartCoroutine(CheckSkillADistance());
             IMonsterState nextState = new MonsterIdle();
             mController.MStateMachine.onChangeState?.Invoke(nextState);
+            mController.isDelay = false;
             return;
         }
 
@@ -103,6 +104,16 @@ public class SkeletonGrunt : Monster
     //! 사용가능한 스킬이 있는지 체크하는 함수 (몬스터컨트롤러에서 상태진입 체크하기 위함)
     private void CheckUseSkill()
     {
+        // 원거리스킬 사용 유무 체크
+        if (useSkillA == false)
+        {
+            isNoRangeSkill = true;
+        }
+        else
+        {
+            isNoRangeSkill = false;
+        }
+        // 스킬 사용가능 유무 체크
         if (useSkillA == false && useSkillB == false)
         {
             useSkill = false;
@@ -243,14 +254,12 @@ public class SkeletonGrunt : Monster
     //! 스킬A 사용 거리체크하는 코루틴함수
     private IEnumerator CheckSkillADistance()
     {
-        isNoRangeSkill = true;
-        while (isNoRangeSkill == true)
+        while (useSkillA == false)
         {
             // 타겟이 스킬A 최소사거리 밖에 있으면 스킬A 사용가능
             if (mController.distance >= 13f)
             {
                 useSkillA = true;
-                isNoRangeSkill = false;
                 CheckUseSkill();
                 yield break;
             }
@@ -301,7 +310,6 @@ public class SkeletonGrunt : Monster
     {
         skillACool = 0f;
         // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
-        isNoRangeSkill = true;
         while (skillACool < skillA_MaxCool)
         {
             skillACool += Time.deltaTime;
@@ -309,7 +317,6 @@ public class SkeletonGrunt : Monster
         }
         skillACool = 0f;
         useSkillA = true;
-        isNoRangeSkill = false;
         CheckUseSkill();
     } // SkillACooldown
     #endregion // 스킬A (도약 공격)

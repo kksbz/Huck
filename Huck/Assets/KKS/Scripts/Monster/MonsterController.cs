@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,7 +24,7 @@ public class MonsterController : MonoBehaviour, IDamageable
     public MStateMachine MStateMachine { get; private set; }
     public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
     [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
-    [SerializeField] private GameObject hpBar = default; // HpBar 오브젝트
+    public GameObject hpBar = default; // HpBar 오브젝트
     public AttackIndicator attackIndicator = default; // 공격범위 지시자 pool에 접근할 변수
     [HideInInspector] public Monster monster; // 몬스터 정보
     [HideInInspector] public Rigidbody monsterRb = default; // 리지드바디
@@ -80,10 +79,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         MStateMachine = new MStateMachine(idle, this);
         target = GameManager.Instance.playerObj;
         StartCoroutine(Spawn());
-        if (hpBar != null || hpBar != default)
-        {
-            hpBar.SetActive(false);
-        }
+        hpBar.SetActive(false);
     } // Start
 
     // Update is called once per frame
@@ -133,6 +129,10 @@ public class MonsterController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(0.1f);
         yield return new WaitForSeconds(monsterAni.GetCurrentAnimatorStateInfo(0).length);
         isSpawn = false;
+        if (monster.monsterType == Monster.MonsterType.BOSS)
+        {
+            hpBar.SetActive(true);
+        }
     } // Spawn
 
     //! 공격받으면 처리하는 함수 (interface 상속)
@@ -148,7 +148,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         if (monster.monsterHp <= 0f)
         {
             isDead = true;
-            //hpBar.SetActive(false);
+            hpBar.SetActive(false);
             monster.ExitAttack();
             MStateMachine.SetState(dicState[MonsterState.DEAD]);
             return;
@@ -223,14 +223,17 @@ public class MonsterController : MonoBehaviour, IDamageable
             return;
         }
 
-        //if (distance < 10f)
-        //{
-        //    hpBar.SetActive(true);
-        //}
-        //else
-        //{
-        //    hpBar.SetActive(false);
-        //}
+        if (monster.monsterType != Monster.MonsterType.BOSS)
+        {
+            if (distance < 10f)
+            {
+                hpBar.SetActive(true);
+            }
+            else
+            {
+                hpBar.SetActive(false);
+            }
+        }
 
         // 이동상태로 전환 체크
         if (enumState != MonsterState.ATTACK

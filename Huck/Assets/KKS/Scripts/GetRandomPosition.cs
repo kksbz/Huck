@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class GetRandomPosition
 {
@@ -17,9 +15,9 @@ public class GetRandomPosition
         float x = center.x + distance * Mathf.Cos(angle);
         float z = center.z + distance * Mathf.Sin(angle);
         RaycastHit hit = default;
-        Vector3 pos = center + Vector3.up * 5f;
+        Vector3 pos = center + Vector3.up * 30f;
         // 랜덤으로 구한 좌표 위에서 아래로 레이케스트쏴서 땅인지 체크
-        if (Physics.Raycast(pos, Vector3.down, out hit, 15f, LayerMask.GetMask(GData.TERRAIN_MASK)) == true)
+        if (Physics.Raycast(pos, Vector3.down, out hit, 40f, LayerMask.GetMask(GData.TERRAIN_MASK)) == true)
         {
             // 충돌한 땅의 높이를 좌표에 넣음 (좌표를 사용할 이펙트의 위치를 0.1f 높게 처리)
             center.y = hit.point.y + 0.1f;
@@ -31,13 +29,4 @@ public class GetRandomPosition
         }
         return new Vector3(x, center.y, z);
     } // GetRandomPos
-
-    //! 타겟의 y축
-    public Vector3 GetTerrainOfValidPos(Vector3 _targetPos)
-    {
-        Vector3 targetPos = _targetPos + Vector3.up * 5f;
-        RaycastHit[] hits = Physics.RaycastAll(targetPos, Vector3.down, 10f, LayerMask.GetMask(GData.TERRAIN_MASK));
-        targetPos = hits[0].point + new Vector3(0f, 0.1f, 0f);
-        return targetPos;
-    } // GetTerrainOfValidPos
-}
+} // GetRandomPosition

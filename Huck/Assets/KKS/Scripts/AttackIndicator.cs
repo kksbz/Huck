@@ -31,6 +31,7 @@ public class AttackIndicator : MonoBehaviour
         }
     } // OnDisable
 
+    // { 공격지시자 종류 모음
     #region CircleIndicator
     //! CirclePool 채우는 함수
     private void SetupCircleIndicatorPool(int _number)
@@ -101,7 +102,7 @@ public class AttackIndicator : MonoBehaviour
             rectangleIndicator.SetActive(false);
             rectangleIndicator.transform.parent = transform;
         }
-        rectangleIndicator.transform.position = pos + (Vector3.up * 1f);
+        rectangleIndicator.transform.position = pos + (Vector3.up * 0.2f);
         rectangleIndicator.SetActive(true);
         rectangleIndicator.GetComponent<RectangIndicator>().InitRectangIndicator(horizontalityRange, attackLength, time);
         return rectangleIndicator;
@@ -114,4 +115,5 @@ public class AttackIndicator : MonoBehaviour
         rectanglePool.Enqueue(rectangleIndicator);
     } // EnqueueRectangIndicator
     #endregion // RectangIndicator
+    // } 공격지시자 종류 모음
 } // AttackIndicator

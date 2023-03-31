@@ -64,7 +64,7 @@ public class TimeController : MonoBehaviour
         onStartNight = new EventHandler(() => Debug.Log("¹ã ÁøÀÔ"));
         //onStartDaytime += () => Debug.Log("³· ÁøÀÔ");
         //onStartNight += () => Debug.Log("¹ã ÁøÀÔ");
-
+        onStartNight += GameManager.Instance.SpawnMonster;
         fStartHour = Mathf.Round(iStartHour);
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(fStartHour);
 

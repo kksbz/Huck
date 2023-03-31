@@ -26,7 +26,6 @@ public class RectangIndicator : MonoBehaviour
     // 공격범위(직사각형 범위) 지속시간동안 커지는 코루틴함수
     private IEnumerator StartRectangIndicator(float attackLength)
     {
-        Debug.Log($"길이 {attackLength}, 시간 {durationTime}");
         Vector3 startPos = transform.position;
         float elapsed = 0f;
         while (elapsed < durationTime)

@@ -10,7 +10,7 @@ public class InventoryArray : MonoBehaviour
     public List<GameObject> itemSlots = new List<GameObject>();
     public List<ItemSlot> itemSlotScripts = new List<ItemSlot>();
     public GameObject slotPrefab = null;
-    private ItemSlot nowSlot = default;
+    public ItemSlot nowSlot = default;
 
 
     #region 인벤토리 드래그 & 드랍을 위한 변수
@@ -18,7 +18,7 @@ public class InventoryArray : MonoBehaviour
     protected GraphicRaycaster graphicRay = default;
     protected PointerEventData pointEvent = default;
     protected Canvas myCanvas = default;
-    private ItemSlot beginDragSlot = default;
+    protected ItemSlot beginDragSlot = default;
     private Transform beginItemTrans = default;
     private GameObject dividedItemIcon = default;
 

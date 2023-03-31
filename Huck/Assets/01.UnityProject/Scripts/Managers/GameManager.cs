@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public GameObject playerObj = default;
 
     public GameObject procGenManager = default;
+    public BuildSystem buildSystem = default;
 
     public TimeController timeController = default;
 
@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     public List<GameObject> nomalMonsterPrefab = default;
     public GameObject nameedMonsterPrefab = default;
     public GameObject bossMonsterPrefab = default;
+    public Transform bossPos = default;
     private int count = 0;
     //! } [KKS] 몬스터 스폰관련 변수
 
@@ -28,7 +29,6 @@ public class GameManager : Singleton<GameManager>
     //! { [KKS] 몬스터 소환 함수
     public void SpawnMonster()
     {
-        Debug.Log($"SpawnStart Day : {count + 1}");
         int nomalTypeCount = default;
         switch (count)
         {
@@ -65,7 +65,6 @@ public class GameManager : Singleton<GameManager>
 
         if (count % 5 == 0 && count != 0)
         {
-            Debug.Log("중간보스 젠!");
             Vector3 point = getRandomPosition.GetRandomCirclePos(playerObj.transform.position, 30, 25) + Vector3.up;
             Vector3 dirToTarget = (playerObj.transform.position - point).normalized;
             GameObject nomalMonster = Instantiate(nameedMonsterPrefab, point, Quaternion.LookRotation(dirToTarget));
@@ -79,8 +78,13 @@ public class GameManager : Singleton<GameManager>
                 GameObject nomalMonster = Instantiate(nomalMonsterPrefab[randomIndex], spawnPointList[i] + Vector3.up, Quaternion.LookRotation(dirToTarget));
             }
         }
-
         count += 1;
     } // SpawnMonster
+
+    public void BossSpwan()
+    {
+        GameObject boss = Instantiate(bossMonsterPrefab, bossPos.position, bossPos.rotation);
+        boss.SetActive(false);
+    } // BossSpwan
     //! } [KKS] 몬스터 소환 함수
 }

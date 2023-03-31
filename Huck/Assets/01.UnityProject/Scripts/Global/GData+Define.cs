@@ -16,6 +16,8 @@ public static partial class GData
     public const string GATHER_MASK = "Gather";
     public const string TERRAIN_MASK = "Terrain";
 
+    public const string POSTPROCESS_ON_LOADING = "PostProcessObject";
+
     // Asset Path
     public const string PREFAB_PATH = "Prefabs/";
     public const string UI_PATH = "UI/";

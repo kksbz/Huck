@@ -26,11 +26,20 @@ public class RangeMove : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter(Collider other)
     {
+        ItemData item_ = playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData;
 
+        DamageMessage dm = new DamageMessage(transform.parent.gameObject, playerStat.damage, item_);
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        if(damageable != null)
+        {
+            damageable.TakeDamage(dm);
+        }
+
+        /*
         if (other.tag == GData.ENEMY_MASK)
         {
             ItemData item_ = playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData;
-   
+
             DamageMessage dm = new DamageMessage(transform.parent.gameObject, playerStat.damage);
             other.gameObject.GetComponent<IDamageable>().TakeDamage(dm);
         }
@@ -95,5 +104,6 @@ public class RangeMove : MonoBehaviour, IDamageable
                 }
             }
         }
+        */
     }
 }

@@ -122,7 +122,6 @@ public class BaseObjectPlacer : MonoBehaviour
 
                 SpawnObject(prefab, spawnLocation, objectRoot);
             }
-            Debug.Log($"Placed : {numPlaced} objects out of {numToSpawn}");
         }
     }
 
@@ -132,20 +131,29 @@ public class BaseObjectPlacer : MonoBehaviour
         Vector3 positionOffset = new Vector3(Random.Range(  -maxPositionJitter, maxPositionJitter),
                                                             0,
                                                             Random.Range(-maxPositionJitter, maxPositionJitter));
-        
         // instantiate the prefab
+        GameObject spawnedGO = default;
 #if UNITY_EDITOR
         if (Application.isPlaying)
-            Instantiate(prefab, spawnLocation + positionOffset, spawnRotation, objectRoot);
+            spawnedGO = Instantiate(prefab, spawnLocation + positionOffset, spawnRotation, objectRoot);
         else
         {
-            var spawnedGO = PrefabUtility.InstantiatePrefab(prefab, objectRoot) as GameObject;
+            spawnedGO = PrefabUtility.InstantiatePrefab(prefab, objectRoot) as GameObject;
             spawnedGO.transform.position = spawnLocation + positionOffset;
             spawnedGO.transform.rotation = spawnRotation;
             Undo.RegisterCreatedObjectUndo(spawnedGO, "Placed object");
         }
 #else
-        Instantiate(prefab, spawnLocation + positionOffset, spawnRotation, objectRoot);
+        spawnedGO = Instantiate(prefab, spawnLocation + positionOffset, spawnRotation, objectRoot);
+        
 #endif // UNITY_EDITOR
+        // 스폰 이후 처리 사항
+        spawnedGO.tag = prefab.tag;
+        if(spawnedGO.GetComponent<Item>() != null)
+        {
+            Rigidbody spawnedRigid = spawnedGO.GetComponent<Rigidbody>();
+            spawnedRigid.useGravity = false;
+            spawnedRigid.constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 }

@@ -8,6 +8,7 @@ public class PlayerMove : MonoBehaviour
     private Animator playerAnim = default;
     private InHand playerInHand = default;
     private PlayerStat playerStat = default;
+    //private AudioSource PlayerSound = default;
 
     public static bool isGrounded = default;
     public static bool isRunning = default;
@@ -26,10 +27,9 @@ public class PlayerMove : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         playerInHand = GetComponent<InHand>();
         playerStat = GetComponent<PlayerStat>();
+        //PlayerSound = GetComponent<AudioSource>();
 
         playerStat.onPlayerDead += playerDie;
-
-
     }
 
     private void Update()
@@ -46,7 +46,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Input_()
     {
-        if (PlayerOther.isMenuOpen == false && PlayerOther.isStoveOpen == false)
+        if (PlayerOther.isMenuOpen == false && PlayerOther.isStoveOpen == false && PlayerOther.isAnvilOpen == false
+            && PlayerOther.isWorkbenchOpen == false)
         {
             MoveInput();
             JumpInput();
@@ -55,7 +56,8 @@ public class PlayerMove : MonoBehaviour
 
     private void PlayerAction()
     {
-        if (isDead == false)
+        if (isDead == false && PlayerOther.isMenuOpen == false && PlayerOther.isStoveOpen == false
+            && PlayerOther.isAnvilOpen == false && PlayerOther.isWorkbenchOpen == false)
         {
             Move();
             Jump();
@@ -198,23 +200,28 @@ public class PlayerMove : MonoBehaviour
     #region Eat
     private void Eat()
     {
-        if (Input.GetMouseButtonDown(1) && playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData != null)
+        if (Input.GetMouseButtonDown(1) && playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData != null
+            && playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData.ItemUseAble == true)
         {
-            if (PlayerOther.isInvenOpen == false && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false)
+            if (playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemData.IsBuild == false)
             {
-                playerAnim.SetTrigger("Eat");
+                if (PlayerOther.isInvenOpen == false && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false)
+                {
+                    playerAnim.SetTrigger("Eat");
+                }
             }
-        }
-        if (PlayerAtk.isAttacking == true || PlayerOther.isInvenOpen == true ||
-            PlayerOther.isMapOpen == true || PlayerOther.isMenuOpen == true)
-        {
-            playerAnim.SetTrigger("EatCancel");
+            else
+            {
+                if (GameManager.Instance.playerObj.GetComponent<InHand>().buildSystem.IsBuildAct)
+                {
+                    EatFood();
+                }
+            }
         }
     }
     private void EatFood()
     {
         playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot].itemUseDel(playerInHand.inventorySlotItem[playerInHand.selectedQuitSlot]);
-        Debug.Log("먹음");
     }
     private void EatFin()
     {
@@ -238,7 +245,7 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionExit(Collision other)
     {
-        if (other.gameObject.tag == "Floor")
+        if (other.gameObject.tag == "Terrain")
         {
             isGrounded = false;
             playerAnim.SetBool("isGround", false);
@@ -247,10 +254,12 @@ public class PlayerMove : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        isGrounded = true;
-        isJump = false;
-        curJumpCnt = 0;
-        playerAnim.SetBool("isGround", true);
+        if (other.gameObject.tag == "Terrain")
+        {
+            isGrounded = true;
+            curJumpCnt = 0;
+            playerAnim.SetBool("isGround", true);
+        }
     }
     #endregion
     // } Player Grounded Check

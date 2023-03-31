@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class ItemRange : MonoBehaviour
 {
     private GameObject ItemFound = default;
@@ -19,11 +18,20 @@ public class ItemRange : MonoBehaviour
     private Text interect_T = default;
 
     public GameObject getItem = default;
+    public StoveItem stoveItem = default;
+
 
     private float Range = 5;
 
     void Start()
     {
+        UI = UIManager.Instance.UiObjs.transform.GetChild(1).gameObject;
+        res_UI = UI.transform.GetChild(1).gameObject;
+        ItemFound = UI.transform.GetChild(2).gameObject;
+
+        find_T_panel = res_UI.transform.GetChild(0).gameObject;
+        find_R_Hp = res_UI.transform.GetChild(2).gameObject;
+        find_T_interect = res_UI.transform.GetChild(3).gameObject;
         UI = UIManager.Instance.UiObjs.transform.GetChild(1).gameObject;
         res_UI = UI.transform.GetChild(1).gameObject;
         ItemFound = UI.transform.GetChild(2).gameObject;
@@ -46,6 +54,9 @@ public class ItemRange : MonoBehaviour
     void ItemGet()
     {
         RaycastHit hitinfo = default;
+
+        ItemFound.SetActive(false);
+        res_UI.SetActive(false);
 
         ItemFound.SetActive(false);
         res_UI.SetActive(false);
@@ -77,9 +88,10 @@ public class ItemRange : MonoBehaviour
                 res_Hp.fillAmount = ((float)resObjCurrentHP / (float)resObjMaxHp);
             }
 
-            if (hitinfo.transform.name == "10.Stove(Clone)" && PlayerOther.isAnvilOpen == false && PlayerOther.isInvenOpen == false
+            if (hitinfo.transform.tag == "Stove" && PlayerOther.isAnvilOpen == false && PlayerOther.isInvenOpen == false
                 && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false && PlayerOther.isWorkbenchOpen == false)
             {
+                stoveItem = hitinfo.transform.GetComponent<StoveItem>();
                 res_UI.SetActive(true);
                 panel_T.text = "Stove";
                 interect_T.text = "Stove";
@@ -96,6 +108,60 @@ public class ItemRange : MonoBehaviour
                     else
                     {
                         UIManager.Instance.stove.SetActive(false);
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+                }
+                else
+                {
+                    stoveItem = default;
+                }
+            }
+
+            if (hitinfo.transform.tag == "Workbench" && PlayerOther.isAnvilOpen == false && PlayerOther.isInvenOpen == false
+                && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false && PlayerOther.isStoveOpen == false)
+            {
+                res_UI.SetActive(true);
+                panel_T.text = "Workbench";
+                interect_T.text = "Workbench";
+                ItemFound.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    PlayerOther.isWorkbenchOpen = !PlayerOther.isWorkbenchOpen;
+                    if (PlayerOther.isWorkbenchOpen == true)
+                    {
+                        UIManager.Instance.workBench.SetActive(true);
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+                    }
+                    else
+                    {
+                        UIManager.Instance.workBench.SetActive(false);
+                        Cursor.visible = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+                }
+            }
+
+            if (hitinfo.transform.tag == "Anvil" && PlayerOther.isWorkbenchOpen == false && PlayerOther.isInvenOpen == false
+                && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false && PlayerOther.isStoveOpen == false)
+            {
+                res_UI.SetActive(true);
+                panel_T.text = "Anvil";
+                interect_T.text = "Anvil";
+                ItemFound.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    PlayerOther.isAnvilOpen = !PlayerOther.isAnvilOpen;
+                    if (PlayerOther.isAnvilOpen == true)
+                    {
+                        UIManager.Instance.anvil.SetActive(true);
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
+                    }
+                    else
+                    {
+                        UIManager.Instance.anvil.SetActive(false);
                         Cursor.visible = false;
                         Cursor.lockState = CursorLockMode.Locked;
                     }

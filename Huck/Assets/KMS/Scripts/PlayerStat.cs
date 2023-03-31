@@ -115,17 +115,16 @@ public class PlayerStat : MonoBehaviour, IDamageable
     // { TakeDamage
     public void TakeDamage(DamageMessage message)
     {
-        Debug.Log($"{message.causer.name}에게 {message.damageAmount} 피해입음!");
-        //if (isHit == false)
-        //{
-        //    curHp -= message.damageAmount;
-        //    StartCoroutine(WaitHitTime());
-        //}
-        //if (curHp <= 0f)
-        //{
-        //    onPlayerDead();
-        //    Die();
-        //}
+        if (isHit == false)
+        {
+            curHp -= message.damageAmount;
+            StartCoroutine(WaitHitTime());
+        }
+        if (curHp <= 0f)
+        {
+            onPlayerDead();
+            Die();
+        }
     }
 
     private IEnumerator WaitHitTime()

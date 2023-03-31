@@ -43,8 +43,7 @@ public class PlayerOther : MonoBehaviour
 
         CursorSet();
         inven.SetLocalScale(enableScale);
-        invenSlot = inven.transform.GetChild(0)
-            .GetChild(1).GetComponent<InventoryArray>();
+        invenSlot = UIManager.Instance.inventory.GetComponent<InventoryArray>();
     }
 
     private void Update()
@@ -61,7 +60,8 @@ public class PlayerOther : MonoBehaviour
     {
 
         if (Input.GetKeyDown(KeyCode.Tab) && isMapOpen == false && isMenuOpen == false && PlayerMove.isDead == false
-            && PlayerOther.isStoveOpen == false)
+            && PlayerOther.isStoveOpen == false && PlayerOther.isAnvilOpen == false
+            && PlayerOther.isWorkbenchOpen == false)
         {
             isInvenOpen = !isInvenOpen;
             if (isInvenOpen == true)
@@ -92,7 +92,8 @@ public class PlayerOther : MonoBehaviour
     public void MapOpen()
     {
         if (Input.GetKeyDown(KeyCode.M) && isInvenOpen == false && isMenuOpen == false && PlayerMove.isDead == false
-            && PlayerOther.isStoveOpen == false)
+            && PlayerOther.isStoveOpen == false && PlayerOther.isAnvilOpen == false
+            && PlayerOther.isWorkbenchOpen == false)
         {
             isMapOpen = !isMapOpen;
             if (isMapOpen == true)
@@ -137,7 +138,7 @@ public class PlayerOther : MonoBehaviour
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     menu.SetActive(true);
-                    Time.timeScale = 0;
+                    Time.timeScale = 0f;
                 }
                 if (isMenuOpen == false)
                 {
@@ -146,7 +147,7 @@ public class PlayerOther : MonoBehaviour
                     Cursor.lockState = CursorLockMode.Locked;
                     UIManager.Instance.isResumeOn = false;
                     menu.SetActive(false);
-                    Time.timeScale = 1;
+                    Time.timeScale = 1f;
                 }
             }
         }

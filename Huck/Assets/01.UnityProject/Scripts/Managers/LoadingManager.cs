@@ -13,13 +13,13 @@ public enum EGenerationStage
     Beginning,
     BuildTextureMap,
     BuildDetailMap,
-    BuildLowResolutionBiomeMap,
-    BuildHighResolutionBiomeMap,
+    BuildBiomeMap,
     HeightMapGeneration,
     TerrainPainting,
     ObjectPlacement,
     DetailPainting,
     NavMeshBaking,
+    PostProcessOnLoading,
 
     Complete,
     NumStage = Complete
@@ -67,7 +67,6 @@ public class LoadingManager : Singleton<LoadingManager>
             OnStatusReported(EGenerationStage.EnterPlayScene, "Load PlayScene");
             if (operation.progress >= 0.9f)
             {
-                Debug.Log("Loading PlayScene");
                 operation.allowSceneActivation = true;
             }
 
@@ -80,7 +79,6 @@ public class LoadingManager : Singleton<LoadingManager>
         string newText = $"Step {(int)currentStage} of {(int)EGenerationStage.NumStage} : {status} ";
         loadingText.text = newText;
 
-        Debug.Log($"{currentStage}");
         if(currentStage == EGenerationStage.Complete)
         {
             loadingScreenAnim.SetBool("isFadeOut", true);

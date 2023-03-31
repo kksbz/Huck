@@ -6,16 +6,10 @@ public class CheckTrigger : MonoBehaviour
 {
     private const string BUILD_LAYER = GData.BUILD_MASK;
     public bool IsOnCollider = false;
-    private List<GameObject> cols = new List<GameObject>();
 
-    void Update()
+    private void OnTriggerStay(Collider other)
     {
-        changeCursor();
-    }
-
-    private void changeCursor()
-    {
-        if (cols.Count > 0)
+        if (other.gameObject.layer == LayerMask.NameToLayer(BUILD_LAYER))
         {
             IsOnCollider = false;
         }
@@ -24,31 +18,4 @@ public class CheckTrigger : MonoBehaviour
             IsOnCollider = true;
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer(BUILD_LAYER))
-        {
-            cols.Add(other.gameObject);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer(BUILD_LAYER))
-        {
-            cols.Remove(other.gameObject);
-        }
-    }
-
-    //public void deleteObjTime()
-    //{
-    //    if (cols.Count > 0)
-    //    {
-    //        for (int i = 0; i < cols.Count; i++)
-    //        {
-    //            cols.RemoveAt(0);
-    //        }
-    //    }
-    //}
 }

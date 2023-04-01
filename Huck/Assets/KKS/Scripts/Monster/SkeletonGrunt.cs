@@ -277,10 +277,10 @@ public class SkeletonGrunt : Monster
         {
             foreach (var _hit in hits)
             {
-                // if : 플레이어 또는 건축물일 때
-                if (_hit.collider.tag == GData.PLAYER_MASK || _hit.collider.tag == GData.BUILD_MASK)
+                IDamageable damageable = _hit.collider.gameObject.GetComponent<IDamageable>();
+                if (damageable != null)
                 {
-                    _hit.collider.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
+                    damageable.TakeDamage(damageMessage);
                 }
             }
         }

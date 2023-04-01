@@ -25,9 +25,10 @@ public class WeaponTrigger : MonoBehaviour
     //! 콜라이더 트리거
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == GData.PLAYER_MASK || other.tag == GData.BUILD_MASK)
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            other.gameObject.GetComponent<IDamageable>().TakeDamage(damageMessage);
+            damageable.TakeDamage(damageMessage);
         }
     } // OnTriggerEnter
 } // WeaponTrigger

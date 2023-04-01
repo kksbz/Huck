@@ -42,3 +42,4 @@
 2023-03-31 / v0.3.8 / [KKS] Bug Fix, 몬스터 스포너 구현</br>
 2023-03-31 / v0.3.9 / [Merge] Huck Project</br>
 2023-04-01 / v0.4.0 / [KKS] ProjectilePool Fix, 투사체 본인 pool 못찾는 문제해결, 투사체 충돌조건 변경, 원범위 랜덤좌표 찾기 내비메쉬영역안에서 찾도록 로직 변경</br>
+2023-04-01 / v0.4.1 / [KKS] BossAreaEnter setup</br>

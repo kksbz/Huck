@@ -54,51 +54,61 @@ public class GameManager : Singleton<GameManager>
             while (spawnPointList.Count < spawnNumber)
             {
                 // 중복되지않는 원범위 랜덤좌표를 스폰할 수만큼 가져옴
-                Vector3 point = getRandomPosition.GetRandomCirclePos(playerObj.transform.position, 30, 25);
+                Vector3 point = getRandomPosition.GetRandomCirclePos(playerObj.transform.position, 30, 20);
                 if (!spawnPointList.Contains(point))
                 {
                     spawnPointList.Add(point);
                 }
             }
 
-            //if (count % 5 == 0 && count != 0)
-            //{
-            //    Vector3 point = getRandomPosition.GetRandomCirclePos(playerObj.transform.position, 30, 25) + Vector3.up;
-            //    // 플레이어를 바라보면서 소환되게 회전축 설정
-            //    Vector3 dirToTarget = (playerObj.transform.position - point).normalized;
-            //    GameObject nameedMonster = Instantiate(nameedMonsterPrefab, point, Quaternion.LookRotation(dirToTarget));
-            //}
-            //else
-            //{
             for (int i = 0; i < spawnNumber; i++)
             {
-                Vector3 dirToTarget = default;
-                if (count == 4)
-                {
-                    // 5일차 밤에는 중간보스 소환
-                    int number = Random.Range(0, spawnPointList.Count + 1);
-                    Vector3 point = spawnPointList[number];
-                    // 플레이어를 바라보면서 소환되게 회전축 설정
-                    dirToTarget = (playerObj.transform.position - point).normalized;
-                    GameObject nameedMonster = Instantiate(nameedMonsterPrefab, point, Quaternion.LookRotation(dirToTarget));
-                    // 첫번째 중간보스 소환이후 밤부터 일반몬스터와 같이 소환될수있게 처리
-                    nomalMonsterPrefab.Add(nameedMonsterPrefab);
-                    i = spawnNumber;
-                }
-                int randomIndex = Random.Range(0, nomalTypeCount + 1);
                 // 플레이어를 바라보면서 소환되게 회전축 설정
-                dirToTarget = (playerObj.transform.position - spawnPointList[i]).normalized;
-                GameObject nomalMonster = Instantiate(nomalMonsterPrefab[randomIndex], spawnPointList[i], Quaternion.LookRotation(dirToTarget));
+                Vector3 dirToTarget = default;
+                if (count == 4 || count == 7)
+                {
+                    if (count == 4)
+                    {
+                        // 5일차 밤에는 중간보스 1마리만 소환
+                        Vector3 point = spawnPointList[i];
+                        dirToTarget = (playerObj.transform.position - point).normalized;
+                        GameObject nameedMonster = Instantiate(nameedMonsterPrefab, point, Quaternion.LookRotation(dirToTarget));
+                        i = spawnNumber;
+                    }
+                    else
+                    {
+                        // 8일차 밤에는 중간보스 3마리 소환
+                        Vector3 point = spawnPointList[i];
+                        dirToTarget = (playerObj.transform.position - point).normalized;
+                        GameObject nameedMonster = Instantiate(nameedMonsterPrefab, point, Quaternion.LookRotation(dirToTarget));
+                        // 9일차 밤부터 일반몬스터와 같이 소환될수있게 처리
+                        if (i >= 2)
+                        {
+                            nomalMonsterPrefab.Add(nameedMonsterPrefab);
+                            i = spawnNumber;
+                        }
+                    }
+                }
+                else
+                {
+                    // 몬스터 소환
+                    int randomIndex = Random.Range(0, nomalTypeCount + 1);
+                    dirToTarget = (playerObj.transform.position - spawnPointList[i]).normalized;
+                    GameObject nomalMonster = Instantiate(nomalMonsterPrefab[randomIndex], spawnPointList[i], Quaternion.LookRotation(dirToTarget));
+                }
             }
-            //}
         }
         count += 1;
     } // SpawnMonster
 
     public void BossSpwan()
     {
-        GameObject boss = Instantiate(bossMonsterPrefab, bossPos.position, bossPos.rotation);
-        isExistenceBoss = true;
+        // 보스몬스터가 없을 경우에만 소환
+        if (isExistenceBoss == false)
+        {
+            GameObject boss = Instantiate(bossMonsterPrefab, bossPos.position, bossPos.rotation);
+            isExistenceBoss = true;
+        }
     } // BossSpwan
     //! } [KKS] 몬스터 소환 함수
 }

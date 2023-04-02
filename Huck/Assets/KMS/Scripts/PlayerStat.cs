@@ -12,7 +12,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
     public float maxHungry = 100;
     public float maxEnergy = 100;
 
-    public int damage = 50;
+    public int damage = 1;
     public int armor = 0;
     public float critical = 5;
 
@@ -90,7 +90,8 @@ public class PlayerStat : MonoBehaviour, IDamageable
             isEgFull = false;
             if (isEgFull == false
             && Input.GetKey(KeyCode.LeftShift) == false
-            && PlayerMove.isGrounded == true)
+            && PlayerMove.isGrounded == true
+            && curHungry != 0)
             {
                 curEnergy += 10f * Time.deltaTime;
             }
@@ -117,9 +118,8 @@ public class PlayerStat : MonoBehaviour, IDamageable
     {
         if (isHit == false)
         {
-            //curHp -= message.damageAmount;
+            curHp -= message.damageAmount;
             StartCoroutine(WaitHitTime());
-            Debug.Log($"{message.causer.name}에게 {message.damageAmount} 피해받음");
         }
         if (curHp <= 0f)
         {

@@ -45,3 +45,4 @@
 2023-04-01 / v0.4.1 / [KKS] BossAreaEnter setup</br>
 2023-04-02 / v0.4.2 / [KKS] 몬스터스폰 로직 변경 및 몬스터가 스킬 사용중 죽었을 경우 공격지시자 비활성 하게 변경</br>
 2023-04-02 / v0.4.3 / [KKS] 동물 moose setup</br>
+2023-04-02 / v0.4.4 / [Merge] Huck Project</br>

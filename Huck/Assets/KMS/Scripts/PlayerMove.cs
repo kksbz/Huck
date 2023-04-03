@@ -14,10 +14,17 @@ public class PlayerMove : MonoBehaviour
     public static bool isRunning = default;
     public static bool isDead = false;
     public static bool isJump = false;
+    public static bool isWalk = false;
+    public static bool isEating = false;
 
     private float jumpForce = 150;
     private float moveSpeed = 5;
     private int curJumpCnt = 0;
+
+    //
+    private float prevMoveSpeedMultiPlier = 5f;
+    private float moveSpeedMultiPlier = 1f;
+    //
 
 
     private void Start()
@@ -52,6 +59,8 @@ public class PlayerMove : MonoBehaviour
             MoveInput();
             JumpInput();
         }
+        Cheat_FindBossCastle();
+        Cheat_SpeedUp();
     }
 
     private void PlayerAction()
@@ -74,7 +83,7 @@ public class PlayerMove : MonoBehaviour
 
         Vector3 move_H = transform.right * horizontal;
         Vector3 move_V = transform.forward * vertical;
-        Vector3 velocity_P = (move_H + move_V).normalized * moveSpeed;
+        Vector3 velocity_P = (move_H + move_V).normalized * moveSpeed * moveSpeedMultiPlier;
         playerRigid.MovePosition(transform.position + velocity_P
             * Time.deltaTime);
 
@@ -82,6 +91,16 @@ public class PlayerMove : MonoBehaviour
         {
             playerAnim.SetInteger("WalkFB", (int)vertical);
             playerAnim.SetInteger("WalkRL", (int)horizontal);
+        }
+
+        if (horizontal != 0 || vertical != 0)
+        {
+            isWalk = true;
+        }
+        
+        if(horizontal == 0 && vertical == 0)
+        {
+            isWalk = false;
         }
     }
 
@@ -211,6 +230,7 @@ public class PlayerMove : MonoBehaviour
                 if (PlayerOther.isInvenOpen == false && PlayerOther.isMapOpen == false && PlayerOther.isMenuOpen == false)
                 {
                     playerAnim.SetTrigger("Eat");
+                    isEating = true;
                 }
             }
             else
@@ -229,6 +249,7 @@ public class PlayerMove : MonoBehaviour
     private void EatFin()
     {
         playerAnim.SetTrigger("EatCancel");
+        isEating = false;
     }
     #endregion
     // } Player Eat
@@ -238,7 +259,8 @@ public class PlayerMove : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == GData.TERRAIN_MASK
-            || other.gameObject.tag == GData.FLOOR_MASK)
+            || other.gameObject.tag == GData.FLOOR_MASK
+            || other.gameObject.tag == GData.GATHER_MASK)
         {
             isGrounded = true;
             isJump = false;
@@ -250,7 +272,8 @@ public class PlayerMove : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         if (other.gameObject.tag == GData.TERRAIN_MASK
-            || other.gameObject.tag == GData.FLOOR_MASK)
+            || other.gameObject.tag == GData.FLOOR_MASK
+            || other.gameObject.tag == GData.GATHER_MASK)
         {
             isGrounded = false;
             playerAnim.SetBool("isGround", false);
@@ -260,7 +283,8 @@ public class PlayerMove : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == GData.TERRAIN_MASK
-            || other.gameObject.tag == GData.FLOOR_MASK)
+            || other.gameObject.tag == GData.FLOOR_MASK
+            || other.gameObject.tag == GData.GATHER_MASK)
         {
             isGrounded = true;
             curJumpCnt = 0;
@@ -269,4 +293,23 @@ public class PlayerMove : MonoBehaviour
     }
     #endregion
     // } Player Grounded Check
+
+    //
+    void Cheat_SpeedUp()
+    {
+        if(Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            float tempMul = moveSpeedMultiPlier;
+            moveSpeedMultiPlier = prevMoveSpeedMultiPlier;
+            prevMoveSpeedMultiPlier = tempMul;
+        }
+    }
+    void Cheat_FindBossCastle()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            transform.LookAt(GameManager.Instance.bossPos);
+        }
+    }
+    //
 }

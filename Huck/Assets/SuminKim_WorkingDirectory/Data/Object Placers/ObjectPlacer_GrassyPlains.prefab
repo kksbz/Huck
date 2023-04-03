@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1432066525936201213}
   - component: {fileID: -4647320068589533504}
   - component: {fileID: -9140704032504034544}
+  - component: {fileID: 5874209466628827612}
   m_Layer: 0
   m_Name: ObjectPlacer_GrassyPlains
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: 9eda4a225becfde489916bee761c89f3, type: 3}
@@ -61,6 +63,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: 94969a476487fb843a6e46b43ec07810, type: 3}
@@ -70,6 +73,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: bd3499aaefc957a40962dd917035421f, type: 3}
@@ -79,6 +83,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: 12e80878caf19d44f80be060a5275ec8, type: 3}
@@ -88,6 +93,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: 4d27dc691e07ee045937f44d040cca97, type: 3}
@@ -97,6 +103,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.6
     prefabs:
     - {fileID: 525703396560854713, guid: 8eff1ae5aae661046a3860c1049a5989, type: 3}
@@ -106,6 +113,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: c7c463e45c64fdb48bbb457996d9a9c7, type: 3}
@@ -115,6 +123,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: 80c3332288fcfe5478a37aa80d7ed6e9, type: 3}
@@ -124,6 +133,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: 482555069e4636643a7492aec7b10126, type: 3}
@@ -133,6 +143,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: 90bbd4e95f456c445993b70017b9db28, type: 3}
@@ -142,6 +153,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: 77df6a4bc3c4a3d47a80ac93e604e150, type: 3}
@@ -151,6 +163,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 1
+    isNavAgent: 0
     weighting: 0.3
     prefabs:
     - {fileID: 525703396560854713, guid: 445a20be774b227428d1fe8e851cd3be, type: 3}
@@ -160,6 +173,7 @@ MonoBehaviour:
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 0
+    isNavAgent: 0
     weighting: 0.2
     prefabs:
     - {fileID: 7002624996615400611, guid: 188f38621d422ad47b618b406111ca8e, type: 3}
@@ -181,15 +195,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - hasHeightLimits: 1
-    minHeightToSpawn: 0
+    minHeightToSpawn: 15
     maxHeightToSpawn: 70
     canGoInWater: 0
     canGoAboveWater: 1
     isEmbedded: 0
+    isNavAgent: 0
     weighting: 1
     prefabs:
     - {fileID: 8121577545144698755, guid: 7dc33a225bec6f34d8e4e70e6aa5a759, type: 3}
   targetDensity: 0.1
-  maxSpawnCount: 1
+  maxSpawnCount: 10
+  maxInvalidLocationSkips: 10
+  maxPositionJitter: 0.1
+--- !u!114 &5874209466628827612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6337709003599619391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f680043b18ec39458474f40e07363f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - hasHeightLimits: 1
+    minHeightToSpawn: 20
+    maxHeightToSpawn: 80
+    canGoInWater: 0
+    canGoAboveWater: 1
+    isEmbedded: 0
+    isNavAgent: 1
+    weighting: 1
+    prefabs:
+    - {fileID: 8456342960129311167, guid: 4bc45a4444fc76043a9600ebf6fbb32e, type: 3}
+  targetDensity: 50
+  maxSpawnCount: 20
   maxInvalidLocationSkips: 10
   maxPositionJitter: 0.1

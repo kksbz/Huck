@@ -27,7 +27,7 @@ public class PlayerInteract : MonoBehaviour
 #endif
         if(isHitRay)
         {
-            Debug.Log($"ray hit : {hit.collider.gameObject.name}");
+            //Debug.Log($"ray hit : {hit.collider.gameObject.name}");
             IInteractable hitInterface = hit.collider.gameObject.GetComponent<IInteractable>();
             if(hitInterface != null)
             {

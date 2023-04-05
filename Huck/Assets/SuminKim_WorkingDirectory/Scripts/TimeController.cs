@@ -7,7 +7,11 @@ using System;
 public class TimeController : MonoBehaviour
 {
     [SerializeField]
+    private float defaultTimeMultiplier;
+    [SerializeField]
+    [Range(0, 5000)]
     private float timeMultiplier;
+
     [SerializeField]
     [Range(0, 23)]
     private int iStartHour;
@@ -64,6 +68,8 @@ public class TimeController : MonoBehaviour
         onStartNight = new EventHandler(() => Debug.Log("¹ã ÁøÀÔ"));
         onStartNight += GameManager.Instance.SpawnMonster;
 
+        timeMultiplier = defaultTimeMultiplier;
+
         fStartHour = Mathf.Round(iStartHour);
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(fStartHour);
 
@@ -91,6 +97,7 @@ public class TimeController : MonoBehaviour
         UpdateTimeOfDay();
         RotateSun();
         UpdateLightSettings();
+        Cheat_ChangeTimeMultiplier();
         // TransitionCheck();
     }
 
@@ -141,7 +148,7 @@ public class TimeController : MonoBehaviour
     private void RotateSun()
     {
         float sunLightRotation;
-        float moonLightRotation;
+        // float moonLightRotation;
 
         if (currentTime.TimeOfDay > sunriseTime && currentTime.TimeOfDay < sunsetTime)
         {
@@ -152,7 +159,7 @@ public class TimeController : MonoBehaviour
             double percentage = timeSinceSunrise.TotalMinutes / sunriseToSunsetDuration.TotalMinutes;
 
             sunLightRotation = Mathf.Lerp(0, 180, (float)percentage);
-            moonLightRotation = Mathf.Lerp(180, 360, (float)percentage);
+            // moonLightRotation = Mathf.Lerp(180, 360, (float)percentage);
         }
         else
         {
@@ -163,11 +170,11 @@ public class TimeController : MonoBehaviour
             double percentage = timeSinceSunset.TotalMinutes / sunsetToSunriseDuration.TotalMinutes;
 
             sunLightRotation = Mathf.Lerp(180, 360, (float)percentage);
-            moonLightRotation = Mathf.Lerp(0, 180, (float)percentage);
+            // moonLightRotation = Mathf.Lerp(0, 180, (float)percentage);
         }
 
         sunLight.transform.rotation = Quaternion.AngleAxis(sunLightRotation, Vector3.right);
-        moonLight.transform.rotation = Quaternion.AngleAxis(moonLightRotation, Vector3.right);
+        // moonLight.transform.rotation = Quaternion.AngleAxis(moonLightRotation, Vector3.right);
     }
 
     private void UpdateLightSettings()
@@ -189,6 +196,40 @@ public class TimeController : MonoBehaviour
 
         return diffTime;
     }
+
+    // º¸½ºÀü Àü¿ë
+
+    public void SetTime_Boss(int hour)
+    {
+        currentTime = DateTime.Now.Date + TimeSpan.FromHours(hour);
+        timeMultiplier = 0f;
+    }
+
+    #region Debugging Cheat
+    // µð¹ö±ë¿ë Ä¡Æ® ¸â¹ö
+
+    private int multiplierIndex = 0;
+    private float[] cheatTimeMultipliers = { 2000, 3500, 5000 };
+    private float prevTimeMultiplier = default;
+    void Cheat_ChangeTimeMultiplier()
+    {
+        if(Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            prevTimeMultiplier = timeMultiplier;
+            if(multiplierIndex < cheatTimeMultipliers.Length)
+            {
+                timeMultiplier = cheatTimeMultipliers[multiplierIndex];
+                multiplierIndex++;
+            }
+            else
+            {
+                timeMultiplier = defaultTimeMultiplier;
+                multiplierIndex = 0;
+            }
+        }
+    }
+
+    #endregion
 
     /*
     void TransitionCheck()

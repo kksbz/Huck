@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 1547788498440699773}
   - component: {fileID: 1170358403619078125}
   - component: {fileID: 9186060589081110805}
-  m_Layer: 30
+  m_Layer: 0
   m_Name: woodWallPrev
   m_TagString: Untagged
   m_Icon: {fileID: 0}

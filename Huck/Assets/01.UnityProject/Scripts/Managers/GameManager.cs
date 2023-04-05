@@ -13,6 +13,8 @@ public class GameManager : Singleton<GameManager>
 
     public TimeController timeController = default;
 
+    public Terrain terrain = default;
+
     //
     private bool isMidBossClear = false;
     public bool IsMidBossClear
@@ -35,6 +37,10 @@ public class GameManager : Singleton<GameManager>
     public bool isExistenceBoss = false; // 보스 존재 유무
     public int count = 0; // Day체크
     //! } [KKS] 몬스터 스폰관련 변수
+
+    //
+    public BossRoomLightControl bossRoomLightController = default;
+    //
 
     //! 게임매니져 초기화 함수
     protected override void Init()
@@ -136,6 +142,7 @@ public class GameManager : Singleton<GameManager>
     } // StartBGM
     public void StartBossBGM()
     {
+        bossRoomLightController.onStartBattle();
         bgmAudio.clip = bossBgmSound;
         bgmAudio.Play();
     } // StartBGM

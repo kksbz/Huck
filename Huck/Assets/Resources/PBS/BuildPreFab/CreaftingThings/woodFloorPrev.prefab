@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 2384507205541034869}
   - component: {fileID: 1389183390707491451}
   - component: {fileID: 7200704131301936782}
-  m_Layer: 30
+  m_Layer: 0
   m_Name: woodFloorPrev
   m_TagString: Untagged
   m_Icon: {fileID: 0}

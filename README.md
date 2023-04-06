@@ -50,3 +50,4 @@
 2023-04-03 / v0.4.6 / [Merge] Huck Project</br>
 2023-04-05 / v0.4.7 / [KKS] 몬스터 탐색로직 랜덤좌표와 플레이어좌표 두개중 랜덤으로 선택하게 변경, HpBar 통합</br>
 2023-04-05 / v0.4.8 / [Merge] Huck Project</br>
+2023-04-06 / v0.4.9 / [Merge] Huck Project</br>

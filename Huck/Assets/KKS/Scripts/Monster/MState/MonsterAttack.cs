@@ -9,20 +9,19 @@ public class MonsterAttack : IMonsterState
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.ATTACK;
-        Debug.Log($"공격상태 시작 : {mController.monster.monsterName}");
-
+        //Debug.Log($"공격상태 시작 : {mController.monster.monsterName}");
         mController.monster.Attack();
-    }
+    } // StateEnter
     public void StateFixedUpdate()
     {
         /*Do Nothing*/
-    }
+    } // StateFixedUpdate
     public void StateUpdate()
     {
         /*Do Nothing*/
-    }
+    } // StateUpdate
     public void StateExit()
     {
-        /*Do Nothing*/
-    }
-}
+        mController.monster.ExitAttack();
+    } // StateExit
+} // MonsterAttack

@@ -13,8 +13,13 @@ public class HeightMapModifier_Smooth : BaseHeightMapModifier
     {
         if(biomeMap != null)
         {
+<<<<<<< HEAD
             Debug.LogError("HeightModifier_Smooth is not supported as a per biome modifier [" + gameObject.name + "]");
             return;
+=======
+            // Debug.LogError("HeightModifier_Smooth is not supported as a per biome modifier [" + gameObject.name + "]");
+            // return;
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         }
 
         float[,] smoothHeight = new float[mapResolution, mapResolution];

@@ -8,10 +8,13 @@ using UnityEditor;
 
 public class ObjectPlacer_Random : BaseObjectPlacer
 {
+<<<<<<< HEAD
     [SerializeField]
     float TargetDensity = 0.1f;
     [SerializeField]
     int MaxSpawnCount = 1000;
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public override void Execute(   ProcGenConfigSO globalConfig,Transform objectRoot, int mapResolution, float[,] heightMap,
                                     Vector3 heightmapScale, float[,] slopeMap, float[,,] alphaMaps, int alphaMapResolution,
                                     byte[,] biomeMap = null, int biomeIndex = -1, BiomeConfigSO biome = null)

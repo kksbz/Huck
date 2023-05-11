@@ -245,8 +245,12 @@ Transform:
   m_LocalPosition: {x: -0.008194662, y: -0.0010669329, z: -0.04774205}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
+<<<<<<< HEAD
   m_Children:
   - {fileID: 1129599238}
+=======
+  m_Children: []
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Father: {fileID: 7436032016600827628}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6887,9 +6891,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3674069134690443017}
   - component: {fileID: 1391865045782606725}
+<<<<<<< HEAD
   - component: {fileID: 6336974538445679814}
   - component: {fileID: 3024314894943672556}
   - component: {fileID: 2917202540591340270}
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   - component: {fileID: 1112585196}
   - component: {fileID: 326766005801230062}
   - component: {fileID: 1112585199}
@@ -6938,6 +6945,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+<<<<<<< HEAD
 --- !u!114 &6336974538445679814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6975,6 +6983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470349f6a9e1f6d4886bc1a84dade97b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 --- !u!54 &1112585196
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18786,6 +18796,7 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.123149544, y: -0.03623584, z: -0.00000014901161}
     m_Extent: {x: 0.92821157, y: 0.38411084, z: 0.94028676}
   m_DirtyAABB: 0
+<<<<<<< HEAD
 --- !u!1001 &1129466856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18885,3 +18896,5 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1129466856}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

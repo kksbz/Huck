@@ -46,7 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Strength: 1
+<<<<<<< HEAD
   OffsetAmount: -5
+=======
+  OffsetAmount: -15
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 --- !u!114 &-2160741917897294704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +64,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Strength: 1
+<<<<<<< HEAD
   HeightDelta: 5
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   passes:
   - heightDelta: 5
     noiseScale: 0.0078125
@@ -68,9 +75,12 @@ MonoBehaviour:
     noiseScale: 0.015625
   - heightDelta: 1.25
     noiseScale: 0.03125
+<<<<<<< HEAD
   XScale: 0.0078125
   YScale: 0.0078125
   NumPasses: 3
   XScaleVariationPerPass: 2
   YScaleVariationPerPass: 2
   HeightDeltaVariationPerPass: 0.5
+=======
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

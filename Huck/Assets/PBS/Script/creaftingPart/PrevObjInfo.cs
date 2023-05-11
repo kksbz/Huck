@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PrevObjInfo : MonoBehaviour
 {
+<<<<<<< HEAD
     public bool isBuildAble = false;
     private List<GameObject> cols = new List<GameObject>();
 
@@ -23,6 +24,20 @@ public class PrevObjInfo : MonoBehaviour
         changeCursor();
         //setPoint();
         //CheckBuild();
+=======
+    private buildType CheckBuild;
+    public bool isBuildAble = false;
+    private List<GameObject> cols = new List<GameObject>();
+
+    void Update()
+    {
+        changeCursor();
+    }
+
+    public void SetLayerType(buildType input)
+    {
+        CheckBuild = input;
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     }
 
     private void changeCursor()
@@ -33,6 +48,7 @@ public class PrevObjInfo : MonoBehaviour
         }
         else
         {
+<<<<<<< HEAD
             //if(PrevType != buildType.floor)
             //{
             //    if (isAble == true)
@@ -44,12 +60,24 @@ public class PrevObjInfo : MonoBehaviour
             //{
                 isBuildAble = true;
             //}
+=======
+            isBuildAble = true;
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< HEAD
         if (other.gameObject.layer == LayerMask.NameToLayer("build"))
+=======
+        if (other.gameObject.layer == LayerMask.NameToLayer(GData.BUILD_MASK) ||
+            other.gameObject.layer == LayerMask.NameToLayer("BuildItem") ||
+            other.gameObject.layer == LayerMask.NameToLayer(GData.GATHER_MASK) ||
+            other.gameObject.layer == LayerMask.NameToLayer(GData.ENEMY_MASK)||
+            other.gameObject.tag == "Wall"||
+            other.gameObject.tag == "Floor")
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         {
             cols.Add(other.gameObject);
         }
@@ -57,7 +85,17 @@ public class PrevObjInfo : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+<<<<<<< HEAD
         if (other.gameObject.layer == LayerMask.NameToLayer("build"))
+=======
+
+        if (other.gameObject.layer == LayerMask.NameToLayer(GData.BUILD_MASK) ||
+            other.gameObject.layer == LayerMask.NameToLayer("BuildItem") ||
+            other.gameObject.layer == LayerMask.NameToLayer(GData.GATHER_MASK) ||
+            other.gameObject.layer == LayerMask.NameToLayer(GData.ENEMY_MASK)||
+            other.gameObject.tag == "Wall"||
+            other.gameObject.tag == "Floor")
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         {
             cols.Remove(other.gameObject);
         }
@@ -73,6 +111,7 @@ public class PrevObjInfo : MonoBehaviour
             }
         }
     }
+<<<<<<< HEAD
 
     //===================================================
     public void setMid(Vector3 mid)
@@ -247,3 +286,6 @@ public class PrevObjInfo : MonoBehaviour
 //        }
 //    }
 //}
+=======
+}
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

@@ -6,6 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/KMS/Scene/PlayerScene.unity
     guid: f4e34883e62efaf4e88db14cea43cc52
+=======
+    path: Assets/01.UnityProject/Scenes/TitleScene.unity
+    guid: 175c87cfbbe9fe24a889e6d5e06a2d0c
+  - enabled: 1
+    path: Assets/01.UnityProject/Scenes/LoadingScene.unity
+    guid: 4a7e176007f506f4983a2148eabbf79a
+  - enabled: 1
+    path: Assets/01.UnityProject/Scenes/PlayScene.unity
+    guid: 949d327ba7e3efd46b3b6698033fc6ca
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_configObjects: {}

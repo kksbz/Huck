@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< HEAD
 using UnityEngine.Video;
 
 public class Test : MonoBehaviour
@@ -49,5 +50,26 @@ public class Test : MonoBehaviour
         result *= v0xz;
         result.y = v0y;
         return result;
+=======
+
+public class Test : MonoBehaviour
+{
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.Instance.SpawnMonster();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameManager.Instance.count = 4;
+            GameManager.Instance.SpawnMonster();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            GameManager.Instance.BossSpwan();
+        }
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     }
 }

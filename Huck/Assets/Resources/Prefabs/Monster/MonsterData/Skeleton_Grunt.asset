@@ -13,17 +13,26 @@ MonoBehaviour:
   m_Name: Skeleton_Grunt
   m_EditorClassIdentifier: 
   monsterName: "\uD574\uACE8\uADF8\uB7F0\uD2B8"
-  monsterHp: 150
-  monsterMaxHp: 150
-  moveSpeed: 5
-  minDamage: 4
-  maxDamage: 6
+  monsterHp: 600
+  monsterMaxHp: 600
+  moveSpeed: 7
+  damage: 13
   isNoRangeAttack: 0
+<<<<<<< HEAD
   isNoRangeSkill: 1
   useSkillA: 1
   useSkillB: 1
   skillA_MaxCooldown: 40
   skillB_MaxCooldown: 50
+=======
+  isNoRangeSkill: 0
+  useSkill: 1
+>>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   searchRange: 25
   attackRange: 20
   meleeAttackRange: 3
+  roarAudio: {fileID: 8300000, guid: e7c6b29cd85ff4648a3f20ad8a7557fe, type: 3}
+  deadAudio: {fileID: 8300000, guid: aa911435d1e6d3c429dbb6c314657f17, type: 3}
+  moveAudio: {fileID: 8300000, guid: 1fb63791d64857247b930652db6b84d1, type: 3}
+  hitAudio: {fileID: 8300000, guid: c2ee3a5d70c646940992124bc158c10b, type: 3}
+  weaponAudio: {fileID: 8300000, guid: 61ce667ce0d934e3687f4a9dd731265a, type: 3}

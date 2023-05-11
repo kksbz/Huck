@@ -10,13 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1432066525936201213}
   - component: {fileID: -4647320068589533504}
-<<<<<<< HEAD
-  - component: {fileID: 302295004169923773}
-=======
   - component: {fileID: -9140704032504034544}
   - component: {fileID: 5874209466628827612}
   - component: {fileID: 459171705650530867}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Layer: 0
   m_Name: ObjectPlacer_GrassyPlains
   m_TagString: Untagged
@@ -51,17 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f680043b18ec39458474f40e07363f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  hasHeightLimits: 0
-  minHeightToSpawn: 0
-  maxHeightToSpawn: 0
-  canGoInWater: 0
-  canGoAboveWater: 1
-  TargetDensity: 0.1
-  MaxSpawnCount: 250
-  prefab: {fileID: 6261000807772671166, guid: cc9114b9aa17465448b4fc81545e16fb, type: 3}
---- !u!114 &302295004169923773
-=======
   objects:
   - hasHeightLimits: 0
     minHeightToSpawn: 0
@@ -198,7 +183,6 @@ MonoBehaviour:
   maxInvalidLocationSkips: 10
   maxPositionJitter: 0.1
 --- !u!114 &-9140704032504034544
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,16 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f680043b18ec39458474f40e07363f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  hasHeightLimits: 0
-  minHeightToSpawn: 0
-  maxHeightToSpawn: 0
-  canGoInWater: 0
-  canGoAboveWater: 1
-  TargetDensity: 0.1
-  MaxSpawnCount: 250
-  prefab: {fileID: 722458367132079619, guid: 693a47f1ab2bce6479eee33a1242786f, type: 3}
-=======
   objects:
   - hasHeightLimits: 1
     minHeightToSpawn: 15
@@ -289,4 +263,3 @@ MonoBehaviour:
   maxSpawnCount: 800
   maxInvalidLocationSkips: 10
   maxPositionJitter: 0.1
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

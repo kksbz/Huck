@@ -5,30 +5,11 @@ using UnityEngine;
 public class MonsterDead : IMonsterState
 {
     private MonsterController mController;
-<<<<<<< HEAD
-=======
     private CapsuleCollider monsterCollider = default;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public void StateEnter(MonsterController _mController)
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.DEAD;
-<<<<<<< HEAD
-    }
-    public void StateFixedUpdate()
-    {
-        /*Do Nothing*/
-    }
-    public void StateUpdate()
-    {
-        /*Do Nothing*/
-    }
-    public void StateExit()
-    {
-        /*Do Nothing*/
-    }
-}
-=======
         //Debug.Log($"죽음상태 시작 : {mController.monster.monsterName}");
         monsterCollider = mController.gameObject.GetComponent<CapsuleCollider>();
         mController.isDelay = false;
@@ -87,4 +68,3 @@ public class MonsterDead : IMonsterState
         mController.DestroyObj(mController.gameObject);
     } // Dead
 } // MonsterDead
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

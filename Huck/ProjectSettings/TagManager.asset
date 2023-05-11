@@ -8,8 +8,6 @@ TagManager:
   - Gather
   - build
   - Terrain
-<<<<<<< HEAD
-=======
   - AttackRange
   - Item
   - Floor
@@ -19,7 +17,6 @@ TagManager:
   - Stove
   - Animal
   - Manager
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   layers:
   - Default
   - TransparentFX
@@ -29,10 +26,7 @@ TagManager:
   - UI
   - Player
   - Enemy
-<<<<<<< HEAD
-=======
   - InvenMark
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   - 
   - 
   - 
@@ -46,31 +40,16 @@ TagManager:
   - Floor
   - Wall
   - 
-  - Gather
-  - Terrain
   - 
   - 
   - 
   - 
-<<<<<<< HEAD
-  - 
-  - 
-  - 
-  - 
-  - buildThings
-  - build
-  - 
-  - 
-  - 
-  - 
-=======
   - BuildThings
   - BuilFloor
   - BuildWall
   - BuildObj
   - Build
   - BuildItem
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_SortingLayers:
   - name: Default
     uniqueID: 0

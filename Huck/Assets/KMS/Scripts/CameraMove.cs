@@ -5,15 +5,6 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     public GameObject head = default;
-<<<<<<< HEAD
-    public static float sensitivity = 300f;
-    private float limitAngle = 80;
-    private float cameraX,cameraY,rotateX,rotateY;
-
-    private void Start() 
-    {
-
-=======
     private Transform player = default;
 
     public static float sensitivity = 100f;
@@ -24,19 +15,10 @@ public class CameraMove : MonoBehaviour
     {
         GameObject player_ = GameManager.Instance.playerObj;
         player = player_.transform;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     }
 
     private void LateUpdate()
     {
-<<<<<<< HEAD
-        CameraPos();
-        CameraRotate();
-    }
-
-    // { Camera Position
-#region Position
-=======
         CameraMoving();
         Cheat_FindBossCastle();
     }
@@ -64,32 +46,10 @@ public class CameraMove : MonoBehaviour
 
     // { Camera Position
     #region Position
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     private void CameraPos()
     {
         gameObject.transform.position = head.transform.position;
     }
-<<<<<<< HEAD
-#endregion
-    // } Camera Position
-
-    // { Camera Rotation
-#region Rotate
-    private void CameraRotate()
-    {
-        cameraX = -Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity /2;
-        cameraY = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity;
-
-        rotateX += cameraX;
-        rotateX = Mathf.Clamp(rotateX,-limitAngle,limitAngle);
-
-        rotateY = transform.eulerAngles.y + cameraY;
-
-        transform.eulerAngles = new Vector3(rotateX,rotateY,0);
-    }
-#endregion
-    // } Camera Rotation
-=======
     #endregion
     // } Camera Position
 
@@ -117,5 +77,4 @@ public class CameraMove : MonoBehaviour
             transform.LookAt(GameManager.Instance.bossPos);
         }
     }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 }

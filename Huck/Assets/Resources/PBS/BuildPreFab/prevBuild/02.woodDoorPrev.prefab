@@ -28,27 +28,17 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-<<<<<<< HEAD
-  - {fileID: 5121880876995760965}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &8088271446226642762
-=======
   - {fileID: 9023000944610458389}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5337856334365839130
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 8088271446739430183}
     m_Modifications:
-<<<<<<< HEAD
-=======
     - target: {fileID: 1185002030114067354, guid: 54dfb6361a01eb64faefb69af5a734f1,
         type: 3}
       propertyPath: m_Size.z
@@ -59,7 +49,6 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 0.15
       objectReference: {fileID: 0}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     - target: {fileID: 3975486065916310543, guid: 54dfb6361a01eb64faefb69af5a734f1,
         type: 3}
       propertyPath: m_RootOrder
@@ -120,20 +109,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodDoorPrev
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 5711714149547267508, guid: 54dfb6361a01eb64faefb69af5a734f1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 54dfb6361a01eb64faefb69af5a734f1, type: 3}
---- !u!4 &5121880876995760965 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3975486065916310543, guid: 54dfb6361a01eb64faefb69af5a734f1,
-    type: 3}
-  m_PrefabInstance: {fileID: 8088271446226642762}
-=======
     - target: {fileID: 8405899530396632538, guid: 54dfb6361a01eb64faefb69af5a734f1,
         type: 3}
       propertyPath: m_Size.z
@@ -146,5 +121,4 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3975486065916310543, guid: 54dfb6361a01eb64faefb69af5a734f1,
     type: 3}
   m_PrefabInstance: {fileID: 5337856334365839130}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_PrefabAsset: {fileID: 0}

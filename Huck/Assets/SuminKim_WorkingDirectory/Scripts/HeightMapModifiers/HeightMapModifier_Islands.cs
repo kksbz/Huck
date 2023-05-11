@@ -9,12 +9,9 @@ public class HeightMapModifier_Islands : BaseHeightMapModifier
     [SerializeField] float maxIslandSize = 80f;
     [SerializeField] float minIslandHeight = 10f;
     [SerializeField] float maxIslandHeight = 40f;
-<<<<<<< HEAD
-=======
     [SerializeField] float angleNoiseScale = 1f;
     [SerializeField] float distanceNoiseScale = 1f;
     [SerializeField] float noiseHeightDelta = 5f;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     [SerializeField] AnimationCurve islandShapeCurve;
 
     public override void Execute(ProcGenConfigSO globalConfig, int mapResolution, float[,] heightMap, Vector3 heightmapScale, byte[,] biomeMap = null, int biomeIndex = -1, BiomeConfigSO biome = null)
@@ -50,16 +47,12 @@ public class HeightMapModifier_Islands : BaseHeightMapModifier
                 if(normalizedDistance > 1)
                     continue;
 
-<<<<<<< HEAD
-                float height = workingIslandHeight * islandShapeCurve.Evaluate(normalizedDistance);
-=======
                 float normalisedAngle = Mathf.Clamp01((Mathf.Atan2(islandY, islandX) + Mathf.PI) / (2 * Mathf.PI));
                 float noise = Mathf.PerlinNoise(normalisedAngle * angleNoiseScale, normalizedDistance * distanceNoiseScale);
 
                 float noiseHeightDelta = ((noise - 0.5f) * 2f) * this.noiseHeightDelta / heightmapScale.y;
 
                 float height = workingIslandHeight * islandShapeCurve.Evaluate(normalizedDistance) + noiseHeightDelta;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
                 heightMap[x, y] = Mathf.Max(heightMap[x, y], height);
             }

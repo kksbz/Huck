@@ -68,10 +68,6 @@ public class HeightMapModifier_Feature : BaseHeightMapModifier
                 int spawnX = Random.Range(feature.Radius, mapResolution - feature.Radius);
                 int spawnY = Random.Range(feature.Radius, mapResolution - feature.Radius);
 
-<<<<<<< HEAD
-                Debug.Log("Spawned Feature at " + spawnX + ", " + spawnY);
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
                 SpawnFeature(feature, spawnX, spawnY, mapResolution, heightMap, heightmapScale);
             }

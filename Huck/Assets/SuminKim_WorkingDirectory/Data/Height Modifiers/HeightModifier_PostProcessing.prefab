@@ -9,16 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4723789380994853617}
-<<<<<<< HEAD
-  - component: {fileID: 9112620425249608538}
-  - component: {fileID: -2355352704327713344}
-  - component: {fileID: -6906851927849973386}
-  - component: {fileID: 6427919150682035364}
-=======
   - component: {fileID: 2989022291901821892}
   - component: {fileID: -2355352704327713344}
   - component: {fileID: -6906851927849973386}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Layer: 0
   m_Name: HeightModifier_PostProcessing
   m_TagString: Untagged
@@ -41,11 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!114 &9112620425249608538
-=======
 --- !u!114 &2989022291901821892
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,17 +43,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9427664555903813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-<<<<<<< HEAD
-  m_Script: {fileID: 11500000, guid: 70e4348a525a34145840190bd5677ffa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Strength: 1
-  Features:
-  - HeightMap: {fileID: 2800000, guid: bc5bd6a57e12e4243ab1a17b7f7f9972, type: 3}
-    Height: 100
-    Radius: 50
-    numToSpawn: 5
-=======
   m_Script: {fileID: 11500000, guid: 6b4266d87f8bf7c40b011c1a64f34a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -81,7 +59,6 @@ MonoBehaviour:
     maxHeightToSpawn: 60
     canGoInWater: 0
     canGoAboveWater: 1
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 --- !u!114 &-2355352704327713344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,30 +91,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Strength: 1
   HeightDelta: 0.1
-<<<<<<< HEAD
---- !u!114 &6427919150682035364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9427664555903813}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638baccd8eee69446b618cbe5837bfb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Strength: 1
-  Buildings:
-  - heightMap: {fileID: 2800000, guid: 0ab67c96916fe4343bd3c1041727dae2, type: 3}
-    prefab: {fileID: 7880999669688678654, guid: e8c210deacd13b9489985aa64cd18939,
-      type: 3}
-    Radius: 50
-    numToSpawn: 5
-    hasHeightLimits: 0
-    minHeightToSpawn: 0
-    maxHeightToSpawn: 0
-    canGoInWater: 0
-    canGoAboveWater: 1
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

@@ -1,25 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using Unity.VisualScripting;
-using UnityEngine;
-=======
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
 public class GameManager : Singleton<GameManager>
 {
     public GameObject playerObj = default;
-<<<<<<< HEAD
-    //! { [±è±¤¼º] ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® ½ÃÀÛ½Ã Ä³½Ì
-    private void Awake()
-    {
-        playerObj = GFunc.GetRootObj(GData.PLAYER_MASK);
-    }
-    // } [±è±¤¼º] ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® ½ÃÀÛ½Ã Ä³½Ì
-=======
 
     public GameObject procGenManager = default;
     public BuildSystem buildSystem = default;
@@ -168,5 +155,4 @@ public class GameManager : Singleton<GameManager>
     {
         LoadingManager.Instance.EndingStart();
     }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 }

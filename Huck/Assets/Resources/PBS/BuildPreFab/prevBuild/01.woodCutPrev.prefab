@@ -28,19 +28,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-<<<<<<< HEAD
-  - {fileID: 1361801056671042637}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &8689150105227770454
-=======
   - {fileID: 6406286093646446000}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3645569760706759595
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -55,11 +47,7 @@ PrefabInstance:
     - target: {fileID: 7669657804659439131, guid: 78e31019166b3da46b83ce128d798d6f,
         type: 3}
       propertyPath: m_LocalPosition.x
-<<<<<<< HEAD
-      value: 0.8
-=======
       value: 1.25
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
       objectReference: {fileID: 0}
     - target: {fileID: 7669657804659439131, guid: 78e31019166b3da46b83ce128d798d6f,
         type: 3}
@@ -111,20 +99,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: woodCutPrev
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 7672660555244574093, guid: 78e31019166b3da46b83ce128d798d6f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 78e31019166b3da46b83ce128d798d6f, type: 3}
---- !u!4 &1361801056671042637 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7669657804659439131, guid: 78e31019166b3da46b83ce128d798d6f,
-    type: 3}
-  m_PrefabInstance: {fileID: 8689150105227770454}
-=======
     m_RemovedComponents:
     - {fileID: 9027938373143554343, guid: 78e31019166b3da46b83ce128d798d6f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 78e31019166b3da46b83ce128d798d6f, type: 3}
@@ -133,5 +107,4 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7669657804659439131, guid: 78e31019166b3da46b83ce128d798d6f,
     type: 3}
   m_PrefabInstance: {fileID: 3645569760706759595}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_PrefabAsset: {fileID: 0}

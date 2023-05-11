@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class WeaponTrigger : MonoBehaviour
 {
-<<<<<<< HEAD
-    //! 콜라이더 트리거
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player")
-        {
-            Debug.Log($"{other.tag} 맞춤!");
-            gameObject.SetActive(false);
-        }
-    } // OnTriggerEnter
-}
-=======
     [SerializeField] private MonsterController mController = default;
     private DamageMessage damageMessage = default;
 
@@ -44,4 +32,3 @@ public class WeaponTrigger : MonoBehaviour
         }
     } // OnTriggerEnter
 } // WeaponTrigger
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

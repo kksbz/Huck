@@ -2,14 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-<<<<<<< HEAD
-public class RangeMove : MonoBehaviour
-{
-    public GameObject camera_1p = default;
-    void Start()
-    {
-        
-=======
 public class RangeMove : MonoBehaviour, IDamageable
 {
     private GameObject camera_1p = default;
@@ -22,16 +14,10 @@ public class RangeMove : MonoBehaviour, IDamageable
         camera_1p = Camera.main.gameObject;
         playerInHand = transform.parent.GetComponent<InHand>();
         playerStat = transform.parent.GetComponent<PlayerStat>();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     }
 
     void Update()
     {
-<<<<<<< HEAD
-        gameObject.transform.position = camera_1p.transform.position;
-        gameObject.transform.rotation = camera_1p.transform.rotation;
-    }
-=======
         // Follow camera
         gameObject.transform.position = camera_1p.transform.position;
         gameObject.transform.rotation = camera_1p.transform.rotation;
@@ -48,5 +34,4 @@ public class RangeMove : MonoBehaviour, IDamageable
             damageable.TakeDamage(dm);
         }
     }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 }

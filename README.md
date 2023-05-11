@@ -15,9 +15,6 @@
 2023-03-19 / v0.1.1 / [KKS] Arrow Setup, Attack direction 수정</br>
 2023-03-20 / v0.1.2 / [KKS] 몬스터 돌진스킬 로직변경, collider 수정</br>
 2023-03-21 / v0.1.3 / [KKS] 몬스터 돌진 최소사거리 추가, tag 및 LayerMask 변수 팀 통일, 제네릭 Singleton 추가</br>
-<<<<<<< HEAD
-2023-03-21 / v0.1.4 / [KKS] 몬스터 포물선 점프 prototype setup</br>
-=======
 2023-03-21 / v0.1.4 / [KKS] 몬스터 포물선 점프 prototype setup</br>
 2023-03-22 / v0.1.5 / [KKS] 몬스터 Hit상태 및 공용 데미지처리 interface prototype setup</br>
 2023-03-22 / v0.1.6 / [KKS] 몬스터 4방향 Hit상태 구현, 공격딜레이 State로 분리</br>
@@ -54,4 +51,4 @@
 2023-04-05 / v0.4.7 / [KKS] 몬스터 탐색로직 랜덤좌표와 플레이어좌표 두개중 랜덤으로 선택하게 변경, HpBar 통합</br>
 2023-04-05 / v0.4.8 / [Merge] Huck Project</br>
 2023-04-06 / v0.4.9 / [Merge] Huck Project</br>
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
+2023-04-06 / Huck Project Final</br>

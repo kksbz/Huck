@@ -18,16 +18,8 @@ MonoBehaviour:
   moveSpeed: 7
   damage: 13
   isNoRangeAttack: 0
-<<<<<<< HEAD
-  isNoRangeSkill: 1
-  useSkillA: 1
-  useSkillB: 1
-  skillA_MaxCooldown: 40
-  skillB_MaxCooldown: 50
-=======
   isNoRangeSkill: 0
   useSkill: 1
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   searchRange: 25
   attackRange: 20
   meleeAttackRange: 3

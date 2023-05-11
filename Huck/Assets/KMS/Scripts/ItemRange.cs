@@ -1,13 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
-
-public class ItemRange : MonoBehaviour
-{
-    public GameObject camera_1p = default;
-    public GameObject ItemFound = default;
-=======
 using UnityEngine.UI;
 public class ItemRange : MonoBehaviour
 {
@@ -28,14 +21,10 @@ public class ItemRange : MonoBehaviour
     public StoveItem stoveItem = default;
 
 
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     private float Range = 5;
 
     void Start()
     {
-<<<<<<< HEAD
-        
-=======
         UI = UIManager.Instance.UiObjs.transform.GetChild(1).gameObject;
         res_UI = UI.transform.GetChild(1).gameObject;
         ItemFound = UI.transform.GetChild(2).gameObject;
@@ -54,7 +43,6 @@ public class ItemRange : MonoBehaviour
         res_Hp = find_R_Hp.GetComponent<Image>();
         panel_T = find_T_panel.GetComponent<Text>();
         interect_T = find_T_interect.GetComponent<Text>();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     }
 
     void Update()
@@ -62,24 +50,6 @@ public class ItemRange : MonoBehaviour
         ItemGet();
     }
 
-<<<<<<< HEAD
-    void ItemGet()
-    {
-        ItemFound.SetActive(false);
-        RaycastHit hitinfo = default;
-
-        if(Physics.Raycast(transform.position, 
-        transform.TransformDirection(Vector3.forward), 
-        out hitinfo, Range))
-        {
-            if(hitinfo.transform.tag == "Item")
-            {
-                ItemFound.SetActive(true);
-            }
-        }
-    }
-}
-=======
     // { Found Item & Get Item
     void ItemGet()
     {
@@ -241,4 +211,3 @@ public class ItemRange : MonoBehaviour
         // } Found Item & Get Item
     }
 }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

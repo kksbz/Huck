@@ -1,12 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
-
-public class UIManager : Singleton<UIManager>
-{
-    
-=======
 using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
@@ -190,5 +184,4 @@ public class UIManager : Singleton<UIManager>
         }
     }
     // } Setting Menu Btn
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 }

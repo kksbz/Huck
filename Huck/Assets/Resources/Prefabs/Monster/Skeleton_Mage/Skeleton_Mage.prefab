@@ -1956,24 +1956,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 213407114422482444}
-  - component: {fileID: 213407114422482447}
-  - component: {fileID: 213407114422482441}
-  - component: {fileID: 213407114422482446}
-  - component: {fileID: 213407114422482440}
-  - component: {fileID: 213407114422482437}
-  - component: {fileID: 213407114422482442}
-  - component: {fileID: 213407114422482443}
-  m_Layer: 7
-  m_Name: Skeleton_Mage
-  m_TagString: Enemy
-=======
   - component: {fileID: 6321580681261583452}
   m_Layer: 0
   m_Name: calf_r
   m_TagString: Untagged
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -1,25 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
-using static Monster;
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
 public class SkeletonMage : Monster
 {
     private MonsterController mController = default;
-<<<<<<< HEAD
-    private float skillACool = 0f;
-    private float skillBCool = 0f;
-    public MonsterData monsterData;
-    public GameObject attackA_Effect;
-    private void Awake()
-    {
-        mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.RANGE, monsterData);
-        mController.monster = this;
-=======
     [SerializeField] private MonsterData monsterData = default;
     [SerializeField] private GameObject summonObjPrefab = default;
     [SerializeField] private bool useSkillA = default;
@@ -44,7 +29,6 @@ public class SkeletonMage : Monster
         attackA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/MageMelee") as GameObject;
         skillA_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_Mage_Effect/Summon_Thorn") as GameObject;
         CheckUseSkill();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     } // Awake
 
     //! 해골마법사 공격 오버라이드
@@ -68,32 +52,21 @@ public class SkeletonMage : Monster
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
         if (useSkillA == true)
         {
-<<<<<<< HEAD
-=======
             useSkillA = false;
             CheckUseSkill();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             SkillA();
             return;
         }
 
         if (useSkillB == true)
         {
-<<<<<<< HEAD
-=======
             useSkillB = false;
             CheckUseSkill();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             SkillB();
             return;
         }
     } // Skill
 
-<<<<<<< HEAD
-    //! 공격종료 이벤트함수
-    private void ExitAttack()
-    {
-=======
     //! 사용가능한 스킬이 있는지 체크하는 함수 (몬스터컨트롤러에서 상태진입 체크하기 위함)
     private void CheckUseSkill()
     {
@@ -163,71 +136,14 @@ public class SkeletonMage : Monster
     public override void ExitAttack()
     {
         damage = defaultDamage;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         mController.monsterAni.SetBool("isAttackA", false);
         mController.monsterAni.SetBool("isAttackB", false);
         mController.monsterAni.SetBool("isSkillA", false);
         mController.monsterAni.SetBool("isSkillB", false);
         // 공격종료 후 딜레이 시작
-<<<<<<< HEAD
-        StartCoroutine(AttackDelay(mController, 4));
-    } // ExitAttack
-
-    //! 스킬A 함수
-    private void SkillA()
-    {
-        mController.monsterAni.SetBool("isSkillA", true);
-        StartCoroutine(LookTarget());
-        StartCoroutine(SkillACooldown());
-    } // SkillA
-
-    private void SkillB()
-    {
-        mController.monsterAni.SetBool("isSkillB", true);
-        StartCoroutine(SkillBCooldown());
-    } // SkillB
-
-    //! 스킬A 쿨다운 코루틴함수
-    private IEnumerator SkillACooldown()
-    {
-        useSkillA = false;
-        // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
-        while (true)
-        {
-            skillACool += Time.deltaTime;
-            if (skillACool >= skillA_MaxCool)
-            {
-                skillACool = 0f;
-                useSkillA = true;
-                yield break;
-            }
-            yield return null;
-        }
-    } // SkillACooldown
-
-    //! 스킬B 쿨다운 코루틴함수
-    private IEnumerator SkillBCooldown()
-    {
-        useSkillB = false;
-        // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
-        while (true)
-        {
-            skillBCool += Time.deltaTime;
-            if (skillBCool >= skillB_MaxCool)
-            {
-                skillBCool = 0f;
-                useSkillB = true;
-                yield break;
-            }
-            yield return null;
-        }
-    } // SkillACooldown
-
-=======
         mController.isDelay = true;
     } // ExitAttack
 
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     //! 타겟을 바라보는 코루틴함수
     private IEnumerator LookTarget()
     {
@@ -240,13 +156,6 @@ public class SkeletonMage : Monster
                 isLookAt = false;
                 yield break;
             }
-<<<<<<< HEAD
-            Vector3 dir = (mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
-            mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 2f * Time.deltaTime);
-            yield return null;
-        }
-    } // LookTarget
-=======
             mController.transform.LookAt(mController.targetSearch.hit.transform.position);
             yield return null;
         }
@@ -375,5 +284,4 @@ public class SkeletonMage : Monster
     } // WeaponSound
     #endregion // 사운드 모음
     //! } 해골마법사 항목별 region 모음
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 } // SkeletonMage

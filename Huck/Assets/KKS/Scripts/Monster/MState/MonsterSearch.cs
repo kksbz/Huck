@@ -1,20 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using System.Threading;
 using UnityEngine;
-using UnityEngine.AI;
-=======
-using UnityEngine;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
 public class MonsterSearch : IMonsterState
 {
     private MonsterController mController;
-<<<<<<< HEAD
-    private bool exitState; // 코루틴 while문 조건
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public void StateEnter(MonsterController _mController)
     {
         this.mController = _mController;
@@ -28,16 +18,6 @@ public class MonsterSearch : IMonsterState
     } // StateFixedUpdate
     public void StateUpdate()
     {
-<<<<<<< HEAD
-        /*Do Nothing*/
-    } // StateUpdate
-    public void StateExit()
-    {
-        exitState = true;
-        mController.mAgent.ResetPath();
-        mController.mAgent.speed = mController.monster.moveSpeed;
-        mController.monsterAni.SetBool("isWalk", false);
-=======
         mController.targetSearch.SearchTarget();
     } // StateUpdate
     public void StateExit()
@@ -45,20 +25,12 @@ public class MonsterSearch : IMonsterState
         mController.mAgent.ResetPath();
         mController.monsterAni.SetBool("isWalk", false);
         mController.mAgent.speed = mController.monster.moveSpeed;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     } // StateExit
 
     //! 타겟을 추적하는 코루틴함수
     private IEnumerator TargetChase()
     {
         mController.mAgent.speed = mController.monster.moveSpeed * 0.7f;
-<<<<<<< HEAD
-        exitState = false;
-        mController.monsterAni.SetBool("isWalk", true);
-        while (exitState == false)
-        {
-            mController.mAgent.SetDestination(mController.target.transform.position);
-=======
         mController.monsterAni.SetBool("isWalk", true);
         GetRandomPosition getRandomPosition = new GetRandomPosition();
         Vector3 targetPos = getRandomPosition.GetRandomCirclePos(mController.transform.position, 20, 10);
@@ -104,7 +76,6 @@ public class MonsterSearch : IMonsterState
                     targetPos = mController.transform.position;
                 }
             }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             yield return null;
         }
     } // TargetChase

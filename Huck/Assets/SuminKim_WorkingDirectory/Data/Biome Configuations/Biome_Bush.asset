@@ -17,19 +17,12 @@ MonoBehaviour:
   MaxIntensity: 1
   MaxDecayRate: 0.1
   MinDecayRate: 0.2
-<<<<<<< HEAD
-=======
   mapColor: {r: 0, g: 0.5254902, b: 0.1510973, a: 0}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   HeightModifier: {fileID: 2241750196349273561, guid: f199c385fa6008f4ba8c8cfa9702e1e8,
     type: 3}
   TerrainPainter: {fileID: 5882182845285664830, guid: b6f6f0e637eb9bc40b5c48af0d753883,
     type: 3}
-<<<<<<< HEAD
-  ObjectPlacer: {fileID: 0}
-=======
   ObjectPlacer: {fileID: 6337709003599619391, guid: 5bbba0a9833057447b5ed24979f2db7f,
     type: 3}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   DetailPainter: {fileID: 3064925499222612711, guid: 2881b2811dead17408293018a4c18101,
     type: 3}

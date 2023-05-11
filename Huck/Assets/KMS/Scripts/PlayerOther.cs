@@ -4,38 +4,6 @@ using UnityEngine;
 
 public class PlayerOther : MonoBehaviour
 {
-<<<<<<< HEAD
-    public GameObject inven = default;
-    public GameObject map = default;
-    public GameObject GUI = default;
-
-    public static bool isInvenOpen = false;
-    public static bool isMapOpen = false;
-
-    private InventoryArray invenSlot = default;
-
-    private void Start()
-    {
-        invenSlot = inven.transform.GetChild(0).GetChild(0).GetComponent<InventoryArray>();
-        CursorSet();
-    }
-
-    private void Update() 
-    {
-        InvenOpen();
-        MapOpen();
-    }
-    
-    // { Player Inventory
-#region Inven
-    public void InvenOpen()
-    {
-
-        if(Input.GetKeyDown(KeyCode.Tab) && isMapOpen == false)
-        {
-            isInvenOpen = !isInvenOpen;
-            if(isInvenOpen == true)
-=======
     [SerializeField]
     private InventoryArray invenSlot = default;
 
@@ -97,62 +65,25 @@ public class PlayerOther : MonoBehaviour
         {
             isInvenOpen = !isInvenOpen;
             if (isInvenOpen == true)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             {
                 gameObject.GetComponent<PlayerAtk>().enabled = false;
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
-<<<<<<< HEAD
-                inven.SetActive(true);
-                GUI.SetActive(false);
-            }
-            if(isInvenOpen == false)
-=======
                 invenCam.SetActive(true);
                 inven.SetLocalScale(ableScale);
                 GUI.SetActive(false);
             }
             if (isInvenOpen == false)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             {
                 gameObject.GetComponent<PlayerAtk>().enabled = true;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-<<<<<<< HEAD
-                inven.SetActive(false);
-=======
                 invenCam.SetActive(false);
                 inven.SetLocalScale(enableScale);
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
                 GUI.SetActive(true);
             }
         }
     }
-<<<<<<< HEAD
-#endregion
-    // } Player Inventory 
-
-    // { Player Interaction 
-#region Interact
-    public void Interaction()
-    {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            
-        }
-    }
-#endregion
-    // } Player Interaction
-
-    // { Player Map
-#region Map
-    public void MapOpen()
-    {
-        if(Input.GetKeyDown(KeyCode.M) && isInvenOpen == false)
-        {
-            isMapOpen = !isMapOpen;
-            if(isMapOpen == true)
-=======
     #endregion
     // } Player Inventory 
 
@@ -166,17 +97,12 @@ public class PlayerOther : MonoBehaviour
         {
             isMapOpen = !isMapOpen;
             if (isMapOpen == true)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             {
                 gameObject.GetComponent<PlayerAtk>().enabled = false;
                 map.SetActive(true);
                 GUI.SetActive(false);
             }
-<<<<<<< HEAD
-            if(isMapOpen == false)
-=======
             if (isMapOpen == false)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             {
                 gameObject.GetComponent<PlayerAtk>().enabled = true;
                 map.SetActive(false);
@@ -184,29 +110,16 @@ public class PlayerOther : MonoBehaviour
             }
         }
     }
-<<<<<<< HEAD
-#endregion
-    // } Player Map
-
-    // { Cursor Setting
-#region Cursor
-=======
     #endregion
     // } Player Map
 
     // { Cursor Setting
     #region Cursor
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     private void CursorSet()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-<<<<<<< HEAD
-#endregion
-    // } Cursor Setting
-}
-=======
     #endregion
     // } Cursor Setting
 
@@ -270,4 +183,3 @@ public class PlayerOther : MonoBehaviour
     #endregion
     // } Item Root
 }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

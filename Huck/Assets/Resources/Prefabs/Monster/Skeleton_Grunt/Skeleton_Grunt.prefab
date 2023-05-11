@@ -933,24 +933,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 8716971430347659794}
-  - component: {fileID: 8716971430347659795}
-  - component: {fileID: 8716971430347659805}
-  - component: {fileID: 8716971430347659804}
-  - component: {fileID: 8716971430347659806}
-  - component: {fileID: 8716971430347659801}
-  - component: {fileID: 8716971430347659800}
-  - component: {fileID: 8716971430347659807}
-  m_Layer: 7
-  m_Name: Skeleton_Grunt
-  m_TagString: Enemy
-=======
   - component: {fileID: 6196586119332461141}
   m_Layer: 0
   m_Name: middle_03_l
   m_TagString: Untagged
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

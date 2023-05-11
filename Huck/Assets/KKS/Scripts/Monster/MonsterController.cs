@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-using System;
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-<<<<<<< HEAD
-public class MonsterController : MonoBehaviour
-=======
 public class MonsterController : MonoBehaviour, IDamageable
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 {
     //! 몬스터의 상태 종류
     public enum MonsterState
@@ -21,10 +13,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         SEARCH,
         ATTACK,
         SKILL,
-<<<<<<< HEAD
-=======
         DELAY,
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         HIT,
         DEAD
     }; //MonsterState
@@ -33,20 +22,6 @@ public class MonsterController : MonoBehaviour, IDamageable
     private MStateMachine mStateMachine; // 몬스터의 상태를 처리할 스테이트머신
     private bool isSpawn = true;
     public MStateMachine MStateMachine { get; private set; }
-<<<<<<< HEAD
-    [HideInInspector] public Monster monster;
-    public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
-    public float currentHp; // 몬스터의 현재 HP 변수
-    [HideInInspector] public Rigidbody monsterRb = default;
-    [HideInInspector] public Animator monsterAni = default;
-    [HideInInspector] public AudioSource monsterAudio = default;
-    [HideInInspector] public TargetSearchRay targetSearch = default;
-    [HideInInspector] public NavMeshAgent mAgent = default;
-    // { Test
-    public GameObject target;
-    public float distance; // 타겟과의 거리 변수
-    // } Test
-=======
     public MonsterState enumState = MonsterState.IDLE; // 몬스터의 현재 상태를 체크하기 위한 변수
     [SerializeField] private bool isBattle = false; // 몬스터의 감지범위에 따라 distance를 구하는 코드 실행 조건
     public MonsterHpBar hpBar = default; // HpBar 오브젝트
@@ -63,30 +38,20 @@ public class MonsterController : MonoBehaviour, IDamageable
     [HideInInspector] public bool isDead = false; // Dead상태 체크 변수
     [HideInInspector] public float distance; // 타겟과의 거리 변수
     public GameObject target;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
     // Start is called before the first frame update
     void Start()
     {
-<<<<<<< HEAD
-        currentHp = monster.monsterHp;
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         monsterRb = gameObject.GetComponent<Rigidbody>();
         monsterAni = gameObject.GetComponent<Animator>();
         monsterAudio = gameObject.GetComponent<AudioSource>();
         targetSearch = gameObject.GetComponent<TargetSearchRay>();
         mAgent = gameObject.GetComponent<NavMeshAgent>();
-<<<<<<< HEAD
-        mAgent.acceleration = 100f;
-        mAgent.speed = monster.moveSpeed;
-=======
         attackIndicator = GFunc.GetRootObj("AttackIndicator").GetComponent<AttackIndicator>();
         mAgent.acceleration = 100f;
         mAgent.angularSpeed = 180f;
         mAgent.speed = monster.moveSpeed;
         mAgent.enabled = true;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
         // { 각 상태를 Dictionary에 저장
         IMonsterState idle = new MonsterIdle();
@@ -94,10 +59,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         IMonsterState search = new MonsterSearch();
         IMonsterState attack = new MonsterAttack();
         IMonsterState skill = new MonsterSkill();
-<<<<<<< HEAD
-=======
         IMonsterState delay = new MonsterDelay();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         IMonsterState hit = new MonsterHit();
         IMonsterState dead = new MonsterDead();
 
@@ -106,35 +68,22 @@ public class MonsterController : MonoBehaviour, IDamageable
         dicState.Add(MonsterState.SEARCH, search);
         dicState.Add(MonsterState.ATTACK, attack);
         dicState.Add(MonsterState.SKILL, skill);
-<<<<<<< HEAD
-=======
         dicState.Add(MonsterState.DELAY, delay);
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         dicState.Add(MonsterState.HIT, hit);
         dicState.Add(MonsterState.DEAD, dead);
         // } 각 상태를 Dictionary에 저장
 
         // 입력받은 상태를 처리할 MStateMachine 초기화 
         MStateMachine = new MStateMachine(idle, this);
-<<<<<<< HEAD
-        // 매프레임마다 실행 시켜줄 필요가 없어서 0.5초마다 타겟 정보 갱신
-        InvokeRepeating("GetTarget", 0f, 0.5f);
-        StartCoroutine(Spawn());
-=======
         target = GameManager.Instance.playerObj;
         StartCoroutine(Spawn());
         hpBar.gameObject.SetActive(false);
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     } // Start
 
     // Update is called once per frame
     void Update()
     {
-<<<<<<< HEAD
-        if (isSpawn == false)
-=======
         if (isSpawn == false && isDead == false)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         {
             MonsterSetState();
         }
@@ -146,16 +95,7 @@ public class MonsterController : MonoBehaviour, IDamageable
         MStateMachine.DoFixedUpdate();
     } // FixedUpdate
 
-<<<<<<< HEAD
-    //! 타겟의 정보를 가져오는 함수
-    private void GetTarget()
-    {
-        target = GameManager.Instance.playerObj;
-    } // GetTarget
-
-=======
     #region 몬스터의 스폰과 공용 데미지처리 함수
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     //! 몬스터 스폰 코루틴함수
     private IEnumerator Spawn()
     {
@@ -163,15 +103,6 @@ public class MonsterController : MonoBehaviour, IDamageable
         isSpawn = true;
         // 기본상태가 Idle이기 때문에 현재Clip이 Spawn으로 갱신되도록 0.1초 기다림
         yield return null;
-<<<<<<< HEAD
-        //Debug.Log($"{monsterAni.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
-        //Debug.Log($"{monster.monsterName}, {monsterAni.GetCurrentAnimatorStateInfo(0).length}");
-        yield return new WaitForSeconds(monsterAni.GetCurrentAnimatorStateInfo(0).length);
-        isSpawn = false;
-    } // Spawn
-
-    //! interface를 상속받은 클래스는 MonoBehaviour를 상속 받지 못해서 코루틴을 대신 실행시켜줄 함수
-=======
         float waitTime = monsterAni.GetCurrentAnimatorStateInfo(0).length;
         if (monster.monsterType == Monster.MonsterType.BOSS)
         {
@@ -239,85 +170,11 @@ public class MonsterController : MonoBehaviour, IDamageable
 
     #region MonoBehaviour를 상속받지 않는 클래스에서 대신 기능을 수행시켜줄 함수모음
     //! 코루틴을 대신 실행시켜줄 함수
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public void CoroutineDeligate(IEnumerator func)
     {
         StartCoroutine(func);
     } // CoroutineDeligate
 
-<<<<<<< HEAD
-    //! 몬스터 상태 정하는 함수
-    private void MonsterSetState()
-    {
-        if (monster.monsterHp < currentHp)
-        {
-            MStateMachine.SetState(dicState[MonsterState.HIT]);
-        }
-
-        float _distance = Vector3.Distance(this.transform.position, target.transform.position);
-        // 타겟이 몬스터의 탐색범위 밖에 있으면 추적
-        if (_distance > monster.searchRange)
-        {
-            MStateMachine.SetState(dicState[MonsterState.SEARCH]);
-            return;
-        }
-
-        // 타겟이 몬스터의 탐색범위 안에 있을 때 탐색 실행
-        targetSearch.SearchTarget();
-        distance = Vector3.Distance(this.transform.position, targetSearch.hit.transform.position);
-        // 공격, 스킬 상태가 아니면 이동상태로 전환
-        if (enumState != MonsterState.ATTACK && enumState != MonsterState.SKILL)
-        {
-            MStateMachine.SetState(dicState[MonsterState.MOVE]);
-        }
-        // { 타겟이 공격사거리 안에 있으면 공격 및 스킬 상태로 전환
-        if (distance <= monster.attackRange)
-        {
-            // 몬스터의 스킬이 사용가능할 때
-            if (enumState != MonsterState.ATTACK && (monster.useSkillA == true || monster.useSkillB == true))
-            {
-                // 몬스터의 원거리 스킬 유무에 따라 실행
-                switch (monster.isNoRangeSkill)
-                {
-                    case true:
-                        if (distance <= monster.meleeAttackRange)
-                        {
-                            MStateMachine.SetState(dicState[MonsterState.SKILL]);
-                        }
-                        break;
-                    case false:
-                        if (distance > monster.meleeAttackRange)
-                        {
-                            MStateMachine.SetState(dicState[MonsterState.SKILL]);
-                        }
-                        break;
-                } // switch end
-            } // if end
-            // if : 스킬이 모두 사용불가능하면 공격
-            if (enumState != MonsterState.SKILL)
-            {
-                // 몬스터의 원거리 공격 유무에 따라 실행
-                switch (monster.isNoRangeAttack)
-                {
-                    case true:
-                        if (distance <= monster.meleeAttackRange)
-                        {
-                            MStateMachine.SetState(dicState[MonsterState.ATTACK]);
-                        }
-                        break;
-                    case false:
-                        if (distance > monster.meleeAttackRange)
-                        {
-                            MStateMachine.SetState(dicState[MonsterState.ATTACK]);
-                        }
-                        break;
-                } // switch end
-            } // if end
-        }
-        // } 타겟이 공격사거리 안에 있으면 공격 및 스킬 상태로 전환
-
-    } // MonsterSetState
-=======
     //! 코루틴을 대신 종료시켜줄 함수
     public void StopCoroutineDeligate(IEnumerator func)
     {
@@ -418,5 +275,4 @@ public class MonsterController : MonoBehaviour, IDamageable
     #endregion // 조건에 따라 몬스터의 상태 정하는 함수
 
     
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 } // MonsterController

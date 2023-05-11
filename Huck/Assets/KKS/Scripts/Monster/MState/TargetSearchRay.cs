@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
-using UnityEngineInternal;
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
 public class TargetSearchRay : MonoBehaviour
 {
@@ -48,14 +44,11 @@ public class TargetSearchRay : MonoBehaviour
             // 가장 가까운 타겟을 hit에 캐싱 (타겟이 플레이어가 아닐 경우)
             hit = nearTarget;
         }
-<<<<<<< HEAD
-=======
         else
         {
             // 타겟이 없으면 null
             hit = null;
         }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     } // TagetCheckRay
 
     //! 몬스터의 감지범위를 Gizmo로 보여주는 함수

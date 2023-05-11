@@ -13,29 +13,6 @@ public class BiomeConfig
 [CreateAssetMenu(fileName = "ProcGen Config", menuName = "Procedural Generation/ProcGen Configuration", order = -1)]
 public class ProcGenConfigSO : ScriptableObject
 {
-<<<<<<< HEAD
-    public List<BiomeConfig> Biomes;
-
-    public enum EBiomeMapBaseResolution
-    {
-        Size_64x64      = 64,
-        Size_128x128    = 128,
-        Size_256x256    = 256,
-        Size_512x512    = 512,
-    }
-
-    [Range(0f, 1.0f)]
-    public float BiomeSeedPointDensity = 0.1f;
-
-    public EBiomeMapBaseResolution biomeMapResolution = EBiomeMapBaseResolution.Size_64x64;
-
-    public GameObject InitialHeightModifier;
-    public GameObject HeightPostProcessingModifier;
-
-    public GameObject PaintingPostProcessingModifier;
-    public GameObject DetailPaintingPostProcessingModifier;
-
-=======
     // 바이옴 리스트
     public List<BiomeConfig> Biomes;
 
@@ -51,7 +28,6 @@ public class ProcGenConfigSO : ScriptableObject
     public GameObject DetailPaintingPostProcessingModifier;
 
     // water plane 높이
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public float waterHeight = 15f;
 
     public int NumBiomes => Biomes.Count;

@@ -5,10 +5,6 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public ItemData itemData = null;
-<<<<<<< HEAD
-    public int itemCount = 3;
-}
-=======
     public int itemCount = 1;
 
     public void OnUse(ItemSlot itemSlot_)
@@ -24,4 +20,3 @@ public class Item : MonoBehaviour
         }
     }
 }
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

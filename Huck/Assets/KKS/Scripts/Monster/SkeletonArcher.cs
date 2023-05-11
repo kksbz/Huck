@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using Unity.VisualScripting;
-=======
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 using UnityEngine;
 
 public class SkeletonArcher : Monster
 {
     private MonsterController mController = default;
     [SerializeField] private GameObject weapon = default;
-<<<<<<< HEAD
-    [SerializeField] private MonsterData monsterData;
-=======
     [SerializeField] private Transform arrowPos = default;
     [SerializeField] private MonsterData monsterData;
     [SerializeField] private AudioClip attackAClip = default;
@@ -22,31 +15,11 @@ public class SkeletonArcher : Monster
     private GameObject skillA_Prefab = default;
     private DamageMessage damageMessage = default;
     private int defaultDamage = default;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     private float skillACool = 0f;
     private bool isAttackDelay = false;
     private void Awake()
     {
         mController = gameObject.GetComponent<MonsterController>();
-<<<<<<< HEAD
-        InitMonsterData(MonsterType.RANGE, monsterData);
-        mController.monster = this;
-    } // Awake
-
-    //! 공격 처리 이벤트함수 (Collider)
-    private void EnableWeapon()
-    {
-        weapon.SetActive(true);
-    } // EnableWeapon
-
-    //! 화살 쏘는 함수
-    private void ShootArrow()
-    {
-        Vector3 dir = (mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
-        ArrowPool.Instance.GetArrow(dir, weapon.transform.position);
-    } // ShootArrow
-
-=======
         InitMonsterData(MonsterType.NOMAL, monsterData);
         mController.monster = this;
         defaultDamage = damage;
@@ -56,7 +29,6 @@ public class SkeletonArcher : Monster
         CheckUseSkill();
     } // Awake
 
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     //! 해골궁수 공격 오버라이드
     public override void Attack()
     {
@@ -76,14 +48,6 @@ public class SkeletonArcher : Monster
     public override void Skill()
     {
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-<<<<<<< HEAD
-        SkillA();
-    } // Skill
-
-    //! 공격종료 이벤트함수
-    private void ExitAttack()
-    {
-=======
         if (useSkillA == true)
         {
             useSkillA = false;
@@ -135,24 +99,16 @@ public class SkeletonArcher : Monster
     {
         damage = defaultDamage;
         weapon.SetActive(false);
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         mController.monsterAni.SetBool("isAttackA", false);
         mController.monsterAni.SetBool("isAttackB", false);
         mController.monsterAni.SetBool("isSkillA", false);
         // 공격종료 후 딜레이 시작
-<<<<<<< HEAD
-        StartCoroutine(AttackDelay(mController, 4));
-    } // ExitAttack
-
-    //! 스킬A 함수
-=======
         mController.isDelay = true;
     } // ExitAttack
     #endregion // 공격 처리 (Collider, RayCast)
 
     #region 스킬A (화살비)
     //! 스킬A 함수 (화살비)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     private void SkillA()
     {
         mController.monsterAni.SetBool("isSkillA", true);
@@ -160,26 +116,6 @@ public class SkeletonArcher : Monster
         StartCoroutine(SkillACooldown());
     } // SkillA
 
-<<<<<<< HEAD
-    //! 스킬A 쿨다운 코루틴함수
-    private IEnumerator SkillACooldown()
-    {
-        useSkillA = false;
-        // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
-        while (true)
-        {
-            skillACool += Time.deltaTime;
-            if (skillACool >= skillA_MaxCool)
-            {
-                skillACool = 0f;
-                useSkillA = true;
-                yield break;
-            }
-            yield return null;
-        }
-    } // SkillACooldown
-
-=======
     //! 스킬A 사용 이벤트함수
     private void UseSkillA()
     {
@@ -237,24 +173,10 @@ public class SkeletonArcher : Monster
     #endregion // 스킬A (모아 쏘기)
 
     #region 타겟 조준
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     //! 타겟을 바라보는 코루틴함수
     private IEnumerator LookAtTarget()
     {
         isAttackDelay = false;
-<<<<<<< HEAD
-        bool isLookAt = true;
-        while (isLookAt == true)
-        {
-            // 공격딜레이가 시작되면 종료
-            if (isAttackDelay == true)
-            {
-                isLookAt = false;
-                yield break;
-            }
-            Vector3 dir = (mController.targetSearch.hit.transform.position - mController.transform.position).normalized;
-            mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 10f * Time.deltaTime);
-=======
         while (isAttackDelay == false)
         {
             if (mController.enumState != MonsterController.MonsterState.SKILL
@@ -264,7 +186,6 @@ public class SkeletonArcher : Monster
                 yield break;
             }
             mController.transform.LookAt(mController.targetSearch.hit.transform.position);
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             yield return null;
         }
     } // LookTarget
@@ -274,8 +195,6 @@ public class SkeletonArcher : Monster
     {
         isAttackDelay = true;
     } // OffLookAtTarget
-<<<<<<< HEAD
-=======
     #endregion // 타겟 조준
 
     #region 사운드 모음
@@ -312,5 +231,4 @@ public class SkeletonArcher : Monster
     } // AttackASound
     #endregion // 사운드 모음
     //! } 해골궁수 항목별 region 모음
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 } // SkeletonArcher

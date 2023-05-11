@@ -5,30 +5,11 @@ using UnityEngine;
 public class MonsterHit : IMonsterState
 {
     private MonsterController mController;
-<<<<<<< HEAD
-=======
     private string aniClipName = default;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     public void StateEnter(MonsterController _mController)
     {
         this.mController = _mController;
         mController.enumState = MonsterController.MonsterState.HIT;
-<<<<<<< HEAD
-    }
-    public void StateFixedUpdate()
-    {
-        /*Do Nothing*/
-    }
-    public void StateUpdate()
-    {
-        /*Do Nothing*/
-    }
-    public void StateExit()
-    {
-        /*Do Nothing*/
-    }
-}
-=======
         //Debug.Log($"Hit상태 시작 : {mController.monster.monsterName}");
         aniClipName = GetHitPoint();
         mController.CoroutineDeligate(HitProcess(aniClipName));
@@ -98,4 +79,3 @@ public class MonsterHit : IMonsterState
         mController.MStateMachine.onChangeState?.Invoke(nextState);
     } // HitProcess
 } // MonsterHit
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498

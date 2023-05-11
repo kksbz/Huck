@@ -1,26 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using UnityEngine;
-=======
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 
 public class SkeletonKing : Monster
 {
     private MonsterController mController = default;
-<<<<<<< HEAD
-    [SerializeField] private MonsterData monsterData = default;
-    [SerializeField] private GameObject weapon = default;
-    private float skillACool = 0f;
-    void Awake()
-    {
-        mController = gameObject.GetComponent<MonsterController>();
-        InitMonsterData(MonsterType.MELEE, monsterData);
-        mController.monster = this;
-=======
     [SerializeField] private MonsterData monsterData = default; // 몬스터정보
     [SerializeField] private GameObject weapon = default; // 무기 오브젝트
     [SerializeField] private GameObject summonObjPrefab = default; // 스킬A 소환오브젝트 Prefab
@@ -59,24 +45,12 @@ public class SkeletonKing : Monster
         skillC_Prefab = Resources.Load("Prefabs/Monster/MonsterEffect/Skeleton_King_Effect/Thunder") as GameObject;
         CheckUseSkill();
         GameManager.Instance.onPlayerDead += OffBossHpBar;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
     } // Awake
 
     //! 해골왕 공격 오버라이드
     public override void Attack()
     {
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-<<<<<<< HEAD
-        // 모션 2개 중 랜덤으로 한개 실행
-        int number = Random.Range(0, 10);
-        if (number <= 6)
-        {
-            mController.monsterAni.SetBool("isAttackA", true);
-        }
-        else
-        {
-            mController.monsterAni.SetBool("isAttackB", true);
-=======
         // 슬라이드 공격 조건체크
         if (slideAttackCool <= 0f && isNoRangeAttack == false && mController.distance >= 7f)
         {
@@ -136,7 +110,6 @@ public class SkeletonKing : Monster
                 mController.monsterAni.SetBool("isAttackA", true);
             }
             return;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         }
     } // Attack
 
@@ -144,40 +117,6 @@ public class SkeletonKing : Monster
     public override void Skill()
     {
         mController.transform.LookAt(mController.targetSearch.hit.transform.position);
-<<<<<<< HEAD
-        SkillA();
-    } // Skill
-
-    //! 스킬A 함수
-    private void SkillA()
-    {
-        mController.monsterAni.SetBool("isSkillA_Start", true);
-        StartCoroutine(SkillACooldown());
-    } // SkillA
-
-    //! 스킬A 연계 공격 이벤트함수
-    private void SkillA_Combo()
-    {
-        StartCoroutine(UseSkillA());
-    } // SkillA_Combo
-
-    //! 공격종료 이벤트함수
-    private void ExitAttack()
-    {
-        mController.monsterAni.SetBool("isAttackA", false);
-        mController.monsterAni.SetBool("isAttackB", false);
-        mController.monsterAni.SetBool("isSkillA_End", false);
-        // 공격종료 후 딜레이 시작
-        StartCoroutine(AttackDelay(mController, 3));
-    } // ExitAttack
-
-    //! 스킬A 공격 코루틴함수
-    private IEnumerator UseSkillA()
-    {
-        // 소환 준비 모션 끝나면 소환 시작
-        mController.monsterAni.SetBool("isSkillA_Start", false);
-        mController.monsterAni.SetBool("isSkillA_Loop", true);
-=======
         
 
         
@@ -534,18 +473,11 @@ public class SkeletonKing : Monster
         mController.monsterAni.SetBool("isSkillA_Start", true);
         yield return null;
         bool isStart = true;
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
         bool isSkillA = false;
         float timeCheck = 0f;
         while (isSkillA == false)
         {
             timeCheck += Time.deltaTime;
-<<<<<<< HEAD
-            //Vector3 dir = (mController.targetPos.position - mController.transform.position).normalized;
-            //mController.transform.rotation = Quaternion.Lerp(mController.transform.rotation, Quaternion.LookRotation(dir), 2f * Time.deltaTime);
-            // 5초가 지나면 소환 마무리 시작
-            if (timeCheck >= 5f)
-=======
             if (mController.monsterAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && isStart == true)
             {
                 // 소환 준비 모션 끝나면 소환 시작
@@ -556,7 +488,6 @@ public class SkeletonKing : Monster
             }
             // 5초가 지나면 소환 마무리 시작
             if (isStart == false && timeCheck >= 4f)
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
             {
                 mController.monsterAni.SetBool("isSkillA_Loop", false);
                 mController.monsterAni.SetBool("isSkillA_End", true);
@@ -566,20 +497,6 @@ public class SkeletonKing : Monster
         }
     } // UseSkillA
 
-<<<<<<< HEAD
-    //! 스킬A 쿨다운 코루틴함수
-    private IEnumerator SkillACooldown()
-    {
-        useSkillA = false;
-        // 몬스터컨트롤러에서 상태진입 시 체크할 조건 : 원거리 스킬 쿨 적용
-        while (true)
-        {
-            skillACool += Time.deltaTime;
-            if (skillACool >= skillA_MaxCool)
-            {
-                skillACool = 0f;
-                useSkillA = true;
-=======
     //! 스킬A 사용가능 조건 체크하는 코루틴함수
     private IEnumerator CheckUseSkillA()
     {
@@ -589,14 +506,10 @@ public class SkeletonKing : Monster
             {
                 useSkillA = true;
                 CheckUseSkill();
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
                 yield break;
             }
             yield return null;
         }
-<<<<<<< HEAD
-    } // SkillACooldown
-=======
     } // CheckUseSkillA
 
     //! 스킬A 해골그런트 소환하는 함수
@@ -968,5 +881,4 @@ public class SkeletonKing : Monster
             mController.hpBar.gameObject.SetActive(false);
         }
     } // OffBossHpBar
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
 } // SkeletonKing

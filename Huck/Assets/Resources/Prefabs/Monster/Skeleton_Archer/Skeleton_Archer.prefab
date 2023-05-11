@@ -40,17 +40,6 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 6237938908125963978}
-  - component: {fileID: 6762802244940201075}
-  - component: {fileID: 6762802244940201068}
-  - component: {fileID: 6762802244940201069}
-  - component: {fileID: 6762802244940201074}
-  - component: {fileID: 6762802244940201065}
-  - component: {fileID: 6762802244940201070}
-  - component: {fileID: 6762802244940201071}
-  - component: {fileID: 6762802244940201087}
-=======
   - component: {fileID: 593286317102974472}
   - component: {fileID: 247722647913602225}
   - component: {fileID: 247722647913602222}
@@ -61,7 +50,6 @@ GameObject:
   - component: {fileID: 247722647913602221}
   - component: {fileID: 247722647913602237}
   - component: {fileID: 8488423344644233516}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Layer: 7
   m_Name: Skeleton_Archer
   m_TagString: Enemy

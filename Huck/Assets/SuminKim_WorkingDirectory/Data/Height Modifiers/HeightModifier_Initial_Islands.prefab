@@ -11,10 +11,7 @@ GameObject:
   - component: {fileID: 4723789380994853617}
   - component: {fileID: -8652125930250045587}
   - component: {fileID: -3806739832059206212}
-<<<<<<< HEAD
-=======
   - component: {fileID: -4146230833278792533}
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   m_Layer: 0
   m_Name: HeightModifier_Initial_Islands
   m_TagString: Untagged
@@ -67,16 +64,11 @@ MonoBehaviour:
   numIslands: 1
   minIslandSize: 950
   maxIslandSize: 1000
-<<<<<<< HEAD
-  minIslandHeight: 5
-  maxIslandHeight: 60
-=======
   minIslandHeight: 3
   maxIslandHeight: 6
   angleNoiseScale: 1
   distanceNoiseScale: 1
   noiseHeightDelta: 15
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
   islandShapeCurve:
     serializedVersion: 2
     m_Curve:
@@ -90,11 +82,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-<<<<<<< HEAD
-      time: 0.4
-=======
       time: 0.25562134
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
       value: 0.6
       inSlope: 0
       outSlope: 0
@@ -103,11 +91,7 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.93749976
     - serializedVersion: 3
-<<<<<<< HEAD
-      time: 0.6
-=======
       time: 0.4110657
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
       value: 0.6
       inSlope: 0
       outSlope: 0
@@ -127,8 +111,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-<<<<<<< HEAD
-=======
 --- !u!114 &-4146230833278792533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,4 +135,3 @@ MonoBehaviour:
     noiseScale: 0.125
   - heightDelta: 1.25
     noiseScale: 0.25
->>>>>>> 906dbeb8e19fb7a93a4a77a683abc26c4204f498
